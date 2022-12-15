@@ -154,8 +154,8 @@
         return permisos.find(idModuloPermisoFromDb => Number.parseInt(idModuloPermisoFromDb) === idModuloPermiso);
     }
     pathApi = () => {
-        //return "http://localhost:8000/uploads/";
-        return "https://observatoriolegislativouccaep.com/aservice/uploads/"
+        return "http://localhost:8000/uploads/";
+        //return "https://observatoriolegislativouccaep.com/aservice/uploads/"
         // return "https://anepobservatorio.com/aservice/uploads/"
         // return "https://cohepobservatorio.com/aservice/uploads/"
         // return "https://pruebasmorant.com.mx/clienteoit.pruebasmorant.com.mx/aservice/uploads/"

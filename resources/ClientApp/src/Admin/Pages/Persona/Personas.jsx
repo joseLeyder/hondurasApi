@@ -306,10 +306,6 @@ class Personas extends Component {
         });
     };
 
-    getComboComisiones = async () => {
-        this.state({loading: true});
-    }
-
     handlerDesactivar = (item) => {
         let desActObj = {
             id: item.id,

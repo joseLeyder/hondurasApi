@@ -31,6 +31,6 @@ class ProyectoLeyComision extends Model
     }
     public function Comision(){
         return $this->hasOne(Comision::class, 'id', 'comision_id')->where('activo',1)
-                    ->with(['corporacion', 'tipoComision']);
+                    ->with(['tipoComision']);
     }
 }

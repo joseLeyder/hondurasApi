@@ -25,8 +25,8 @@ class TipoComision extends Model
         'updated_at'
     ];
 
-    public function corporacion()
-    {
-        return $this->hasOne('App\Models\Corporacion', 'id', 'corporacion_id');
-    }
+    // public function corporacion()
+    // {
+    //     return $this->hasOne('App\Models\Corporacion', 'id', 'corporacion_id');
+    // }
 }

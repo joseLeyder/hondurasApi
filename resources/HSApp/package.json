@@ -2,7 +2,6 @@
   "name": "cidfares.observatorio",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://observatoriolegislativouccaep.com",
   "dependencies": {
     "@azure/msal-browser": "^2.8.0",
     "@azure/msal-react": "^1.0.0-alpha.1",

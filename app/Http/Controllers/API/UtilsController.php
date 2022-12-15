@@ -842,13 +842,13 @@ class UtilsController extends Controller
                 '%' . $request->nombre . '%'
             );
         }
-        if ($request->has('corporacion_id') && !is_null($request["corporacion_id"]))
-        {
-            $query->where(
-                'corporacion_id',
-                $request->corporacion_id
-            );
-        }
+        // if ($request->has('corporacion_id') && !is_null($request["corporacion_id"]))
+        // {
+        //     $query->where(
+        //         'corporacion_id',
+        //         $request->corporacion_id
+        //     );
+        // }
         if ($request->has('tipo_comision_id') && !is_null($request["tipo_comision_id"]))
         {
             $query->where(
@@ -871,8 +871,7 @@ class UtilsController extends Controller
         }
         $query->with(
             [
-                "comisionImagen",
-                "corporacion"
+                "comisionImagen"
             ]
         );
         $result = $query->orderBy("nombre")->get();
