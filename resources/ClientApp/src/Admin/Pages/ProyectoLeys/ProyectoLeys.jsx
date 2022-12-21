@@ -55,7 +55,7 @@ class ProyectoLeys extends Component {
                                 accessor: "cuatrienio.nombre",
                             },
                             {
-                                Header: "Tipo de proyecto",
+                                Header: "Tipo de expediente",
                                 accessor: "tipo_proyecto_ley.nombre",
                             },
                             {
@@ -140,7 +140,7 @@ class ProyectoLeys extends Component {
                         ],
                     },
                 ],
-                hiddenColumns: ["id", "activo"],
+                hiddenColumns: ["id", "activo", "legislatura.nombre"],
                 data: [],
                 page: 1,
                 rows: 5,

@@ -27,7 +27,8 @@ const fieldsConst = {
     fecha_radicacion: "",       tema_id_principal: "",      tema_id_secundario: '',
     corporacion_id: '',         alcance_id: '',             sinopsis: "",
     proyecto_ley_estado: [],    proyecto_ley_autor_legislativos: [],     proyecto_ley_autor_personas: [],
-    proyecto_ley_ponente: [],   user: auth.username(),      se_acumula_a_id: ''
+    proyecto_ley_ponente: [],   user: auth.username(),      se_acumula_a_id: '',
+    comision_asamblea_id:"",    comision_uccaeps_id:""
 };
 const errorsConst = {
     id: '',                     titulo: "",                 alias: "",
@@ -36,7 +37,8 @@ const errorsConst = {
     fecha_radicacion: "",       tema_id_principal: "",      tema_id_secundario: '',
     corporacion_id: '',         alcance_id: '',             sinopsis: "",
     proyecto_ley_estado: '',    proyecto_ley_autor_legislativos: [],     proyecto_ley_autor_personas: [],
-    proyecto_ley_ponente: [],   user: '',                   se_acumula_a_id: ''
+    proyecto_ley_ponente: [],   user: '',                   se_acumula_a_id: '',
+    comision_asamblea_id:"",    comision_uccaeps_id:""
 };
 const buttonList = [
     [
@@ -86,7 +88,9 @@ const defaultItemSearch = {
 const defaultAutorOtro = { id: "", nombre: "" , activo: true };
 const defaultLegislatura = { value: "", label: "Seleccione legislatura" };
 const defaultCuatrienio = { value: "", label: "Seleccione cuatrienio" };
-const defaultTipoProyecto = { value: "", label: "Seleccione tipo de proyecto" };
+const defaultTipoProyecto = { value: "", label: "Seleccione tipo de expediente" };
+const defaultComisionUCCAEPS = { value: "", label: "Seleccione una comisión de UCCAEPS" };
+const defaultComisionAsamblea = { value: "", label: "Seleccione una comisión de asamblea" };
 const defaultCorporacion = { value: "", label: "Seleccione corporación" };
 const default_item_select_corporacion = { value: "", label: "Seleccione una corporación" };
 const default_item_select_alcance = { value: "", label: "Seleccione un alcance" };
@@ -168,6 +172,8 @@ class CrearProyectoLey extends Component {
             itemLegislatura: Object.assign({}, defaultLegislatura),
             itemCuatrienio: Object.assign({}, defaultCuatrienio),
             itemTipoProyecto: Object.assign({}, defaultTipoProyecto),
+            itemComisionUCCAEPS: Object.assign({}, defaultComisionUCCAEPS),
+            itemComisionAsamblea: Object.assign({}, defaultComisionAsamblea),
             itemFilterCorporacion: Object.assign({}, defaultCorporacion),
             itemFilterCuatrienio: Object.assign({}, defaultCuatrienio),
             itemPublicacion: Object.assign({}, defaultItemPublicacion),
@@ -270,7 +276,93 @@ class CrearProyectoLey extends Component {
                         ],
                     },
                 ],
-                hiddenColumns: ["id", "archivo", 'gaceta_url', 'gaceta_texto'],
+                hiddenColumns: ["id", "archivo",  'orden', 'gaceta_url', 'gaceta_texto'],
+                data: [],
+                page: 1,
+                rows: 5,
+                search: "",
+                totalRows: 0,
+            },
+            index_alertas:{
+                columns: [
+
+                    {
+                        Header: "Alertas",
+                        columns: [
+                            {
+                                Header: "id",
+                                accessor: "id",
+                            },
+                            {
+                                Header: "Alerta",
+                                accessor: "descripcion",
+                            },
+                            {
+                                Header: "Activo",
+                                id: "activo",
+                                accessor: "activo",
+                                Cell: (tableProps) => {
+                                    return (
+                                        <input
+                                            type="checkbox"
+                                            className="icheckbox"
+                                            checked={
+                                                tableProps.row.values.activo
+                                            }
+                                            readOnly
+                                        />
+                                    );
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        Header: "Acciones",
+                        columns: [
+                            {
+                                Header: "Editar",
+                                id: "editar",
+                                accessor: (str) => "editar",
+                                Cell: (tableProps) => (
+                                    <button
+                                        type="button"
+                                        data-toggle="modal"
+                                        data-target="#modal-alerta"
+                                        className="btn btn-info btn-block editar_alerta"
+                                        data-id={tableProps.row.values.id}
+                                    >
+                                        <i className="fa fa-edit"/>{" "}
+                                        Editar
+                                    </button>
+                                ),
+                            },
+                            {
+                                Header: "Activar/Desactivar",
+                                id: "actdesc",
+                                accessor: (str) => "actdesc",
+                                Cell: (tableProps) => (
+                                    <button
+                                        data-toggle="modal"
+                                        data-target="#modal-activar-desactivar-alerta"
+                                        className={`btn ${tableProps.row.values.activo
+                                            ? "btn-danger"
+                                            : "btn-warning"} eliminar_alerta`}
+                                        style={{ width: "100%" }}
+                                        data-id={tableProps.row.values.id}
+                                        data-titulo={tableProps.row.values["descripción"] }
+                                        data-activo={tableProps.row.values.activo}
+                                    >
+                                        <i className="fa fa-eraser"/>{" "}
+                                        {tableProps.row.values.activo
+                                            ? "Desactivar"
+                                            : "Activar"}
+                                    </button>
+                                ),
+                            },
+                        ],
+                    },
+                ],
+                hiddenColumns: ["id"],
                 data: [],
                 page: 1,
                 rows: 5,
@@ -346,6 +438,8 @@ class CrearProyectoLey extends Component {
             dataSelectLegislatura: [],
             dataSelectCuatrienio: [],
             dataSelectTipoProyecto: [],
+            dataComisionUCCAEPS: [],
+            dataComisionAsamblea: [],
             dataSelectCorporacion: [],
             dataSelectTipoComision: [],
             dataSelectTipoPublicacionProyectoLeyProyecto: [],
@@ -397,6 +491,8 @@ class CrearProyectoLey extends Component {
         this.setState({ loading: true });
         this.getComboCuatrienio();
         this.getComboTipoProyecto();
+        this.getComboComisionUCCAEPS();
+        this.getComboComisionAsamblea();
         this.getComboEstadoProyecto();
         this.getIniciativa(null, null, 1);
         this.getComboTema(1);
@@ -511,10 +607,10 @@ class CrearProyectoLey extends Component {
             itemError.fecha = "Ingrese una fecha.";
         }
 
-        if(!item.orden){
-            hasError = true;
-            itemError.orden = "Ingrese un número de orden.";
-        }
+        // if(!item.orden){
+        //     hasError = true;
+        //     itemError.orden = "Ingrese un número de orden.";
+        // }
 
         if (!item.estado_proyecto_ley_id) {
             hasError = true;
@@ -569,7 +665,8 @@ class CrearProyectoLey extends Component {
                 array[index].estado_proyecto_ley_id = item.estado_proyecto_ley_id;
                 array[index].corporacion_id = item.corporacion_id;
                 array[index].observaciones = item.observaciones;
-                array[index].orden = item.orden;
+                //array[index].orden = item.orden;
+                array[index].orden = 0;
                 array[index].activo = item.activo;
                 array[index].comisiones = item.comisiones;
                 array[index].tipo_estado = item.tipo_estado;
@@ -1261,6 +1358,17 @@ class CrearProyectoLey extends Component {
         fields.tipo_proyecto_id = item.value;
         this.setState({ fields: fields, itemTipoProyecto: item });
     };
+    handlerItemComisionAsamblea = (item) => {
+        let fields = this.state.fields;
+        fields.comision_asamblea_id = item.value;
+        this.setState({ fields: fields, itemComisionAsamblea: item });
+    };
+    handlerItemComisionUCCAEPS = (item) => {
+        let fields = this.state.fields;
+        fields.comision_uccaeps_id = item.value;
+        this.setState({ fields: fields, itemComisionUCCAEPS: item });
+    };
+
     handlerSelectAlcance = (item) => {
         let fields = this.state.fields;
         fields.alcance_id = item.value;
@@ -1679,6 +1787,16 @@ class CrearProyectoLey extends Component {
                         "itemTipoProyecto"
                     );
                     this.setSelectValue(
+                        this.state.fields.comision_uccaeps_id,
+                        "dataSelectComisionUCCAEPS",
+                        "itemComisionUCCAEPS"
+                    );
+                    this.setSelectValue(
+                        this.state.fields.comision_asamblea_id,
+                        "dataSelectComisionAsamblea",
+                        "itemComisionAsamblea"
+                    );
+                    this.setSelectValue(
                         this.state.fields.alcance_id,
                         "data_select_alcance",
                         "item_select_alcance"
@@ -1809,6 +1927,35 @@ class CrearProyectoLey extends Component {
             });
         });
     };
+    getComboComisionUCCAEPS = async () => {
+        await UtilsService.getComboComisionUCCAEPS().then((response) => {
+            let combo = [];
+            let selected = Object.assign({}, defaultComisionUCCAEPS);
+            response.data.forEach((i) => {
+                combo.push({ value: i.id, label: i.nombre });
+            });
+            combo.unshift(Object.assign({}, defaultComisionUCCAEPS));
+            this.setState({
+                dataSelectComisionUCCAEPS: combo,
+                itemComisionUCCAEPS: selected,
+            });
+        });
+    };
+    getComboComisionAsamblea = async () => {
+        await UtilsService.getComboComisionAsamblea().then((response) => {
+            let combo = [];
+            let selected = Object.assign({}, defaultComisionAsamblea);
+            response.data.forEach((i) => {
+                combo.push({ value: i.id, label: i.nombre });
+            });
+            combo.unshift(Object.assign({}, defaultComisionAsamblea));
+            this.setState({
+                dataSelectComisionAsamblea: combo,
+                itemComisionAsamblea: selected,
+            });
+        });
+    };
+
     getComboEstadoProyecto = async () => {
         this.setState({ loading: true });
         await UtilsService.getComboEstadoProyecto().then((response) => {
@@ -2280,7 +2427,7 @@ class CrearProyectoLey extends Component {
                                                                 divClassSpanType={ 1 }
                                                                 divClassSpan="input-group-addon"
                                                                 divClassSpanI="fa fa-calendar"
-                                                                maxDate={new Date()}
+                                                                
                                                             />
                                                         </div>
                                                     </div>
@@ -2304,7 +2451,7 @@ class CrearProyectoLey extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="form-group">
-                                                    <label className="col-md-3 control-label"> Tipo de proyecto de ley </label>
+                                                    <label className="col-md-3 control-label"> Tipo de expediente</label>
                                                     <div className="col-md-9">
                                                         <div className="input-group">
                                                             <Select
@@ -2317,6 +2464,42 @@ class CrearProyectoLey extends Component {
                                                                 selectclassNamePrefix="selectReact__value-container"
                                                                 spanClass="error"
                                                                 spanError={ this.state.errors.tipo_proyecto_id || "" }
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="form-group">
+                                                    <label className="col-md-3 control-label"> Comision de UCCAEPS </label>
+                                                    <div className="col-md-9">
+                                                        <div className="input-group">
+                                                            <Select
+                                                                divClass=""
+                                                                selectplaceholder="Seleccione"
+                                                                selectValue={ this.state.itemComisionUCCAEPS }
+                                                                selectIsSearchable={ false }
+                                                                selectoptions={ this.state.dataSelectComisionUCCAEPS }
+                                                                selectOnchange={ this.handlerItemComisionUCCAEPS }
+                                                                selectclassNamePrefix="selectReact__value-container"
+                                                                spanClass="error"
+                                                                spanError={ this.state.errors.comision_uccaeps_id || "" }
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="form-group">
+                                                    <label className="col-md-3 control-label"> Comision de asamblea </label>
+                                                    <div className="col-md-9">
+                                                        <div className="input-group">
+                                                            <Select
+                                                                divClass=""
+                                                                selectplaceholder="Seleccione"
+                                                                selectValue={ this.state.itemComisionAsamblea }
+                                                                selectIsSearchable={ false }
+                                                                selectoptions={ this.state.dataSelectComisionAsamblea }
+                                                                selectOnchange={ this.handlerItemComisionAsamblea }
+                                                                selectclassNamePrefix="selectReact__value-container"
+                                                                spanClass="error"
+                                                                spanError={ this.state.errors.comision_asamblea_id || "" }
                                                             />
                                                         </div>
                                                     </div>
@@ -2362,6 +2545,14 @@ class CrearProyectoLey extends Component {
                                                     data-toggle="tab"
                                                 >
                                                     Estados
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href={`#tab-alertas`}
+                                                    data-toggle="tab"
+                                                >
+                                                    Alertas importantes
                                                 </a>
                                             </li>
                                             <li>
@@ -2483,7 +2674,7 @@ class CrearProyectoLey extends Component {
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-md-6">
+                                                                    {/* <div className="col-md-6">
                                                                         <div className="form-group">
                                                                             <div className="input-group">
                                                                                 <label> Orden </label>
@@ -2524,7 +2715,241 @@ class CrearProyectoLey extends Component {
                                                                                 />
                                                                             </div>
                                                                         </div>
+                                                                    </div> */}
+                                                                    <div className="col-md-6">
+                                                                        <div className="form-group">
+                                                                            <div className="input-group">
+                                                                                <label> Estado </label>
+                                                                                <div className='input-group'>
+                                                                                    <span className="input-group-addon">
+                                                                                        <i className="fa fa-user"/>
+                                                                                    </span>
+                                                                                    <Select
+                                                                                        divClass=""
+                                                                                        selectplaceholder="Seleccione un estado"
+                                                                                        selectValue={ this.state.item_select_estado_proyecto_ley }
+                                                                                        selectOnchange={(e) => {
+                                                                                            this.handlerEstadoProyectoDeLeyEstado(e);
+                                                                                        }}
+                                                                                        selectoptions={ this.state.data_select_estado_proyecto_ley }
+                                                                                        selectIsSearchable={ true }
+                                                                                        selectclassNamePrefix="selectReact__value-container"
+                                                                                        spanClass="error"
+                                                                                        spanError={ this.state.item_error_estado.estado_proyecto_ley_id || "" }
+                                                                                    />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
+                                                                    <div className="col-md-12">
+                                                                        <div className="form-group">
+                                                                            <div className="input-group">
+                                                                                <label> Observaciones </label>
+                                                                                <textarea
+                                                                                    value={this.state.item_estado.observaciones || ""}
+                                                                                    className="form-control"
+                                                                                    rows="10"
+                                                                                    maxLength={368}
+                                                                                    onChange={(e) => {
+                                                                                        let item_estado = this.state.item_estado;
+                                                                                        let item_error_estado = this.state.item_error_estado;
+                                                                                        item_estado = validForm.handleChangeFieldJodiEditor("observaciones", item_estado, e.currentTarget.value);
+                                                                                        item_error_estado = validForm.handleChangeErrors("observaciones", item_error_estado, e.currentTarget.value);
+                                                                                        this.setState({
+                                                                                            item_error: item_estado,
+                                                                                            item_error_estado: item_error_estado,
+                                                                                        });
+                                                                                    }}
+                                                                                />
+                                                                                <span className="error">
+                                                                                    {this.state.item_error_estado.observaciones || ""}
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <hr />
+                                                                <p>
+                                                                    <i className="fa fa-info-circle"/>{" "}
+                                                                    El estado del proyecto de ley aún no esta registrado en la base de datos.
+                                                                    Debe guardar completamente el formulario.
+                                                                </p>
+                                                                <div className="panel-footer">
+                                                                    <button
+                                                                        type="button"
+                                                                        className="btn btn-default"
+                                                                        data-dismiss="modal"
+                                                                        ref="close_modal_estado"
+                                                                    >
+                                                                        Cerrar
+                                                                    </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={async (e) => {
+                                                                            await this.saveSubmitEstado(e);
+                                                                        }}
+                                                                        className="btn btn-success pull-right"
+                                                                    >
+                                                                        <i className="fa fa-check"/>{" "}
+                                                                        Guardar
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                className={`tab-pane active`}
+                                                id={`tab-alertas`}
+                                            >
+                                                <div className="col-md-12">
+                                                    <div className="form-group">
+                                                        <span className='error'>{this.state.errors.proyecto_ley_estado}</span>
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        data-toggle="modal"
+                                                        data-target="#modal-alerta"
+                                                        className="pull-right btn btn-primary"
+                                                        onClick={ async () => {
+                                                            this.handlerResetModalAlerta();
+                                                        }}
+                                                    >
+                                                        <i className="fa fa-plus"/>{" "}
+                                                        Nuevo registro
+                                                    </button>
+                                                    <div className="panel-body">
+                                                        <div>
+                                                            <TableReact
+                                                                columns={this.state.index_alertas.columns}
+                                                                data={this.state.index_alertas.data}
+                                                                hiddenColumns={this.state.index_alertas.hiddenColumns}
+                                                                pageExtends={this.state.index_alertas.page}
+                                                                totalRows={this.state.index_alertas.totalRows}
+                                                                search={this.state.index_alertas.search}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div
+                                                    className="modal"
+                                                    id="modal-estado"
+                                                    tabIndex="-1"
+                                                    role="dialog"
+                                                    aria-labelledby="largeModalHead"
+                                                    aria-hidden="true"
+                                                >
+                                                    <div className="modal-dialog modal-lg">
+                                                        <div className="modal-content">
+                                                            <div className="modal-header">
+                                                                <button
+                                                                    type="button"
+                                                                    className="close"
+                                                                    data-dismiss="modal"
+                                                                >
+                                                                    <span aria-hidden="true">
+                                                                        &times;
+                                                                    </span>
+                                                                    <span className="sr-only">
+                                                                        Cerrar
+                                                                    </span>
+                                                                </button>
+                                                                <h4
+                                                                    className="modal-title"
+                                                                    id="largeModalHead"
+                                                                >
+                                                                    <i className="fa fa-list"/>{" "}
+                                                                    {this.state.item_estado.id === 0 ? 'Crear' : 'Modificar'} estado
+                                                                </h4>
+                                                            </div>
+                                                            <div className="modal-body">
+                                                                <div className="row">
+                                                                    <div className="col-md-6">
+                                                                        <div className="form-group">
+                                                                            <div className="input-group">
+                                                                                <label> Fecha </label>
+                                                                                <DatePicker
+                                                                                    id="item_estado_fecha"
+                                                                                    showInputTime={ false }
+                                                                                    divClass="input-group"
+                                                                                    dateSelected={
+                                                                                        this.state.item_estado.fecha
+                                                                                            ? FechaMysql.DateFormatMySql(this.state.item_estado.fecha)
+                                                                                            : null
+                                                                                    }
+                                                                                    onChangeDate={(e) => {
+                                                                                        let fecha = e;
+
+                                                                                        if (!fecha) {
+                                                                                            fecha = FechaMysql.DateFormatMySql(new Date());
+                                                                                        }
+                                                                                        fecha = FechaMysql.DateFormatMySql(fecha);
+
+                                                                                        this.setState(
+                                                                                            (prevState) => ({
+                                                                                                ...prevState,
+                                                                                                item_estado: {
+                                                                                                    ...prevState.item_estado,
+                                                                                                    fecha: fecha,
+                                                                                                },
+                                                                                            })
+                                                                                        );
+                                                                                    }}
+                                                                                    spanClass="error"
+                                                                                    spanError={ this.state.item_error_estado.fecha || "" }
+                                                                                    divClassSpanType={ 1 }
+                                                                                    divClassSpan="input-group-addon"
+                                                                                    divClassSpanI="fa fa-calendar"
+                                                                                    maxDate={new Date()}
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    {/* <div className="col-md-6">
+                                                                        <div className="form-group">
+                                                                            <div className="input-group">
+                                                                                <label> Orden </label>
+                                                                                <Input
+                                                                                    divClass="input-group"
+                                                                                    inputName="item_estado_orden"
+                                                                                    inputType="text"
+                                                                                    inputClass="form-control"
+                                                                                    inputplaceholder="Ingrese el orden"
+                                                                                    inputValue={ this.state.item_estado.orden || "" }
+                                                                                    inputOnchange={(e) => {
+                                                                                        let value = e.target.value;
+                                                                                        let exp_reg = /^[0-9]*$/;
+
+                                                                                        if(exp_reg.test(value)){
+                                                                                            let item_estado = this.state.item_estado;
+                                                                                            let item_error_estado = this.state.item_error_estado;
+                                                                                            item_estado = validForm.handleChangeField("orden", item_estado, e);
+                                                                                            item_error_estado = validForm.handleChangeErrors("orden", item_error_estado, e);
+                                                                                            this.setState({
+                                                                                                item_estado: item_estado,
+                                                                                                item_error_estado: item_error_estado,
+                                                                                            });
+                                                                                        }
+                                                                                        else{
+                                                                                            let item_error_estado = this.state.item_error_estado;
+                                                                                            item_error_estado.orden = 'Solo números mayores a 0';
+                                                                                            this.setState({
+                                                                                                item_error_estado: item_error_estado,
+                                                                                            });
+                                                                                        }
+                                                                                    }}
+                                                                                    spanClass="error"
+                                                                                    spanError={ this.state.item_error_estado.orden || ""  }
+                                                                                    divClassSpanType={ 1 }
+                                                                                    divClassSpan="input-group-addon"
+                                                                                    divClassSpanI="fa fa-indent"
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div> */}
                                                                     <div className="col-md-6">
                                                                         <div className="form-group">
                                                                             <div className="input-group">

@@ -1,4 +1,4 @@
-﻿export default class Menu
+﻿ export default class Menu
 {
     id;
     modulo_id;

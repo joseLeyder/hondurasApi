@@ -35,6 +35,7 @@ import NivelDificultadBlogND from "./Admin/Pages/NivelDificultadBlogND/NivelDifi
 import TemaBlogND from "./Admin/Pages/TemaBlogND/TemaBlogND";
 import Comisiones from "./Admin/Pages/Comision/Comisiones";
 import EditarComision from "./Admin/Pages/Comision/EditarComision";
+import CrearComision from "./Admin/Pages/Comision/CrearComision";
 import Corporacion from "./Admin/Pages/Corporacion/Corporacion";
 import CrearCorporacion from "./Admin/Pages/Corporacion/CrearCorporacion";
 import TipoActividadAgendaLegislativas from "./Admin/Pages/TipoActividadAgendaLegislativas/TipoActividadAgendaLegislativas";
@@ -106,6 +107,8 @@ import Municipios from "./Admin/Pages/Municipio/Municipios";
  import RolAccion from './Admin/Pages/GestionUsuarios/RolAccion';
  import TipoDeUsuario from './Admin/Pages/GestionUsuarios/TipoDeUsuario';
  import RolesPorTipoDeUsuario from './Admin/Pages/GestionUsuarios/RolesPorTipoDeUsuario';
+import ComisionAsambleas from "./Admin/Pages/ComisionAsamblea/ComisionAsambleas";
+import ComisionUccaeps from "./Admin/Pages/ComisionUccaep/ComisionUccaeps";
 //TERMINA Gestión de usuarios
 
 export default class App extends Component {
@@ -172,6 +175,10 @@ export default class App extends Component {
                         <RouteLayout
                             path="/comision-editar/:id"
                             component={EditarComision}
+                        />
+                        <RouteLayout
+                            path="/comision-crear"
+                            component={CrearComision}
                         />
                         {/* End comisiones */}
 
@@ -493,6 +500,15 @@ export default class App extends Component {
                         {/* Municipios */}
                         <RouteLayout path="/municipios" component={Municipios} />
                         {/* end Municipios */}
+
+                        
+                        {/* Comision de Asamblea */}
+                        <RouteLayout path="/comisionasamblea" component={ComisionAsambleas} />
+                        {/* end Asamblea */}
+                        
+                        {/* Comision de Uccaep */}
+                        <RouteLayout path="/comisionuccaep" component={ComisionUccaeps} />
+                        {/* end Uccaep */}
                     </Switch>
                 </Router>
             </div>

@@ -12,6 +12,8 @@ use App\Models\Circunscripcion;
 use App\Models\Comision;
 use App\Models\ComisionCargoCongresista;
 use App\Models\ComisionMiembro;
+use App\Models\ComisionUccaep;
+use App\Models\ComisionAsamblea;
 use App\Models\ComisionTipoCongresista;
 use App\Models\Congresista;
 use App\Models\CongresoVisibleEquipo;
@@ -279,6 +281,36 @@ class UtilsController extends Controller
     public function getComboCargoCongresista()
     {
         $items = CargoLegislativo::select(
+            'id',
+            'nombre'
+        )->where(
+                'activo',
+                1
+            )->orderBy('id','desc')->get()->toJson(JSON_PRETTY_PRINT);
+
+        return response(
+            $items,
+            200
+        );
+    }
+    public function getComboComisionUCCAEPS()
+    {
+        $items = ComisionUccaep::select(
+            'id',
+            'nombre'
+        )->where(
+                'activo',
+                1
+            )->orderBy('id','desc')->get()->toJson(JSON_PRETTY_PRINT);
+
+        return response(
+            $items,
+            200
+        );
+    }
+    public function getComboComisionAsamblea()
+    {
+        $items = ComisionAsamblea::select(
             'id',
             'nombre'
         )->where(

@@ -55,28 +55,20 @@ class ControlPoliticoIndex extends Component {
                                 accessor: "id"
                             },
                             {
-                                Header: "Título",
-                                accessor: "titulo"
-                            },
-                            {
                                 Header: "Fecha",
                                 accessor: "fecha"
                             },
                             {
-                                Header: "Legislatura",
-                                accessor: "legislatura.nombre"
+                                Header: "Tema",
+                                accessor: "tema"
                             },
                             {
-                                Header: "Cuatrienio",
-                                accessor: "cuatrienio.nombre"
+                                Header: "Proyecto de ley",
+                                accessor: "proyecto"
                             },
                             {
-                                Header: "Estado",
-                                accessor: "estado_control_politico.nombre"
-                            },
-                            {
-                                Header: "Corporación",
-                                accessor: "corporacion.nombre"
+                                Header: "Diputado",
+                                accessor: "Diputado"
                             },
                             {
                                 Header: 'Activo',
@@ -162,117 +154,7 @@ class ControlPoliticoIndex extends Component {
                                     Header: "Activar/Desactivar",
                                     id: "actdesc",
                                     accessor: (str) => "-",
-                                },
-                            auth.tieneModuloPermiso(ModuloPermiso.ControlPolitico.IndexProposiciones) ?
-                                {
-                                    Header: 'Cuestionario',
-                                    id: 'cuestionario',
-                                    accessor: (str) => 'cuestionario',
-                                    Cell: (tableProps) => (
-                                        <ValidarPermiso
-                                            IdModuloPermisoValidar={ModuloPermiso.ControlPolitico.IndexProposiciones}
-                                            DefaultTemplate={
-                                                <a href={`#/control-politico-cuestionarios/${tableProps.row.values.id}`} data-id={tableProps.row.values.id}
-                                                    className="btn btn-primary btn-block">
-                                                    <i class="fab fa-slideshare"></i> Cuestionario
-                                        </a>
-                                            }
-                                        />
-                                    )
                                 }
-                                : {
-                                    Header: 'Cuestionario',
-                                    id: 'Cuestionario',
-                                    accessor: (str) => '-',
-                                },
-                            auth.tieneModuloPermiso(ModuloPermiso.ControlPolitico.IndexCitantes) ?
-                                {
-                                    Header: 'Citantes',
-                                    id: 'citantes',
-                                    accessor: (str) => 'citantes',
-                                    Cell: (tableProps) => (
-                                        <ValidarPermiso
-                                            IdModuloPermisoValidar={ModuloPermiso.ControlPolitico.IndexCitantes}
-                                            DefaultTemplate={
-                                                <a href={`#/control-politico-citantes/${tableProps.row.values.id}`} data-id={tableProps.row.values.id}
-                                                    className="btn btn-primary btn-block">
-                                                    <i className="fa fa-users"></i> Citantes
-                                            </a>
-                                            }
-                                        />
-                                    )
-                                }
-                                : {
-                                    Header: 'Citantes',
-                                    id: 'Sin permiso para citantes',
-                                    accessor: (str) => '-',
-                                },
-                            auth.tieneModuloPermiso(ModuloPermiso.ControlPolitico.IndexCitados) ?
-                                {
-                                    Header: 'Citados',
-                                    id: 'citados',
-                                    accessor: (str) => 'citados',
-                                    Cell: (tableProps) => (
-                                        <ValidarPermiso
-                                            IdModuloPermisoValidar={ModuloPermiso.ControlPolitico.IndexCitados}
-                                            DefaultTemplate={
-                                                <a href={`#/control-politico-citados/${tableProps.row.values.id}`} data-id={tableProps.row.values.id}
-                                                    className="btn btn-primary btn-block">
-                                                    <i className="fa fa-users"></i> Citados
-                                                </a>
-                                            }
-                                        />
-                                    )
-                                }
-                                : {
-                                    Header: 'Citados',
-                                    id: 'Sin permiso para citados',
-                                    accessor: (str) => '-',
-                                },
-                            auth.tieneModuloPermiso(ModuloPermiso.ControlPolitico.IndexRespuestas) ?
-                                {
-                                    Header: 'Respuestas',
-                                    id: 'respuestas',
-                                    accessor: (str) => 'respuestas',
-                                    Cell: (tableProps) => (
-                                        <ValidarPermiso
-                                            IdModuloPermisoValidar={ModuloPermiso.ControlPolitico.IndexRespuestas}
-                                            DefaultTemplate={
-                                                <a href={`#/control-politico-respuestas/${tableProps.row.values.id}`} data-id={tableProps.row.values.id}
-                                                    className="btn btn-primary btn-block">
-                                                    <i class="fa fa-reply-all"></i> Respuestas
-                                                </a>
-                                            }
-                                        />
-                                    )
-                                }
-                                : {
-                                    Header: 'Respuestas',
-                                    id: 'Sin permiso para respuestas',
-                                    accessor: (str) => '-',
-                                },
-                            auth.tieneModuloPermiso(ModuloPermiso.ControlPolitico.IndexDocumentos) ?
-                                {
-                                    Header: 'Gacetas',
-                                    id: 'gacetas',
-                                    accessor: (str) => 'gacetas',
-                                    Cell: (tableProps) => (
-                                        <ValidarPermiso
-                                            IdModuloPermisoValidar={ModuloPermiso.ControlPolitico.IndexDocumentos}
-                                            DefaultTemplate={
-                                                <a href={`#/control-politico-gacetas/${tableProps.row.values.id}`} data-id={tableProps.row.values.id}
-                                                    className="btn btn-primary btn-block">
-                                                    <i class="fa fa-file-upload"></i> Gacetas
-                                    </a>
-                                            }
-                                        />
-                                    )
-                                }
-                                : {
-                                    Header: 'Documentos',
-                                    id: 'gacetas',
-                                    accessor: (str) => '-',
-                                },
                         ]
                     }
                 ],
@@ -320,7 +202,7 @@ class ControlPoliticoIndex extends Component {
         await this.getComboCuatrienio();
         await this.getComboComision();
         await this.getComboEstado();
-        await this.getComboCorporacion();
+        //await this.getComboCorporacion();
     }
     handlerDesactivar = (controlPolitico) => {
         let desActObj = { id: controlPolitico.id, titulo: controlPolitico.titulo, fecha: controlPolitico.fecha, activo: controlPolitico.activo }
@@ -594,67 +476,6 @@ class ControlPoliticoIndex extends Component {
                                                     selectValue={this.state.filterActive}
                                                     selectOnchange={this.handleFilterActive}
                                                     selectoptions={this.state.dataSelectActive}
-                                                    selectIsSearchable={false}
-                                                    selectclassNamePrefix="selectReact__value-container"
-                                                    spanClass=""
-                                                    spanError="" >
-                                                </Select>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div style={{ minWidth: "170px" }}>
-                                                <Select
-                                                    divClass=""
-                                                    selectplaceholder="Seleccione"
-                                                    selectValue={this.state.filterCuatrienio}
-                                                    selectOnchange={this.handleFilterCuatrienio}
-                                                    selectoptions={this.state.dataSelectCuatrienio}
-                                                    selectIsSearchable={false}
-                                                    selectclassNamePrefix="selectReact__value-container"
-                                                    spanClass=""
-                                                    spanError="" >
-                                                </Select>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div style={{ minWidth: "170px" }}>
-                                                <Select
-                                                    divClass=""
-                                                    selectplaceholder="Seleccione"
-                                                    selectValue={this.state.filterLegislatura}
-                                                    selectOnchange={this.handleFilterLegislatura}
-                                                    selectoptions={this.state.dataSelectLegislatura}
-                                                    selectIsSearchable={false}
-                                                    selectclassNamePrefix="selectReact__value-container"
-                                                    noOptionsMessage="Seleccione cuatrienio"
-                                                    spanClass=""
-                                                    spanError="" >
-                                                </Select>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div style={{ minWidth: "200px" }}>
-                                                <Select
-                                                    divClass=""
-                                                    selectplaceholder="Seleccione"
-                                                    selectValue={this.state.filterCorporacion}
-                                                    selectOnchange={this.handleFilterCorporacion}
-                                                    selectoptions={this.state.dataSelectCorporacion}
-                                                    selectIsSearchable={false}
-                                                    selectclassNamePrefix="selectReact__value-container"
-                                                    spanClass=""
-                                                    spanError="" >
-                                                </Select>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div style={{ minWidth: "150px" }}>
-                                                <Select
-                                                    divClass=""
-                                                    selectplaceholder="Seleccione"
-                                                    selectValue={this.state.filterEstado}
-                                                    selectOnchange={this.handleFilterEstado}
-                                                    selectoptions={this.state.dataSelectEstado}
                                                     selectIsSearchable={false}
                                                     selectclassNamePrefix="selectReact__value-container"
                                                     spanClass=""

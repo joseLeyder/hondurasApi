@@ -536,4 +536,20 @@
         , ObtenerTodos: 362
         , Index: 363
     }
+    , ComisionAsamblea: {
+        Nuevo: 377
+        , Modificar: 378
+        , Eliminar: 379
+        , Obtener: 380
+        , ObtenerTodos: 381
+        , Index: 382
+    }
+    , ComisionUccaep: {
+        Nuevo: 370
+        , Modificar: 371
+        , Eliminar: 372
+        , Obtener: 373
+        , ObtenerTodos: 374
+        , Index: 375
+    }
 }

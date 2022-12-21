@@ -31,7 +31,7 @@ const errorsConst = {
     grado_estudio_id: "", persona_trayectoria_publica: [], persona_trayectoria_privada: [],
     persona_dato_contactos: [], imagen: [], submit: ''
 };
-const default_item_select_lugar_nacimiento = { value: "", label: "Seleccione departamento" };
+const default_item_select_lugar_nacimiento = { value: "", label: "Seleccione provincia" };
 const default_item_select_profesion = { value: "", label: "Seleccione una profesión" };
 const default_item_select_genero = { value: "", label: "Seleccione una género" };
 const default_item_select_grado_estudio = { value: "", label: "Seleccione un grado de estudio" };

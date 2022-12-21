@@ -146,7 +146,8 @@ Route::post('utils/getPonenteFilterPagination',[UtilsController::class,'getPonen
 Route::post('utils/getPonenteFilterPaginationTotalRecord',[UtilsController::class,'getPonenteFilterPaginationTotalRecord']);
 Route::post('utils/getAutorFilterPagination',[UtilsController::class,'getAutorFilterPagination']);
 Route::post('utils/getAutorFilterPaginationTotalRecord',[UtilsController::class,'getAutorFilterPaginationTotalRecord']);
-
+Route::get('utils/getComboComisionUCCAEPS',[UtilsController::class,'getComboComisionUCCAEPS']);
+Route::get('utils/getComboComisionAsamblea',[UtilsController::class,'getComboComisionAsamblea']);
 //Departamento
 Route::get('departamento/totalrecords', [DepartamentosController::class, 'totalrecords'])->middleware(['jwt.cid:0']);
 Route::post('departamento', [DepartamentosController::class, 'store'])->middleware(['jwt.cid:173']);
@@ -615,3 +616,21 @@ Route::post('municipio/totalrecords/', [MunicipioController::class, 'totalrecord
 // Notificación
 Route::get('notificacion/get_all/{email}/{limite}', [NotificacionController::class, 'show_all'])->middleware(['jwt.cid:0']);
 Route::delete('notificacion/{email}/{proyecto_ley_id}', [NotificacionController::class, 'destroy'])->middleware(['jwt.cid:0']);
+
+
+// ComisionAsambleas
+Route::post('comisionasamblea', [ComisionAsambleasController::class, 'store'])->middleware(['jwt.cid:370']);
+Route::put('comisionasamblea/{id}', [ComisionAsambleasController::class, 'update'])->middleware(['jwt.cid:371']);
+Route::delete('comisionasamblea/{id}', [ComisionAsambleasController::class, 'destroy'])->middleware(['jwt.cid:372']);
+Route::get('comisionasamblea/{id}', [ComisionAsambleasController::class, 'show'])->middleware(['jwt.cid:373']);
+Route::get('comisionasamblea', [ComisionAsambleasController::class, 'index'])->middleware(['jwt.cid:375']);
+Route::post('comisionasamblea/totalrecords/', [ComisionAsambleasController::class, 'totalrecords'])->middleware(['jwt.cid:375']);
+
+
+// Comision UCCAEP
+Route::post('comisionuccaep', [ComisionUCCAEPsController::class, 'store'])->middleware(['jwt.cid:377']);
+Route::put('comisionuccaep/{id}', [ComisionUCCAEPsController::class, 'update'])->middleware(['jwt.cid:378']);
+Route::delete('comisionuccaep/{id}', [ComisionUCCAEPsController::class, 'destroy'])->middleware(['jwt.cid:379']);
+Route::get('comisionuccaep/{id}', [ComisionUCCAEPsController::class, 'show'])->middleware(['jwt.cid:380']);
+Route::get('comisionuccaep', [ComisionUCCAEPsController::class, 'index'])->middleware(['jwt.cid:382']);
+Route::post('comisionuccaep/totalrecords/', [ComisionUCCAEPsController::class, 'totalrecords'])->middleware(['jwt.cid:382']);

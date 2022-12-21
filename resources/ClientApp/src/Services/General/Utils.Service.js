@@ -20,6 +20,15 @@ class UtilsDataService {
         return await http.get(`/${NombreDelModulo}/getComboTipoComision?idcorporacion=${idCorporacion}`);
     }
 
+    
+    async getComboComisionUCCAEPS(){
+        return await http.get(`/${NombreDelModulo}/getComboComisionUCCAEPS`);
+    }
+    
+    async getComboComisionAsamblea(){
+        return await http.get(`/${NombreDelModulo}/getComboComisionAsamblea`);
+    }
+
     async getComboCuatrienio() {
         return await http.get(`/${NombreDelModulo}/getComboCuatrienio`);
     }

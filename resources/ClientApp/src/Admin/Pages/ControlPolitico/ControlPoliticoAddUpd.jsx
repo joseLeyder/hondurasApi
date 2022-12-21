@@ -104,7 +104,7 @@ const SelectComision = { value: -1, label: 'Seleccione comision' };
 const SelectEstado = { value: -1, label: 'Seleccione estado' };
 const SelectTemaPrincipal = { value: -1, label: 'Seleccione tema principal' };
 const SelectTemaSecundario = { value: -1, label: 'Seleccione tema secundario' };
-const SelectCorporacion = { value: -1, label: 'Seleccione corporacion' };
+const SelectCorporacion = { value: -1, label: 'Seleccione proyecto' };
 const SelectTipoComision = { value: -1, label: 'Seleccione tipo comision' };
 
 class ControlPoliticoAddUpd extends Component {
@@ -144,12 +144,12 @@ class ControlPoliticoAddUpd extends Component {
 
     componentDidMount = async () => {
         this.resetFields();
-        await this.getComboCuatrienio();
+        //await this.getComboCuatrienio();
         
-        await this.getComboEstado();
-        await this.getComboTema(-1);
-        await this.getComboTemaSecundario(-1);
-        await this.getComboCorporacion();
+        //await this.getComboEstado();
+        //await this.getComboTema(-1);
+        //await this.getComboTemaSecundario(-1);
+        //await this.getComboCorporacion();
         this.state.fields.id = this.state.id;
         this.state.fields.user = auth.username();
 
@@ -157,7 +157,7 @@ class ControlPoliticoAddUpd extends Component {
         if (id != 0) {
             await this.getByID(id);
         }
-        await this.getComboGlosarioLegislativo();
+        //await this.getComboGlosarioLegislativo();
     };
 
     //Combos
@@ -579,16 +579,15 @@ class ControlPoliticoAddUpd extends Component {
                                             <div className="col-md-9">
                                                 <div className="form-group">
                                                     <label className="col-md-3 control-label">
-                                                        Título del control político
-                                                    </label>
+                                                        Tema                                                    </label>
                                                     <div className="col-md-9">
                                                         <div className="input-group">
                                                             <Input
                                                                 divClass="input-group"
-                                                                inputName="titulo"
+                                                                inputName="tema"
                                                                 inputType="text"
                                                                 inputClass="form-control"
-                                                                inputplaceholder="Ingrese el título"
+                                                                inputplaceholder="Ingrese el tema"
                                                                 inputValue={
                                                                     this.state
                                                                         .fields
@@ -605,12 +604,12 @@ class ControlPoliticoAddUpd extends Component {
                                                                         .state
                                                                         .errors;
                                                                     fields = validForm.handleChangeField(
-                                                                        "titulo",
+                                                                        "tema",
                                                                         fields,
                                                                         e
                                                                     );
                                                                     errors = validForm.handleChangeErrors(
-                                                                        "titulo",
+                                                                        "tema",
                                                                         errors,
                                                                         e
                                                                     );
@@ -625,7 +624,7 @@ class ControlPoliticoAddUpd extends Component {
                                                                 spanError={
                                                                     this.state
                                                                         .errors[
-                                                                    "titulo"
+                                                                    "tema"
                                                                     ] || ""
                                                                 }
                                                                 divClassSpanType={
@@ -639,7 +638,7 @@ class ControlPoliticoAddUpd extends Component {
                                                 </div>
                                                 <div className="form-group">
                                                     <label className="col-md-3 control-label">
-                                                        Corporación
+                                                        Proyecto de ley
                                                     </label>
                                                     <div className="col-md-9">
                                                         <div style={{ minWidth: "200px" }}>
@@ -657,146 +656,7 @@ class ControlPoliticoAddUpd extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="form-group">
-                                                    <label className="col-md-3 control-label">
-                                                        Tipo comisión
-                                                    </label>
-                                                    <div className="col-md-9">
-                                                        <div style={{ minWidth: "200px" }}>
-                                                            <Select
-                                                                divClass=""
-                                                                selectplaceholder="Seleccione"
-                                                                selectValue={this.state.selectTipoComision}
-                                                                selectOnchange={this.handleSelectTipoComision}
-                                                                selectoptions={this.state.dataSelectTipoComision}
-                                                                selectIsSearchable={false}
-                                                                selectclassNamePrefix="selectReact__value-container"
-                                                                spanClass="error"
-                                                                spanError={this.state.errors["tipo_comision_id"] || ''} >
-                                                            </Select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="form-group">
-                                                    <label className="col-md-3 control-label">
-                                                        Comisión
-                                                    </label>
-                                                    <div className="col-md-9">
-                                                        <div style={{ minWidth: "200px" }}>
-                                                            <Select
-                                                                divClass=""
-                                                                selectplaceholder="Seleccione"
-                                                                selectValue={this.state.selectComision}
-                                                                selectOnchange={this.handleSelectComision}
-                                                                selectoptions={this.state.dataSelectComision}
-                                                                selectIsSearchable={false}
-                                                                selectclassNamePrefix="selectReact__value-container"
-                                                                spanClass="error"
-                                                                spanError={this.state.errors["comision_id"] || ''} >
-                                                            </Select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="form-group">
-                                                    <label className="col-md-3 control-label">
-                                                        Cuatrienio
-                                                    </label>
-                                                    <div className="col-md-9">
-                                                        <div style={{ minWidth: "200px" }}>
-                                                            <Select
-                                                                divClass=""
-                                                                selectplaceholder="Seleccione"
-                                                                selectValue={this.state.selectCuatrienio}
-                                                                selectOnchange={this.handleSelectCuatrienio}
-                                                                selectoptions={this.state.dataSelectCuatrienio}
-                                                                selectIsSearchable={false}
-                                                                selectclassNamePrefix="selectReact__value-container"
-                                                                spanClass="error"
-                                                                spanError={this.state.errors["cuatrienio_id"] || ''} >
-                                                            </Select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="form-group">
-                                                    <label className="col-md-3 control-label">
-                                                        Legislatura
-                                                    </label>
-                                                    <div className="col-md-9">
-                                                        <div style={{ minWidth: "200px" }}>
-                                                            <Select
-                                                                divClass=""
-                                                                selectplaceholder="Seleccione"
-                                                                selectValue={this.state.selectLegislatura}
-                                                                selectOnchange={this.handleSelectLegislatura}
-                                                                selectoptions={this.state.dataSelectLegislatura}
-                                                                selectIsSearchable={false}
-                                                                selectclassNamePrefix="selectReact__value-container"
-                                                                spanClass="error"
-                                                                spanError={this.state.errors["legislatura_id"] || ''} >
-                                                            </Select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="form-group">
-                                                    <label className="col-md-3 control-label">
-                                                        Estado control político
-                                                    </label>
-                                                    <div className="col-md-9">
-                                                        <div style={{ minWidth: "200px" }}>
-                                                            <Select
-                                                                divClass=""
-                                                                selectplaceholder="Seleccione"
-                                                                selectValue={this.state.selectEstado}
-                                                                selectOnchange={this.handleSelectEstado}
-                                                                selectoptions={this.state.dataSelectEstado}
-                                                                selectIsSearchable={false}
-                                                                selectclassNamePrefix="selectReact__value-container"
-                                                                spanClass="error"
-                                                                spanError={this.state.errors["estado_control_politico_id"] || ''} >
-                                                            </Select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="form-group">
-                                                    <label className="col-md-3 control-label">
-                                                        Tema principal
-                                                    </label>
-                                                    <div className="col-md-9">
-                                                        <div style={{ minWidth: "200px" }}>
-                                                            <Select
-                                                                divClass=""
-                                                                selectplaceholder="Seleccione"
-                                                                selectValue={this.state.selectTemaPrincipal}
-                                                                selectOnchange={this.handleSelectTema}
-                                                                selectoptions={this.state.dataSelectTemaPrincipal}
-                                                                selectIsSearchable={false}
-                                                                selectclassNamePrefix="selectReact__value-container"
-                                                                spanClass="error"
-                                                                spanError={this.state.errors["tema_id_principal"] || ''} >
-                                                            </Select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="form-group">
-                                                    <label className="col-md-3 control-label">
-                                                        Tema secundario
-                                                    </label>
-                                                    <div className="col-md-9">
-                                                        <div style={{ minWidth: "200px" }}>
-                                                            <Select
-                                                                divClass=""
-                                                                selectplaceholder="Seleccione"
-                                                                selectValue={this.state.selectTemaSecundario}
-                                                                selectOnchange={this.handleSelectTemaSecundario}
-                                                                selectoptions={this.state.dataSelectTemaSecundario}
-                                                                selectIsSearchable={false}
-                                                                selectclassNamePrefix="selectReact__value-container"
-                                                                spanClass="error"
-                                                                spanError={this.state.errors["tema_id_secundario"] || ''} >
-                                                            </Select>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                
                                                 <div className="form-group">
                                                     <label className="col-md-3 control-label">
                                                         Fecha
@@ -823,69 +683,10 @@ class ControlPoliticoAddUpd extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="form-group">
-                                                    <label className="col-md-3 control-label">Tags asociados</label>
-                                                    <div className="col-md-9">
-                                                        <div className="input-group">
-                                                           <div className="conceptosContainer">
-                                                               <div className="conceptos">
-                                                                   {this.state.glosarioSelected !== null && typeof this.state.glosarioSelected.length !== 'undefined' && this.state.glosarioSelected.length > 0
-                                                                   ?
-                                                                    this.state.glosarioSelected.map((x,i) => {
-                                                                      return (
-                                                                          <div key={i} className="item">
-                                                                              <p>{x.palabra}</p>
-                                                                              <button onClick={()=>{this.unselectWordHandler(x)}} type="button" className="btn btn-danger"><i className="fas fa-trash-alt"></i></button>
-                                                                          </div>
-                                                                      )  
-                                                                    })
-                                                                   :
-                                                                   <p className="no-conceptos">No hay conceptos seleccionados</p>
-                                                                }
-                                                               </div>
-                                                               <span className="error">{this.state.errors.conceptos || ''}</span>
-                                                               <div className="actions">
-                                                                   <button type="button" data-toggle="modal" data-target="#select-concepto" className="btn btn-primary"><i className="fas fa-plus"></i> Agregar conceptos</button>
-                                                               </div>
-                                                           </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                
                                                 <div className="form-group">
                                                     <label className="col-md-3 control-label">
-                                                        Número de proposicion
-                                                    </label>
-                                                    <div className="col-md-9">
-                                                        <div className="input-group">
-                                                            <Input
-                                                                divClass="input-group"
-                                                                inputName="numero_proposicion"
-                                                                inputType="text"
-                                                                inputClass="form-control"
-                                                                inputplaceholder="Ingrese el número de proposición"
-                                                                inputValue={this.state.fields.numero_proposicion ||""}
-                                                                inputOnchange={(e) => {
-                                                                    let fields = this.state.fields;
-                                                                    let errors = this.state.errors;
-                                                                    fields = validForm.handleChangeField("numero_proposicion",fields,e);
-                                                                    errors = validForm.handleChangeErrors("numero_proposicion",errors,e);
-                                                                    this.setState({
-                                                                            fields: fields,
-                                                                            errors: errors
-                                                                        });
-                                                                }}
-                                                                spanClass="error"
-                                                                spanError={this.state.errors["numero_proposicion"] || ""}
-                                                                divClassSpanType={1}
-                                                                divClassSpan="input-group-addon"
-                                                                divClassSpanI="fa fa-indent"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="form-group">
-                                                    <label className="col-md-3 control-label">
-                                                        Detalles
+                                                        Intervención
                                                     </label>
                                                     <div className="col-md-9">
                                                         <SunEditor

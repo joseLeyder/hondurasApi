@@ -16,7 +16,7 @@ class ProyectoLey extends Model
             'numero_camara' => 'required',
             'tema_id_principal' => 'numeric|required|min:0|not_in:0',
             'cuatrienio_id' => 'numeric|required|min:0|not_in:0',
-            'legislatura_id' => 'numeric|required|min:0|not_in:0',
+            // 'legislatura_id' => 'numeric|required|min:0|not_in:0',
             'iniciativa_id' => 'numeric|required|min:0|not_in:0',
             'sinopsis' => 'required',
             'tipo_proyecto_id' => 'numeric|required|min:0|not_in:0',
@@ -38,10 +38,10 @@ class ProyectoLey extends Model
         'cuatrienio_id.min' => 'El cuatrienio es requerido.',
         'cuatrienio_id.not_in' => 'El cuatrienio es requerido.',
 
-        'legislatura_id.numeric' => 'La legislatura es requerido.',
-        'legislatura_id.required' => 'La legislatura es requerido.',
-        'legislatura_id.min' => 'La legislatura es requerido.',
-        'legislatura_id.not_in' => 'La legislatura es requerido.',
+        // 'legislatura_id.numeric' => 'La legislatura es requerido.',
+        // 'legislatura_id.required' => 'La legislatura es requerido.',
+        // 'legislatura_id.min' => 'La legislatura es requerido.',
+        // 'legislatura_id.not_in' => 'La legislatura es requerido.',
 
         'iniciativa_id.numeric' => 'La iniciativa es requerido.',
         'iniciativa_id.required' => 'La iniciativa es requerido.',
@@ -60,7 +60,7 @@ class ProyectoLey extends Model
         return [
             'titulo' => 'required',
             'fecha_radicacion' => 'required',
-            'legislatura_id' => 'numeric|required|min:0|not_in:0',
+            // 'legislatura_id' => 'numeric|required|min:0|not_in:0',
             'cuatrienio_id' => 'numeric|required|min:0|not_in:0',
             'tipo_proyecto_id' => 'numeric|required|min:0|not_in:0',
             'iniciativa_id' => 'numeric|required|min:0|not_in:0',
@@ -73,10 +73,10 @@ class ProyectoLey extends Model
         'titulo.required' => 'El título es requerido.',
         'fecha_radicacion.required' => 'La fecha de radicación es requerida.',
 
-        'legislatura_id.numeric' => 'La legislatura es requerido.',
-        'legislatura_id.required' => 'La legislatura es requerido.',
-        'legislatura_id.min' => 'La legislatura es requerido.',
-        'legislatura_id.not_in' => 'La legislatura es requerido.',
+        // 'legislatura_id.numeric' => 'La legislatura es requerido.',
+        // 'legislatura_id.required' => 'La legislatura es requerido.',
+        // 'legislatura_id.min' => 'La legislatura es requerido.',
+        // 'legislatura_id.not_in' => 'La legislatura es requerido.',
 
         'cuatrienio_id.numeric' => 'El cuatrienio es requerido.',
         'cuatrienio_id.required' => 'El cuatrienio es requerido.',

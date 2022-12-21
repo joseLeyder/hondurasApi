@@ -37,6 +37,10 @@ class Comisiones extends Component {
                             {
                                 Header: "Tipo de comision",
                                 accessor: "tipo_comision.nombre"
+                            },
+                            {
+                                Header: "Activo",
+                                accessor: "activo"
                             }
                         ]
                     },
@@ -58,7 +62,40 @@ class Comisiones extends Component {
                                         }
                                     />
                                 )
-                            }
+                            },
+                            {
+                                Header: "Activar/Desactivar",
+                                id: "actdesc",
+                                accessor: (str) => "actdesc",
+                                Cell: (tableProps) => (
+                                    <ValidarPermiso
+                                        IdModuloPermisoValidar={ModuloPermiso.Comision.Eliminar}
+                                        DefaultTemplate=
+                                            {
+                                                <button
+                                                    data-toggle="modal"
+                                                    data-target="#message-box-danger"
+                                                    className={`btn ${tableProps.row.values.activo === 1
+                                                        ? "btn-danger"
+                                                        : "btn-warning"} eliminar`}
+                                                    style={{ width: "100%" }}
+                                                    data-id={tableProps.row.values.id}
+                                                    onClick={() => {
+                                                        this.handlerDesactivar(
+                                                            tableProps.row.values
+                                                        );
+                                                    }}
+                                                >
+                                                    <i className="fa fa-eraser"></i>{" "}
+                                                    {tableProps.row.values.activo === 1
+                                                        ? "Desactivar"
+                                                        : "Activar"}
+                                                </button>
+                                            }
+                                    />
+
+                                ),
+                            },
                         ]
                     }
                 ],
@@ -208,6 +245,22 @@ class Comisiones extends Component {
                                                     spanError="" >
                                                 </Select>
                                             </div>
+                                        </li>
+                                        <li>
+                                            <ValidarPermiso
+                                                IdModuloPermisoValidar={ModuloPermiso.Comision.Nuevo}
+                                                DefaultTemplate=
+                                                    {
+                                                        <a
+                                                            href="#/comision-crear"
+                                                            className="btn btn-primary"
+                                                        >
+                                                            <i className="fa fa-plus"></i>{" "}
+                                                            Nuevo registro
+                                                        </a>
+                                                    }
+                                            />
+
                                         </li>
                                     </ul>
                                 </div>
