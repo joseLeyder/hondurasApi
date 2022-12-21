@@ -3,7 +3,7 @@ import http2 from "../../../Http/Http-processcommon2";
 
 class ModuloPermisoRolDataService {
     async createRange(data) {
-        return await http.post(`/moduloPermisoRol/postRange/`, data);
+        return await http.post(`/moduloPermisoRol/postRange`, data);
     }
     async updateRange(id, data) {
         return await http2.post(`/moduloPermisoRol/putRange/${id}`, data);
@@ -18,7 +18,7 @@ class ModuloPermisoRolDataService {
     }
     async getAll(data) {
         return await http.post(
-            `/moduloPermisoRol/getAll/`, data);
+            `/moduloPermisoRol/getAll`, data);
     }
 }
 export default new ModuloPermisoRolDataService();

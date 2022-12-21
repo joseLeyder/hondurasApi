@@ -25,7 +25,7 @@ class usuarioCuentaDataService {
     }
 
     async getDto(data) {
-        return await http.post(`/${NombreDelModulo}/getDto/`, data);
+        return await http.post(`/${NombreDelModulo}/getDto`, data);
     }
 
     async updatePerfil(data) {

@@ -8,7 +8,7 @@ class RolDataService {
         return await http.get(`/rol/getAllByIdTipoUsuario/${idTipoUsuario}`);
     }
     async getAll(data) {
-        return await http.post(`/rol/getAll/`, data);
+        return await http.post(`/rol/getAll`, data);
     }
     async get(id) {
         return await http.get(`/rol/${id}`);

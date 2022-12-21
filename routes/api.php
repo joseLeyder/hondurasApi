@@ -521,7 +521,7 @@ Route::post('asignacionUsuario/showAll', [SucursalUsuarioCuentaController::class
 // Usuarios por sucursal
 Route::post('usuariosPorSucursal/showFilter', [SucursalUsuarioCuentaController::class, 'showFilter'])->middleware(['jwt.cid:0']);
 Route::post('usuariosPorSucursal/getUsuariosFaltantesEnSucursal', [SucursalUsuarioCuentaController::class, 'getUsuariosFaltantesEnSucursal'])->middleware(['jwt.cid:0']);
-Route::post('usuariosPorSucursal/', [SucursalUsuarioCuentaController::class, 'store'])->middleware(['jwt.cid:23']);
+Route::post('usuariosPorSucursal', [SucursalUsuarioCuentaController::class, 'store'])->middleware(['jwt.cid:23']);
 Route::delete('usuariosPorSucursal/destroyAll/{id}', [SucursalUsuarioCuentaRolController::class, 'destroyAll'])->middleware(['jwt.cid:25']);
 Route::post('usuariosPorSucursal/showAll', [SucursalUsuarioCuentaRolController::class, 'showAll'])->middleware(['jwt.cid:27']);
 
@@ -551,12 +551,12 @@ Route::get('rol/{id}', [RolController::class, 'show'])->middleware(['jwt.cid:38'
 
 // Tipos de usuario
 Route::get('rol/getAllSinAsignarATipoDeUsuario/{id}', [RolController::class, 'getAllSinAsignarATipoDeUsuario'])->middleware(['jwt.cid:0']);
-Route::post('tipoUsuario/', [TipoUsuarioController::class, 'store'])->middleware(['jwt.cid:41']);
+Route::post('tipoUsuario', [TipoUsuarioController::class, 'store'])->middleware(['jwt.cid:41']);
 Route::put('tipoUsuario/{id}', [TipoUsuarioController::class, 'update'])->middleware(['jwt.cid:42']);
 Route::delete('tipoUsuario/{id}', [TipoUsuarioController::class, 'destroy'])->middleware(['jwt.cid:43']);
 Route::get('tipoUsuario/{id}',[TipoUsuarioController::class,'show'])->middleware(['jwt.cid:44']);
 Route::post('tipoUsuario/getAllDto', [TipoUsuarioController::class, 'getAllDto'])->middleware(['jwt.cid:45']);
-Route::post('rolTipoUsuario/', [RolTipoUsuarioController::class, 'store'])->middleware(['jwt.cid:47']);
+Route::post('rolTipoUsuario', [RolTipoUsuarioController::class, 'store'])->middleware(['jwt.cid:47']);
 Route::delete('rolTipoUsuario/{id}',[RolTipoUsuarioController::class,'destroy'])->middleware(['jwt.cid:49']);
 Route::post('rolTipoUsuario/getAllDto', [RolTipoUsuarioController::class, 'getAllDto'])->middleware(['jwt.cid:50']);
 
@@ -603,7 +603,7 @@ Route::put('region/{id}', [RegionController::class, 'update'])->middleware(['jwt
 Route::delete('region/{id}', [RegionController::class, 'destroy'])->middleware(['jwt.cid:354']);
 Route::get('region/{id}', [RegionController::class, 'show'])->middleware(['jwt.cid:355']);
 Route::get('region', [RegionController::class, 'index'])->middleware(['jwt.cid:356']);
-Route::post('region/totalrecords/', [RegionController::class, 'totalrecords'])->middleware(['jwt.cid:0']);
+Route::post('region/totalrecords', [RegionController::class, 'totalrecords'])->middleware(['jwt.cid:0']);
 
 // Municipio
 Route::post('municipio', [MunicipioController::class, 'store'])->middleware(['jwt.cid:358']);
@@ -611,7 +611,7 @@ Route::put('municipio/{id}', [MunicipioController::class, 'update'])->middleware
 Route::delete('municipio/{id}', [MunicipioController::class, 'destroy'])->middleware(['jwt.cid:360']);
 Route::get('municipio/{id}', [MunicipioController::class, 'show'])->middleware(['jwt.cid:361']);
 Route::get('municipio', [MunicipioController::class, 'index'])->middleware(['jwt.cid:362']);
-Route::post('municipio/totalrecords/', [MunicipioController::class, 'totalrecords'])->middleware(['jwt.cid:0']);
+Route::post('municipio/totalrecords', [MunicipioController::class, 'totalrecords'])->middleware(['jwt.cid:0']);
 
 // Notificación
 Route::get('notificacion/get_all/{email}/{limite}', [NotificacionController::class, 'show_all'])->middleware(['jwt.cid:0']);
@@ -624,7 +624,7 @@ Route::put('comisionasamblea/{id}', [ComisionAsambleasController::class, 'update
 Route::delete('comisionasamblea/{id}', [ComisionAsambleasController::class, 'destroy'])->middleware(['jwt.cid:372']);
 Route::get('comisionasamblea/{id}', [ComisionAsambleasController::class, 'show'])->middleware(['jwt.cid:373']);
 Route::get('comisionasamblea', [ComisionAsambleasController::class, 'index'])->middleware(['jwt.cid:375']);
-Route::post('comisionasamblea/totalrecords/', [ComisionAsambleasController::class, 'totalrecords'])->middleware(['jwt.cid:375']);
+Route::post('comisionasamblea/totalrecords', [ComisionAsambleasController::class, 'totalrecords'])->middleware(['jwt.cid:375']);
 
 
 // Comision UCCAEP
@@ -633,4 +633,4 @@ Route::put('comisionuccaep/{id}', [ComisionUCCAEPsController::class, 'update'])-
 Route::delete('comisionuccaep/{id}', [ComisionUCCAEPsController::class, 'destroy'])->middleware(['jwt.cid:379']);
 Route::get('comisionuccaep/{id}', [ComisionUCCAEPsController::class, 'show'])->middleware(['jwt.cid:380']);
 Route::get('comisionuccaep', [ComisionUCCAEPsController::class, 'index'])->middleware(['jwt.cid:382']);
-Route::post('comisionuccaep/totalrecords/', [ComisionUCCAEPsController::class, 'totalrecords'])->middleware(['jwt.cid:382']);
+Route::post('comisionuccaep/totalrecords', [ComisionUCCAEPsController::class, 'totalrecords'])->middleware(['jwt.cid:382']);

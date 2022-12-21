@@ -4,7 +4,7 @@ import http2 from "../../../Http/Http-processcommon2";
 class TipoUsuarioDataService {
     async getAllDto(data) {
         return await http.post(
-            `/tipoUsuario/getAllDto/`, data);
+            `/tipoUsuario/getAllDto`, data);
     }
     async create(data) {
         return await http.post(`/tipoUsuario`, data);

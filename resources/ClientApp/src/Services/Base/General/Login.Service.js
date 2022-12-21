@@ -5,7 +5,7 @@ class LoginDataService {
         return await http.post(`/login`, data);
     }
     async loginGetsucursales(data) {
-        return await http.post(`/login/LoginGetsucursales/`, data);
+        return await http.post(`/login/LoginGetsucursales`, data);
     }
 }
 

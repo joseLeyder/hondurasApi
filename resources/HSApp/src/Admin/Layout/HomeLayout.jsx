@@ -127,7 +127,7 @@ const HomeLayout = ({ children, ...rest }) => {
                     <div className="menu-items">
                         <a href="#/home" className="link" data-toggle="tooltip-menu" data-tippy-content="Página Principal">
                             <span className="icon la la-laptop"></span>
-                            <span className="title">Página Principal</span>
+                            <span className="title">Control político</span>
                         </a>
                         {/* <a href="#/agenda-legislativa" className="link" data-target="[data-menu=pages]" data-toggle="tooltip-menu"
                             data-tippy-content="Agenda">
@@ -147,7 +147,7 @@ const HomeLayout = ({ children, ...rest }) => {
                         <a href="#/comisiones" className="link" data-target="[data-menu=ui]" data-toggle="tooltip-menu"
                             data-tippy-content="Comisiones y Plenos">
                             <span className="icon la la-sitemap"></span>
-                            <span className="title">Comisiones y Plenos</span>
+                            <span className="title">Comisiones</span>
                         </a>
                         <a href="#/alertas" className="link" data-target="[data-menu=menu]" data-toggle="tooltip-menu"
                             data-tippy-content="Alertas">
