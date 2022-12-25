@@ -16,6 +16,7 @@ class Persona extends Model
             'fechaNacimiento' => 'required',
             'municipio_id_nacimiento' => 'numeric|required|min:0|not_in:0',
             'genero_id' => 'numeric|required|min:0|not_in:0',
+            'fraccion_legislativa_id' => 'numeric|required|min:0|not_in:0',
         ];
     }
 
@@ -23,7 +24,6 @@ class Persona extends Model
         'nombres.required' => 'El nombre(s) es requerido(s).',
         'apellidos.required' => 'Los apellidos son requeridos.',
         'fechaNacimiento.required' => 'La fecha de nacimiento es requerido.',
-
         'municipio_id_nacimiento.numeric' => 'El lugar de nacimiento es requerido.',
         'municipio_id_nacimiento.required' => 'El lugar de nacimiento es requerido.',
         'municipio_id_nacimiento.min' => 'El lugar de nacimiento es requerido.',
@@ -33,6 +33,12 @@ class Persona extends Model
         'genero_id.required' => 'El género es requerido.',
         'genero_id.min' => 'El género es requerido.',
         'genero_id.not_in' => 'El género es requerido.',
+
+        'fraccion_legislativa_id.numeric' => 'La fracción legislativa es requerida.',
+        'fraccion_legislativa_id.required' => 'La fracción legislativa es requerida.',
+        'fraccion_legislativa_id.min' => 'La fracción legislativa es requerida.',
+        'fraccion_legislativa_id.not_in' => 'La fracción legislativa es requerida.',
+
     ];
 
     public static function rulesPut () {
@@ -42,6 +48,7 @@ class Persona extends Model
             'fechaNacimiento' => 'required',
             'municipio_id_nacimiento' => 'numeric|required|min:0|not_in:0',
             'genero_id' => 'numeric|required|min:0|not_in:0',
+            'fraccion_legislativa_id' => 'numeric|required|min:0|not_in:0',
         ];
     }
 
@@ -59,6 +66,11 @@ class Persona extends Model
         'genero_id.required' => 'El género es requerido.',
         'genero_id.min' => 'El género es requerido.',
         'genero_id.not_in' => 'El género es requerido.',
+
+        'fraccion_legislativa_id.numeric' => 'La fracción legislativa es requerida.',
+        'fraccion_legislativa_id.required' => 'La fracción legislativa es requerida.',
+        'fraccion_legislativa_id.min' => 'La fracción legislativa es requerida.',
+        'fraccion_legislativa_id.not_in' => 'La fracción legislativa es requerida.',
     ];
 
     protected $fillable = [
@@ -68,6 +80,7 @@ class Persona extends Model
         'municipio_id_nacimiento',
         'profesion_id',
         'genero_id',
+        'fraccion_legislativa_id',
         'fecha_fallecimiento',
         'perfil_educativo',
         'grado_estudio_id',
@@ -100,7 +113,10 @@ class Persona extends Model
         return $this->hasOne(Genero::class, 'id', 'genero_id')
                     ->select(['id', 'nombre'])->where('activo',1);;
     }
-
+    public function FraccionLegislativa(){
+        return $this->hasOne(FraccionLegislativa::class, 'id', 'fraccion_legislativa_id')
+                    ->select(['id', 'nombre'])->where('activo',1);;
+    }
     public function Profesion(){
         return $this->hasOne(Profesion::class, 'id', 'profesion_id')
                     ->select(['id', 'nombre'])->where('activo',1);;
@@ -109,6 +125,7 @@ class Persona extends Model
         return $this->hasOne(ComisionMiembro::class, 'persona_id', 'id')->with("comision")
                     ->where('activo',1);;
     }
+    
 
     public function PersonaTrayectoriaPublica(){
         return $this->hasMany(PersonaTrayectoriaPublica::class)->where('activo', 1)->with(['Partido'])->where('activo',1);;
@@ -124,5 +141,9 @@ class Persona extends Model
 
     public function Contactos(){
         return $this->hasMany(PersonaDatoContacto::class)->with("DatosContacto")->where('activo', 1);
+    }
+
+    public function ComisionMiembros(){
+        return $this->hasMany(ComisionMiembro::class)->with("comision")->where('activo', 1);
     }
 }

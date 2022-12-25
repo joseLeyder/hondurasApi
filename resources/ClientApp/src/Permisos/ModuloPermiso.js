@@ -552,4 +552,12 @@
         , ObtenerTodos: 374
         , Index: 375
     }
+    , FraccionLegislativa: {
+        Nuevo: 385
+        , Modificar: 386
+        , Eliminar: 387
+        , Obtener: 388
+        , ObtenerTodos: 389
+        , Index: 390
+    }
 }

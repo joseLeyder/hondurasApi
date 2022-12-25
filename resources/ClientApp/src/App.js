@@ -109,6 +109,7 @@ import Municipios from "./Admin/Pages/Municipio/Municipios";
  import RolesPorTipoDeUsuario from './Admin/Pages/GestionUsuarios/RolesPorTipoDeUsuario';
 import ComisionAsambleas from "./Admin/Pages/ComisionAsamblea/ComisionAsambleas";
 import ComisionUccaeps from "./Admin/Pages/ComisionUccaep/ComisionUccaeps";
+import FraccionLegislativa from "./Admin/Pages/FraccionLegislativa/FraccionLegislativa";
 //TERMINA Gestión de usuarios
 
 export default class App extends Component {
@@ -509,6 +510,10 @@ export default class App extends Component {
                         {/* Comision de Uccaep */}
                         <RouteLayout path="/comisionuccaep" component={ComisionUccaeps} />
                         {/* end Uccaep */}
+
+                        {/* Fracción legislativa */}
+                        <RouteLayout path="/fraccion-legislativa" component={FraccionLegislativa} />
+                        {/* end Fracción legislativa */}
                     </Switch>
                 </Router>
             </div>

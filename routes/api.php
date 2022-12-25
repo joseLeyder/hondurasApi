@@ -148,6 +148,7 @@ Route::post('utils/getAutorFilterPagination',[UtilsController::class,'getAutorFi
 Route::post('utils/getAutorFilterPaginationTotalRecord',[UtilsController::class,'getAutorFilterPaginationTotalRecord']);
 Route::get('utils/getComboComisionUCCAEPS',[UtilsController::class,'getComboComisionUCCAEPS']);
 Route::get('utils/getComboComisionAsamblea',[UtilsController::class,'getComboComisionAsamblea']);
+Route::get('utils/getComboFraccionLegislativa',[UtilsController::class,'getComboFraccionLegislativa']);
 //Departamento
 Route::get('departamento/totalrecords', [DepartamentosController::class, 'totalrecords'])->middleware(['jwt.cid:0']);
 Route::post('departamento', [DepartamentosController::class, 'store'])->middleware(['jwt.cid:173']);
@@ -634,3 +635,11 @@ Route::delete('comisionuccaep/{id}', [ComisionUCCAEPsController::class, 'destroy
 Route::get('comisionuccaep/{id}', [ComisionUCCAEPsController::class, 'show'])->middleware(['jwt.cid:380']);
 Route::get('comisionuccaep', [ComisionUCCAEPsController::class, 'index'])->middleware(['jwt.cid:382']);
 Route::post('comisionuccaep/totalrecords', [ComisionUCCAEPsController::class, 'totalrecords'])->middleware(['jwt.cid:382']);
+
+// Comision UCCAEP
+Route::post('fraccionlegislativa', [FraccionLegislativaController::class, 'store'])->middleware(['jwt.cid:385']);
+Route::put('fraccionlegislativa/{id}', [FraccionLegislativaController::class, 'update'])->middleware(['jwt.cid:386']);
+Route::delete('fraccionlegislativa/{id}', [FraccionLegislativaController::class, 'destroy'])->middleware(['jwt.cid:387']);
+Route::get('fraccionlegislativa/{id}', [FraccionLegislativaController::class, 'show'])->middleware(['jwt.cid:388']);
+Route::get('fraccionlegislativa', [FraccionLegislativaController::class, 'index'])->middleware(['jwt.cid:390']);
+Route::post('fraccionlegislativa/totalrecords', [FraccionLegislativaController::class, 'totalrecords'])->middleware(['jwt.cid:390']);

@@ -60,6 +60,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\TipoVotacion;
 use App\Models\ClaseVotacion;
 use App\Models\ProyectoLeyEstado;
+use App\Models\FraccionLegislativa;
 
 class UtilsController extends Controller
 {
@@ -88,6 +89,23 @@ class UtilsController extends Controller
             200
         );
     }
+
+    public function getComboFraccionLegislativa()
+    {
+        $items = FraccionLegislativa::select(
+            'id',
+            'nombre'
+        )->with("fraccionLegislativaImagen")->where(
+                'activo',
+                1
+            )->get()->toJson(JSON_PRETTY_PRINT);
+
+        return response(
+            $items,
+            200
+        );
+    }
+    
     public function getComboComisionTipoCongresista()
     {
         $items = ComisionTipoCongresista::select(

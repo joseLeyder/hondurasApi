@@ -42,6 +42,14 @@ class CongresistasDataService {
     async totalrecordsAutorias(id, search = "") {
         return await http.get(`/${NombreDelModulo}/totalrecordsAutoriasByIdCongresista/${id}?search=${search}`);
     }
+
+    async getComisionesByIdCongresista(id, search = "", page = 1, rows = 4) {
+        return await http.get(`/${NombreDelModulo}/getComisionesByIdCongresista/${id}?search=${search}&page=${page}&rows=${rows}`);
+    }
+    async totalrecordsComisiones(id, search = "") {
+        return await http.get(`/${NombreDelModulo}/totalrecordsComisionesByIdCongresista/${id}?search=${search}`);
+    }
+
     async getPonenciasByIdCongresista(id, search = "", page = 1, rows = 4) {
         return await http.get(`/${NombreDelModulo}/getPonenciasByIdCongresista/${id}?search=${search}&page=${page}&rows=${rows}`);
     }

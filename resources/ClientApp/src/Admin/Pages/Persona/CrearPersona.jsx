@@ -22,22 +22,22 @@ const auth = new AuthLogin();
 const fieldsConst = {
     id: 0, nombres: "", apellidos: "", fechaNacimiento: FechaMysql.DateFormatMySql(new Date()), municipio_id_nacimiento: "",
     profesion_id: "", genero_id: "", fecha_fallecimiento: '', perfil_educativo: "",
-    grado_estudio_id: "", persona_trayectoria_publica: [], persona_trayectoria_privada: [],
+    grado_estudio_id: "", fraccion_legislativa_id:"", persona_trayectoria_publica: [], persona_trayectoria_privada: [],
     persona_dato_contactos: [], imagen: [], user: auth.username()
 };
 const errorsConst = {
     id: 0, nombres: "", apellidos: "", fechaNacimiento: "", municipio_id_nacimiento: "",
     profesion_id: "", genero_id: "", fecha_fallecimiento: "", perfil_educativo: "",
-    grado_estudio_id: "", persona_trayectoria_publica: [], persona_trayectoria_privada: [],
+    grado_estudio_id: "", fraccion_legislativa_id:"", persona_trayectoria_publica: [], persona_trayectoria_privada: [],
     persona_dato_contactos: [], imagen: [], submit: ''
 };
 const default_item_select_lugar_nacimiento = { value: "", label: "Seleccione provincia" };
 const default_item_select_profesion = { value: "", label: "Seleccione una profesión" };
-const default_item_select_genero = { value: "", label: "Seleccione una género" };
+const default_item_select_genero = { value: "", label: "Seleccione un género" };
 const default_item_select_grado_estudio = { value: "", label: "Seleccione un grado de estudio" };
-const default_item_select_partido = { value: "", label: "Seleccione un partido" };
+const default_item_select_fraccion_legislativa = { value: "", label: "Seleccione una fracción legislativa" };
 const default_item_select_tipo_contacto = { value: "", label: "Seleccione un tipo de contacto" };
-const default_item_select_fraccion_legislativa = {value: "", labe: "Seleccione una fracción legislativa"};
+// const default_item_select_fraccion_legislativa = {value: "", labe: "Seleccione una fracción legislativa"};
 
 const default_item_error_persona_trayectoria_publica = {
     id: "",
@@ -65,7 +65,7 @@ const default_item_persona_trayectoria_publica = {
         id: '',
         nombre: ''
     },
-    partido_select: Object.assign({}, default_item_select_partido)
+    fraccion_legislativa_select: Object.assign({}, default_item_select_fraccion_legislativa)
 };
 const default_item_error_persona_trayectoria_privada = {
     id: "",
@@ -173,8 +173,8 @@ class CrearPersona extends Component {
             data_select_grado_estudio: [],
             item_select_grado_estudio: [default_item_select_grado_estudio],
 
-            data_select_partido: [],
-            item_select_partido: Object.assign({},default_item_select_fraccion_legislativa),
+            data_select_fraccion_legislativa: [],
+            item_select_fraccion_legislativa: Object.assign({},default_item_select_fraccion_legislativa),
 
             data_select_tipo_contacto: [],
             item_select_tipo_contacto: [default_item_select_tipo_contacto]
@@ -196,6 +196,7 @@ class CrearPersona extends Component {
         await this.getComboGenero();
         await this.getComboGradoEstudio();
         await this.getComboTipoContacto();
+        await this.getComboFraccionLegislativa();
     };
     saveSubmit = async (e) => {
         e.preventDefault();
@@ -334,12 +335,12 @@ class CrearPersona extends Component {
             item_select_lugar_nacimiento: item,
         });
     };
-    handlerSelectPartido = (item) => {
+    handlerSelectFraccionLegislativa = (item) => {
         let fields = this.state.fields;
-        fields.municipio_id_nacimiento = item.value;
+        fields.fraccion_legislativa_id = item.value;
         this.setState({
             fields: fields,
-            item_select_lugar_nacimiento: item,
+            item_select_fraccion_legislativa: item,
         });
     };
     handlerSelectProfesion = (item) => {
@@ -530,22 +531,22 @@ class CrearPersona extends Component {
             });
         });
     };
-    getComboPartidos = async () => {
+    getComboFraccionLegislativa = async () => {
         this.setState({ loading: true });
-        await UtilsService.getComboMunicipioFilter({
+        await UtilsService.getComboFraccionLegislativa({
             activo: 1
         }).then((response) => {
             let combo = [];
             let selected = Object.assign({}, default_item_select_fraccion_legislativa);
             response.data.forEach((i) => {
                 combo.push({ value: i.id, label: i.nombre});
-                if(this.state.fields.municipio_id_nacimiento === i.id)
+                if(this.state.fields.fraccion_legislativa_id === i.id)
                     selected = { value: i.id, label: i.nombre };
             });
             combo.unshift(Object.assign({}, default_item_select_fraccion_legislativa));
             this.setState({
-                data_select_partido: combo,
-                item_select_partido: selected,
+                data_select_fraccion_legislativa: combo,
+                item_select_fraccion_legislativa: selected,
                 loading: false,
             });
         });
@@ -615,7 +616,7 @@ class CrearPersona extends Component {
         await UtilsDataService.getComboDatosContacto()
             .then(response => {
                 let combo = [];
-                let selected = Object.assign({}, default_item_select_partido);
+                let selected = Object.assign({}, default_item_select_fraccion_legislativa);
                 response.data.forEach((i) => {
                     combo.push({ value: i.id, label: i.nombre });
                 });
@@ -644,6 +645,7 @@ class CrearPersona extends Component {
                 fields.fecha_fallecimiento = data.fecha_fallecimiento;
                 fields.perfil_educativo = data.perfil_educativo;
                 fields.grado_estudio_id = data.grado_estudio_id;
+                fields.fraccion_legislativa_id = data.fraccion_legislativa_id;
                 fields.activo = data.activo;
                 fields.imagen = data.imagenes;
                 fields.persona_dato_contactos = data.contactos;
@@ -723,6 +725,11 @@ class CrearPersona extends Component {
                         this.state.fields.grado_estudio_id,
                         "data_select_grado_estudio",
                         "item_select_grado_estudio"
+                    );
+                    this.setSelectValue(
+                        this.state.fields.fraccion_legislativa_id,
+                        "data_select_fraccion_legislativa",
+                        "item_select_fraccion_legislativa"
                     );
                 });
             })
@@ -914,13 +921,13 @@ class CrearPersona extends Component {
                                                             <Select
                                                                 divClass=""
                                                                 selectplaceholder="Seleccione"
-                                                                selectValue={ this.state.item_select_partido }
-                                                                selectOnchange={ this.handlerSelectPartido }
-                                                                selectoptions={ this.state.data_select_partido }
+                                                                selectValue={ this.state.item_select_fraccion_legislativa }
+                                                                selectOnchange={ this.handlerSelectFraccionLegislativa }
+                                                                selectoptions={ this.state.data_select_fraccion_legislativa }
                                                                 selectIsSearchable={ true }
                                                                 selectclassNamePrefix="selectReact__value-container"
                                                                 spanClass="error"
-                                                                spanError={ this.state.errors.municipio_id_nacimiento || "" }
+                                                                spanError={ this.state.errors.fraccion_legislativa_id || "" }
                                                             />
                                                         </div>
                                                     </div>

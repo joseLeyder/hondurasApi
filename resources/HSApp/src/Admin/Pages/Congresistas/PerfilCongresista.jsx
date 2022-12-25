@@ -34,9 +34,14 @@ const dataConst = {
         id: 0,
         nombre: ""
     },
+    fraccion_legislativa:{
+        id: 0,
+        nombre :""
+    },
     comision_miembro: null,
     imagenes: [],
-    contactos: []
+    contactos: [],
+    comision_miembros: []
 }
 class PerfilCongresista extends React.Component {
     constructor(props) {
@@ -48,6 +53,7 @@ class PerfilCongresista extends React.Component {
             subloaderAutorias: false,
             subloaderPonencias: false,
             subloaderCitante: false,
+            subloaderComisiones: false,
             listAutorias: {
                 data: [],
                 propiedades:
@@ -61,6 +67,22 @@ class PerfilCongresista extends React.Component {
                             { title: "Tipo", text: "proyecto_ley.tipo_proyecto_ley.nombre" },
                             { title: "Iniciativa", text: "proyecto_ley.iniciativa.nombre" },
                         ]
+                },
+                totalRows: 0,
+                search: "",
+                page: 1,
+                rows: 8
+            },
+            listComisiones: {
+                data: [],
+                propiedades:
+                {
+                    id: 'comision.id',
+                    title: 'comision.nombre',
+                     description:
+                         [
+                             { title: "Tema principal", text: "comision.nombre" }
+                         ]
                 },
                 totalRows: 0,
                 search: "",
@@ -82,6 +104,21 @@ class PerfilCongresista extends React.Component {
         this.timeout = setTimeout(
             async function () {
                 await this.getAutoriasByIdCongresista(this.state.id, search, page, rows);
+            }.bind(this),
+            1000
+        );
+    }
+
+    handlerPaginationComisiones = async (page, rows, search = "") => {
+        let listComisiones = this.state.listComisiones;
+        listComisiones.page = page;
+        listComisiones.rows = rows;
+        listComisiones.search = search;
+        this.setState({ listComisiones });
+        if (this.timeout) clearTimeout(this.timeout);
+        this.timeout = setTimeout(
+            async function () {
+                await this.getComisionesByIdCongresista(this.state.id, search, page, rows);
             }.bind(this),
             1000
         );
@@ -120,6 +157,8 @@ class PerfilCongresista extends React.Component {
     componentDidMount = async () => {
         await this.getByID(this.state.id);
         await this.getAutoriasByIdCongresista(this.state.id);
+        await this.getComisionesByIdCongresista(this.state.id);
+
     }
     // 
 
@@ -149,6 +188,30 @@ class PerfilCongresista extends React.Component {
         });
     };
 
+    getComisionesByIdCongresista = async (id, search, page, rows) => {
+        this.setState({ subloaderComisiones: true });
+        let listComisiones = this.state.listComisiones;
+        await CongresistasDataService.getComisionesByIdCongresista(id, search, page, rows).then((response) => {
+            console.log(response.data)
+            listComisiones.data = response.data;
+        })
+            .catch((e) => {
+                console.error(e);
+            });
+
+        await CongresistasDataService.totalrecordsComisiones(id, search).then((response) => {
+            listComisiones.totalRows = response.data;
+        })
+            .catch((e) => {
+                console.error(e);
+            });
+
+        this.setState({
+            listComisiones,
+            subloaderComisiones: false
+        });
+    };
+
     getByID = async (id) => {
         this.setState({ subloader: true });
         await CongresistasDataService.get(id)
@@ -172,7 +235,7 @@ class PerfilCongresista extends React.Component {
                 <main className="workspace">
                     <section className="breadcrumb lg:flex items-start">
                         <div>
-                            <h1>Perfil del ditpuado</h1>
+                            <h1>Perfil del diputado</h1>
                             <ul>
                                 <li><a href="#">Página principal</a></li>
                                 <li className="divider la la-arrow-right"></li>
@@ -226,6 +289,11 @@ class PerfilCongresista extends React.Component {
                                                 className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
                                                 <p className="mt-2">Departamento</p>
                                                 <div className="text-primary mt-1 text-xl leading-none">{this.state.data.lugar_nacimiento?.nombre || "Sin dpto. asignado"}</div>
+                                            </div>
+                                            <div
+                                                className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
+                                                <p className="mt-2">Fracción legislativa</p>
+                                                <div className="text-primary mt-1 text-xl leading-none">{this.state.data.fraccion_legislativa?.nombre || "Sin fracción legislativa asignada"}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -285,10 +353,11 @@ class PerfilCongresista extends React.Component {
                             />
                         </div>
                     </div>
+                    
                     <div className="lg:flex justify-center pageSection">
                         
                         <div className="itemSection info">
-                            <h3>Autorías</h3>
+                            <h3>Proyectos presentados</h3>
                             <div className="buscador items-center ml-auto mt-5 lg:mt-0 pd-25">
                                 <div className="input-group">
                                     <input type="text" value={this.state.listAutorias.search}
@@ -306,9 +375,36 @@ class PerfilCongresista extends React.Component {
                                     <span className="input-group-text"><button onClick={async () => { await this.handlerPaginationAutorias(this.state.listAutorias.page, this.state.listAutorias.rows, this.state.listAutorias.search) }} type="button" className="btn btn-primary"><i className="fa fa-search"></i></button></span>
                                 </div>
                             </div>
-                            <PerfilCongresistaSubList data={this.state.listAutorias.data} propiedades={this.state.listAutorias.propiedades} link={`#/detalle-proyecto-de-ley`} params={["proyecto_ley_id"]} handler={this.handlerPaginationAutorias} pageExtends={this.state.listAutorias.page} pageSize={this.state.listAutorias.rows} totalRows={this.state.listAutorias.rows} />
-                        </div>
+                            <PerfilCongresistaSubList data={this.state.listAutorias.data} propiedades={this.state.listAutorias.propiedades} link={`#/detalle-proyecto-de-ley`} params={["proyecto_ley_id"]} handler={this.handlerPaginationAutorias} pageExtends={this.state.listAutorias.page} pageSize={this.state.listAutorias.rows} totalRows={this.state.listAutorias.rows} /> </div>
+
                     </div>
+                    
+                    <div className="lg:flex justify-center pageSection">
+                        
+                        <div className="itemSection info">
+                            <h3>Comisiones</h3>
+                            <div className="buscador items-center ml-auto mt-5 lg:mt-0 pd-25">
+                                <div className="input-group">
+                                    <input type="text" value={this.state.listComisiones.search}
+                                    onChange={async (e) => {
+                                        let data = this.state.listComisiones;
+                                        data.search = e.target.value;
+                                        this.setState({ listComisiones: data })
+                                    }}
+                                    onKeyUp={async (e) => {
+                                        if (e.key === "Enter") {
+                                            await this.handlerPaginationComisiones(this.state.listComisiones.page, this.state.listComisiones.rows, e.target.value)
+                                        }
+                                    }}
+                                    placeholder="Escriba para buscar" className="form-control" />
+                                    <span className="input-group-text"><button onClick={async () => { await this.handlerPaginationComisiones(this.state.listComisiones.page, this.state.listComisiones.rows, this.state.listComisiones.search) }} type="button" className="btn btn-primary"><i className="fa fa-search"></i></button></span>
+                                </div>
+                            </div>
+                          
+                            <PerfilCongresistaSubList data={this.state.listComisiones.data} propiedades={this.state.listComisiones.propiedades} link={`#/detalle-comision`} params={["comision_id"]} handler={this.handlerPaginationComisiones} pageExtends={this.state.listComisiones.page} pageSize={this.state.listComisiones.rows} totalRows={this.state.listComisiones.rows} />                        </div>
+                    </div> 
+
+
                 </main>
             </>
         )

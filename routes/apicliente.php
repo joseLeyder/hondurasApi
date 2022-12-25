@@ -19,6 +19,9 @@ Route::get('congresistas', [CongresistaController::class, 'index']);
 Route::get('congresistas/{id}', [CongresistaController::class, 'show']);
 Route::get('congresistas/totalrecordsAutoriasByIdCongresista/{id}', [CongresistaController::class, 'totalrecordsAutoriasByIdCongresista']);
 Route::get('congresistas/getAutoriasByIdCongresista/{id}', [CongresistaController::class, 'getAutoriasByIdCongresista']);
+Route::get('congresistas/totalrecordsComisionesByIdCongresista/{id}', [CongresistaController::class, 'totalrecordsComisionesByIdCongresista']);
+Route::get('congresistas/getComisionesByIdCongresista/{id}', [CongresistaController::class, 'getComisionesByIdCongresista']);
+
 Route::get('congresistas/totalrecordsPonenciasByIdCongresista/{id}', [CongresistaController::class, 'totalrecordsPonenciasByIdCongresista']);
 Route::get('congresistas/getPonenciasByIdCongresista/{id}', [CongresistaController::class, 'getPonenciasByIdCongresista']);
 Route::get('congresistas/totalrecordsCitantesByIdCongresista/{id}', [CongresistaController::class, 'totalrecordsCitantesByIdCongresista']);

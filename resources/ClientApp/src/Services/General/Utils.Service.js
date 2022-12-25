@@ -29,6 +29,10 @@ class UtilsDataService {
         return await http.get(`/${NombreDelModulo}/getComboComisionAsamblea`);
     }
 
+    async getComboFraccionLegislativa(){
+        return await http.get(`/${NombreDelModulo}/getComboFraccionLegislativa`);
+    }
+
     async getComboCuatrienio() {
         return await http.get(`/${NombreDelModulo}/getComboCuatrienio`);
     }

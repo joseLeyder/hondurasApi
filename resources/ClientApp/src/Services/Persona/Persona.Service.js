@@ -14,10 +14,11 @@ class PersonaDataService {
         grado_estudio_id,
         genero_id,
         idFilter,
+        comision_id,
         page,
         rows,
         search) {
-        return await http.get(`/${NombreDelModulo}?lugar_nacimiento_id=${lugar_nacimiento_id}&profesion_id=${profesion_id}&grado_estudio_id=${grado_estudio_id}&genero_id=${genero_id}&idFilter=${idFilter}&page=${page}&rows=${rows}&search=${search}`);
+        return await http.get(`/${NombreDelModulo}?lugar_nacimiento_id=${lugar_nacimiento_id}&profesion_id=${profesion_id}&grado_estudio_id=${grado_estudio_id}&genero_id=${genero_id}&idFilter=${idFilter}&comision_id=${comision_id}&page=${page}&rows=${rows}&search=${search}`);
     }
     async get(id) {
         return await http.get(`/${NombreDelModulo}/${id}`);
@@ -30,8 +31,9 @@ class PersonaDataService {
         grado_estudio_id,
         genero_id,
         idFilter,
+        comision_id,
         search) {
-        return await http.get(`/${NombreDelModulo}/totalrecords?lugar_nacimiento_id=${lugar_nacimiento_id}&profesion_id=${profesion_id}&grado_estudio_id=${grado_estudio_id}&genero_id=${genero_id}&idFilter=${idFilter}&search=${search}`);
+        return await http.get(`/${NombreDelModulo}/totalrecords?lugar_nacimiento_id=${lugar_nacimiento_id}&profesion_id=${profesion_id}&grado_estudio_id=${grado_estudio_id}&genero_id=${genero_id}&idFilter=${idFilter}&comision_id=${comision_id}&search=${search}`);
     }
 }
 

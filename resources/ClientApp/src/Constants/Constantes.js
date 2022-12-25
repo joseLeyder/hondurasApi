@@ -102,5 +102,13 @@ export const Constantes = {
         ResolutionNames.FotoBlogNdDestacadoCelular,
         ResolutionNames.FotoBlogNdDestacadoTablet,
         ResolutionNames.FotoBlogNdDestacadoDesktop
+    ],
+    FraccionLegislativaResolutions: [
+        ResolutionNames.Icono,
+        ResolutionNames.FotoInformeMiniaturaPost,
+        ResolutionNames.FotoOpinonDesktop,
+        ResolutionNames.FotoInformeDestacadoCelular,
+        ResolutionNames.FotoInformeDestacadoTablet,
+        ResolutionNames.FotoInformeDestacadoDesktop
     ]
 }

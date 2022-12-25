@@ -154,7 +154,7 @@ class CongresistaController extends Controller
     public function show($id)
     {
         $Congresista = Persona::where('id', $id)
-        ->with("LugarNacimiento", "GradoEstudio", "Genero", "Profesion", 'ComisionMiembro', 'Imagenes', 'Contactos')
+        ->with("LugarNacimiento", "GradoEstudio", "Genero", "Profesion", 'ComisionMiembro', 'Imagenes', 'Contactos', 'FraccionLegislativa')
         ->get()->first()
         ->toJson(JSON_PRETTY_PRINT);
         return response($Congresista, 200);
@@ -184,6 +184,34 @@ class CongresistaController extends Controller
         ->count();
         return response($ProyectoLeyAutor, 200);
     }
+
+
+
+    public function getComisionesByIdCongresista(Request $request, $id){
+        $search = $request->input("search");
+        $Comisiones = ComisionMiembro::where('persona_id', $id)
+        ->with("comision")
+        ->whereHas('comision', function($q) use ($search){
+            $q->where('nombre', 'LIKE', '%' . $search . '%');
+        })
+        ->skip(($request->input('page') - 1) * $request->input('rows'))
+        ->take($request->input('rows'))
+        ->get()
+        ->toJson(JSON_PRETTY_PRINT);
+        return response($Comisiones, 200);
+    }
+
+    public function totalrecordsComisionesByIdCongresista(Request $request, $id){
+        $search = $request->input("search");
+        $Comisiones = ComisionMiembro::where('persona_id', $id)
+        ->with("comision")
+        ->whereHas('comision', function($q) use ($search){
+            $q->where('nombre', 'LIKE', '%' . $search . '%');
+        })
+        ->count();
+        return response($Comisiones, 200);
+    }
+
 
     public function getPonenciasByIdCongresista(Request $request, $id){
         $search = $request->input("search");

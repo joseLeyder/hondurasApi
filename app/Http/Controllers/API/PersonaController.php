@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Partido;
+use App\Models\FraccionLegislativa;
 use App\Models\Persona;
 use App\Models\PersonaDatoContacto;
 use App\Models\PersonaImagen;
@@ -66,6 +66,17 @@ class PersonaController extends Controller
             );
         }
 
+        if ($request->has('comision_id') && !is_null($request["comision_id"]))
+        {
+            // $query->whereHas(
+            //     'activo',
+            //     $request->idFilter
+            // );
+            $query->WhereHas('ComisionMiembros', function ($query) use ($request){
+                $query->where('comision_id', $request->comision_id);
+            });
+        }
+
         if ($request->has('search') && !is_null($request["search"]))
         {
             $search = $request->input('search');
@@ -84,7 +95,11 @@ class PersonaController extends Controller
                               $query->where('nombre', 'like', '%'. $search .'%');
                           })->orWhereHas('Profesion', function ($query) use ($search) {
                               $query->where('nombre', 'like', '%'. $search .'%');
-                          });
+                          })->orWhereHas('ComisionMiembros', function ($query) use ($search) {
+                            $query->whereHas('comision', function ($query) use ($search) {
+                                $query->where('nombre', 'like', '%'. $search .'%');
+                            });
+                        });
                       });
             });
         }
@@ -96,13 +111,14 @@ class PersonaController extends Controller
                 'apellidos',
                 'fechaNacimiento',
                 'municipio_id_nacimiento',
+                'fraccion_legislativa_id',
                 'profesion_id',
                 'genero_id',
                 'fecha_fallecimiento',
                 'grado_estudio_id',
                 'activo'
             ])
-            ->with(['LugarNacimiento', 'GradoEstudio', 'Genero', 'Profesion', 'Imagenes'])
+            ->with(['LugarNacimiento', 'FraccionLegislativa', 'GradoEstudio', 'Genero', 'Profesion', 'Imagenes', 'ComisionMiembros'])
             ->skip(($request->input('page') - 1) * $request->input('rows'))
             ->take($request->input('rows'))
             ->orderBy('id','desc')
@@ -226,6 +242,7 @@ class PersonaController extends Controller
                                     'apellidos',
                                     'fechaNacimiento',
                                     'municipio_id_nacimiento',
+                                    'fraccion_legislativa_id',
                                     'profesion_id',
                                     'genero_id',
                                     'fecha_fallecimiento',
@@ -592,6 +609,18 @@ class PersonaController extends Controller
             );
         }
 
+        if ($request->has('comision_id') && !is_null($request["comision_id"]))
+        {
+            // $query->whereHas(
+            //     'activo',
+            //     $request->idFilter
+            // );
+            $query->WhereHas('ComisionMiembros', function ($query) use ($request){
+                $query->where('comision_id', $request->comision_id);
+            });
+        }
+        
+
         if ($request->has('search') && !is_null($request["search"]))
         {
             $search = $request->input('search');
@@ -610,7 +639,11 @@ class PersonaController extends Controller
                               $query->where('nombre', 'like', '%'. $search .'%');
                           })->orWhereHas('Profesion', function ($query) use ($search) {
                               $query->where('nombre', 'like', '%'. $search .'%');
-                          });
+                          })->orWhereHas('ComisionMiembros', function ($query) use ($search) {
+                            $query->whereHas('comision', function ($query) use ($search) {
+                                $query->where('nombre', 'like', '%'. $search .'%');
+                            });
+                        });
                       });
             });
         }
@@ -622,13 +655,14 @@ class PersonaController extends Controller
                 'apellidos',
                 'fechaNacimiento',
                 'municipio_id_nacimiento',
+                'fraccion_legislativa_id',
                 'profesion_id',
                 'genero_id',
                 'fecha_fallecimiento',
                 'grado_estudio_id',
                 'activo'
             ])
-           ->with(['LugarNacimiento', 'GradoEstudio', 'Genero', 'Profesion', 'Imagenes'])
+           ->with(['LugarNacimiento', 'FraccionLegislativa', 'GradoEstudio', 'Genero', 'Profesion', 'Imagenes'])
            ->get()->count();
 
         return response($count);

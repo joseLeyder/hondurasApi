@@ -8,6 +8,7 @@ import AuthLogin from "../../../Utils/AuthLogin";
 import ValidarPermiso from "../../../Permisos/ValidarPermiso";
 import { ModuloPermiso } from "../../../Permisos/ModuloPermiso";
 import UtilsService from "../../../Services/General/Utils.Service";
+import { isFunctionDeclaration } from "typescript";
 
 const auth = new AuthLogin();
 const validForm = new ValidForm();
@@ -67,24 +68,38 @@ class Personas extends Component {
                                 accessor: "apellidos",
                             },
                             {
-                                Header: "Fecha nacimiento",
-                                accessor: "fechaNacimiento",
+                                Header: "Fracción Legislativa",
+                                accessor: "fraccion_legislativa.nombre",
                             },
                             {
                                 Header: "Nació en",
                                 accessor: "lugar_nacimiento.nombre",
                             },
+                            // {
+                            //     Header: "Profesion",
+                            //     accessor: "profesion.nombre",
+                            // },
+                            // {
+                            //     Header: "Genero",
+                            //     accessor: "genero.nombre",
+                            // },
+                            // {
+                            //     Header: "Grado de estudio",
+                            //     accessor: "grado_estudio.nombre",
+                            // },
                             {
-                                Header: "Profesion",
-                                accessor: "profesion.nombre",
-                            },
-                            {
-                                Header: "Genero",
-                                accessor: "genero.nombre",
-                            },
-                            {
-                                Header: "Grado de estudio",
-                                accessor: "grado_estudio.nombre",
+                                Header: "Comisiones",
+                                accessor: "comision_miembros",
+                                Cell: (tableProps) => {
+                                    return (
+                                        <p className="text-center">
+                                            {
+                                             tableProps.row.values.comision_miembros.map(function(v)
+                                             {return v.comision.nombre}).join(" -- ")
+                                           }</p>
+                                        
+                                    );
+                                },
                             },
                             {
                                 Header: "Activo",
@@ -203,8 +218,9 @@ class Personas extends Component {
             this.state.item_select_lugar_nacimiento.value,
             this.state.item_select_profesion.value,
             this.state.item_select_grado_estudio.value,
-            this.state.item_select_genero.value,
+            this.state.item_select_genero.value,            
             this.state.filterActive.value,
+            this.state.item_select_comision.value,
             this.state.tableInfo["page"],
             this.state.tableInfo["rows"],
             this.state.tableInfo["search"]
@@ -401,6 +417,7 @@ class Personas extends Component {
                         grado_estudio_id,
                         genero_id,
                         idFilter,
+                        comision_id,
                         page,
                         rows,
                         search
@@ -413,6 +430,7 @@ class Personas extends Component {
                 grado_estudio_id,
                 genero_id,
                 idFilter,
+                comision_id,
                 page,
                 rows,
                 search
@@ -429,6 +447,7 @@ class Personas extends Component {
             grado_estudio_id,
             genero_id,
             idFilter,
+            comision_id,
             search
             ).then((response) => {
                 tableInfo["totalRows"] = response.data;
@@ -458,6 +477,7 @@ class Personas extends Component {
             this.state.item_select_grado_estudio.value,
             this.state.item_select_genero.value,
             selectActive.value,
+            this.state.item_select_comision.value,
             this.state.tableInfo.page,
             this.state.tableInfo.rows,
             this.state.tableInfo.search
@@ -474,6 +494,7 @@ class Personas extends Component {
                 this.state.item_select_grado_estudio.value,
                 select.value,
                 this.state.filterActive.value,
+                this.state.item_select_comision.value,
                 this.state.tableInfo.page,
                 this.state.tableInfo.rows,
                 this.state.tableInfo.search
@@ -490,6 +511,7 @@ class Personas extends Component {
                 this.state.item_select_grado_estudio.value,
                 this.state.item_select_genero.value,
                 this.state.filterActive.value,
+                this.state.item_select_comision.value,
                 this.state.tableInfo.page,
                 this.state.tableInfo.rows,
                 this.state.tableInfo.search
@@ -506,6 +528,7 @@ class Personas extends Component {
                 this.state.item_select_grado_estudio.value,
                 this.state.item_select_genero.value,
                 this.state.filterActive.value,
+                this.state.item_select_comision.value,
                 this.state.tableInfo.page,
                 this.state.tableInfo.rows,
                 this.state.tableInfo.search
@@ -522,6 +545,7 @@ class Personas extends Component {
                 select.value,
                 this.state.item_select_genero.value,
                 this.state.filterActive.value,
+                this.state.item_select_comision.value,
                 this.state.tableInfo.page,
                 this.state.tableInfo.rows,
                 this.state.tableInfo.search
@@ -536,9 +560,10 @@ class Personas extends Component {
             await this.getAll(
                 this.state.item_select_lugar_nacimiento.value,
                 this.state.item_select_profesion.value,
-                select.value,
+                this.state.item_select_grado_estudio.value,
                 this.state.item_select_genero.value,
                 this.state.filterActive.value,
+                select.value,
                 this.state.tableInfo.page,
                 this.state.tableInfo.rows,
                 this.state.tableInfo.search
@@ -563,6 +588,7 @@ class Personas extends Component {
                     this.state.item_select_grado_estudio.value,
                     this.state.item_select_genero.value,
                     this.state.filterActive.value,
+                    this.state.item_select_comision.value,
                     page,
                     rows,
                     search
