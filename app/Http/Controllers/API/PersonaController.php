@@ -58,6 +58,15 @@ class PersonaController extends Controller
                 $request->lugar_nacimiento_id
             );
         }
+
+        if ($request->has('fraccion_legislativa_id') && !is_null($request["fraccion_legislativa_id"]))
+        {
+            $query->where(
+                'fraccion_legislativa_id',
+                $request->fraccion_legislativa_id
+            );
+        }
+
         if ($request->has('idFilter') && !is_null($request["idFilter"]))
         {
             $query->where(
@@ -95,6 +104,8 @@ class PersonaController extends Controller
                               $query->where('nombre', 'like', '%'. $search .'%');
                           })->orWhereHas('Profesion', function ($query) use ($search) {
                               $query->where('nombre', 'like', '%'. $search .'%');
+                          })->orWhereHas('FraccionLegislativa', function ($query) use ($search) {
+                                $query->where('nombre', 'like', '%'. $search .'%');
                           })->orWhereHas('ComisionMiembros', function ($query) use ($search) {
                             $query->whereHas('comision', function ($query) use ($search) {
                                 $query->where('nombre', 'like', '%'. $search .'%');
@@ -601,6 +612,14 @@ class PersonaController extends Controller
             );
         }
 
+        if ($request->has('fraccion_legislativa_id') && !is_null($request["fraccion_legislativa_id"]))
+        {
+            $query->where(
+                'fraccion_legislativa_id',
+                $request->fraccion_legislativa_id
+            );
+        }
+
         if ($request->has('idFilter') && !is_null($request["idFilter"]))
         {
             $query->where(
@@ -639,6 +658,8 @@ class PersonaController extends Controller
                               $query->where('nombre', 'like', '%'. $search .'%');
                           })->orWhereHas('Profesion', function ($query) use ($search) {
                               $query->where('nombre', 'like', '%'. $search .'%');
+                          })->orWhereHas('FraccionLegislativa', function ($query) use ($search) {
+                                $query->where('nombre', 'like', '%'. $search .'%');
                           })->orWhereHas('ComisionMiembros', function ($query) use ($search) {
                             $query->whereHas('comision', function ($query) use ($search) {
                                 $query->where('nombre', 'like', '%'. $search .'%');

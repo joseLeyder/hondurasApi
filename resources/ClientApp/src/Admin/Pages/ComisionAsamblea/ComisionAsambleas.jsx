@@ -259,7 +259,7 @@ class ComisionAsambleas extends Component {
         this.setState({ loading: true });
         await ComisionAsambleaDataService.get(id)
             .then((response) => {
-                let fields = response.data;
+                let fields = response.data[0];
                 Object.assign(fields, { user: auth.username() });
                 this.setState({
                     fields: fields,

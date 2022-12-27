@@ -9,6 +9,7 @@ import ValidarPermiso from "../../../Permisos/ValidarPermiso";
 import { ModuloPermiso } from "../../../Permisos/ModuloPermiso";
 import Input from "../../../Components/Input";
 import UtilsService from "../../../Services/General/Utils.Service";
+import { ContactSupportOutlined } from "@material-ui/icons";
 
 const auth = new AuthLogin();
 const validForm = new ValidForm();
@@ -257,9 +258,11 @@ class ComisionUccaeps extends Component {
     //<editor-fold desc="Get">
     getByID = async (id) => {
         this.setState({ loading: true });
+        console.log(id);        
         await ComisionUccaepDataService.get(id)
             .then((response) => {
-                let fields = response.data;
+                console.log(response);            
+                let fields = response.data[0];
                 Object.assign(fields, { user: auth.username() });
                 this.setState({
                     fields: fields,

@@ -223,6 +223,10 @@ class ProyectoLeyController extends Controller
                 'tema_id_secundario',
                 'sinopsis',
                 'activo',
+                'fecha_cuatrienal',
+                'fecha_dictamen',
+                'comision_uccaeps_id',
+                'comision_asamblea_id'
             ]
         )->where(
                 'id',
@@ -495,6 +499,10 @@ class ProyectoLeyController extends Controller
              'tema_proyecto_ley_id',
              'sinopsis',
              'activo',
+             'fecha_cuatrienal',
+             'fecha_dictamen',
+             'comision_uccaeps_id',
+             'comision_asamblea_id'
         ])
         ->where('activo', ($filter != "-1") ? '=' : '!=', $filter)
         ->where(function($query) use ($search){

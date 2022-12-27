@@ -9,6 +9,7 @@ import ValidarPermiso from "../../../Permisos/ValidarPermiso";
 import { ModuloPermiso } from "../../../Permisos/ModuloPermiso";
 import UtilsService from "../../../Services/General/Utils.Service";
 import { isFunctionDeclaration } from "typescript";
+import { NoEncryption } from "@material-ui/icons";
 
 const auth = new AuthLogin();
 const validForm = new ValidForm();
@@ -44,6 +45,7 @@ const default_item_select_profesion = { value: "", label: "Seleccione una profes
 const default_item_select_genero = { value: "", label: "Seleccione un género" };
 const default_item_select_grado_estudio = { value: "", label: "Seleccione un grado de estudio" };
 const default_item_select_comisiones = {value:"", label:"Seleccione una comisión"};
+const default_item_select_fraccion_legislativa = {value:"", label:"Seleccione una fracción legislativa"};
 
 class Personas extends Component {
     constructor(props) {
@@ -208,7 +210,10 @@ class Personas extends Component {
             item_select_grado_estudio: Object.assign({}, default_item_select_grado_estudio),
 
             data_select_comision: [],
-            item_select_comision: Object.assign({},default_item_select_comisiones)
+            item_select_comision: Object.assign({},default_item_select_comisiones),
+
+            data_select_fraccion_legislativa: [],
+            item_select_fraccion_legislativa: Object.assign({},default_item_select_fraccion_legislativa),
         };
     }
 
@@ -221,6 +226,7 @@ class Personas extends Component {
             this.state.item_select_genero.value,            
             this.state.filterActive.value,
             this.state.item_select_comision.value,
+            this.state.item_select_fraccion_legislativa.value,
             this.state.tableInfo["page"],
             this.state.tableInfo["rows"],
             this.state.tableInfo["search"]
@@ -230,6 +236,7 @@ class Personas extends Component {
         await this.getComboGenero();
         await this.getComboGradoEstudio();
         await this.getComboComisiones();
+        await this.getComboFraccionLegislativa();
     }
 
     getComboLugarNacimiento = async () => {
@@ -317,6 +324,23 @@ class Personas extends Component {
             combo.unshift(Object.assign({}, selected));
             this.setState({
                 data_select_comision: combo,
+                loading: false,
+            });
+        });
+    };
+
+    getComboFraccionLegislativa = async () => {
+        this.setState({ loading: true });
+        await UtilsService.getComboFraccionLegislativa()
+        .then((response) => {
+            let combo = [];
+            let selected = Object.assign({}, default_item_select_fraccion_legislativa);
+            response.data.forEach((i) => {
+                combo.push({ value: i.id, label: i.nombre });
+            });
+            combo.unshift(Object.assign({}, selected));
+            this.setState({
+                data_select_fraccion_legislativa: combo,
                 loading: false,
             });
         });
@@ -418,6 +442,7 @@ class Personas extends Component {
                         genero_id,
                         idFilter,
                         comision_id,
+                        fraccion_legislativa_id,
                         page,
                         rows,
                         search
@@ -431,6 +456,7 @@ class Personas extends Component {
                 genero_id,
                 idFilter,
                 comision_id,
+                fraccion_legislativa_id,
                 page,
                 rows,
                 search
@@ -448,6 +474,7 @@ class Personas extends Component {
             genero_id,
             idFilter,
             comision_id,
+            fraccion_legislativa_id,
             search
             ).then((response) => {
                 tableInfo["totalRows"] = response.data;
@@ -478,6 +505,7 @@ class Personas extends Component {
             this.state.item_select_genero.value,
             selectActive.value,
             this.state.item_select_comision.value,
+            this.state.item_select_fraccion_legislativa.value,
             this.state.tableInfo.page,
             this.state.tableInfo.rows,
             this.state.tableInfo.search
@@ -495,6 +523,7 @@ class Personas extends Component {
                 select.value,
                 this.state.filterActive.value,
                 this.state.item_select_comision.value,
+                this.state.item_select_fraccion_legislativa.value,
                 this.state.tableInfo.page,
                 this.state.tableInfo.rows,
                 this.state.tableInfo.search
@@ -512,6 +541,7 @@ class Personas extends Component {
                 this.state.item_select_genero.value,
                 this.state.filterActive.value,
                 this.state.item_select_comision.value,
+                this.state.item_select_fraccion_legislativa.value,
                 this.state.tableInfo.page,
                 this.state.tableInfo.rows,
                 this.state.tableInfo.search
@@ -529,6 +559,7 @@ class Personas extends Component {
                 this.state.item_select_genero.value,
                 this.state.filterActive.value,
                 this.state.item_select_comision.value,
+                this.state.item_select_fraccion_legislativa.value,
                 this.state.tableInfo.page,
                 this.state.tableInfo.rows,
                 this.state.tableInfo.search
@@ -546,6 +577,7 @@ class Personas extends Component {
                 this.state.item_select_genero.value,
                 this.state.filterActive.value,
                 this.state.item_select_comision.value,
+                this.state.item_select_fraccion_legislativa.value,
                 this.state.tableInfo.page,
                 this.state.tableInfo.rows,
                 this.state.tableInfo.search
@@ -563,6 +595,26 @@ class Personas extends Component {
                 this.state.item_select_grado_estudio.value,
                 this.state.item_select_genero.value,
                 this.state.filterActive.value,
+                select.value,
+                this.state.item_select_fraccion_legislativa.value,
+                this.state.tableInfo.page,
+                this.state.tableInfo.rows,
+                this.state.tableInfo.search
+            );
+        });
+    };
+
+    handlerSelectFraccionLegislativa = async (select) => {
+        this.setState({
+            item_select_fraccion_legislativa: select
+        }, async()=>{
+            await this.getAll(
+                this.state.item_select_lugar_nacimiento.value,
+                this.state.item_select_profesion.value,
+                this.state.item_select_grado_estudio.value,
+                this.state.item_select_genero.value, 
+                this.state.filterActive.value,
+                this.state.item_select_comision.value,
                 select.value,
                 this.state.tableInfo.page,
                 this.state.tableInfo.rows,
@@ -589,6 +641,7 @@ class Personas extends Component {
                     this.state.item_select_genero.value,
                     this.state.filterActive.value,
                     this.state.item_select_comision.value,
+                    this.state.item_select_fraccion_legislativa.value,
                     page,
                     rows,
                     search
@@ -647,7 +700,7 @@ class Personas extends Component {
                                                 />
                                             </div>
                                         </li>
-                                        <li>
+                                        {/* <li >
                                             <div style={{ minWidth: "190px" }}>
                                                 <Select
                                                     divClass=""
@@ -659,6 +712,7 @@ class Personas extends Component {
                                                     selectclassNamePrefix="selectReact__value-container"
                                                     spanClass=""
                                                     spanError=""
+                                                    
                                                 />
                                             </div>
                                         </li>
@@ -685,6 +739,21 @@ class Personas extends Component {
                                                     selectValue={ this.state.item_select_genero }
                                                     selectOnchange={ this.handlerSelectGenero }
                                                     selectoptions={ this.state.data_select_genero }
+                                                    selectIsSearchable={true}
+                                                    selectclassNamePrefix="selectReact__value-container"
+                                                    spanClass=""
+                                                    spanError=""
+                                                />
+                                            </div>
+                                        </li> */}
+                                        <li>
+                                            <div style={{ minWidth: "190px" }}>
+                                                <Select
+                                                    divClass=""
+                                                    selectplaceholder="Seleccione"
+                                                    selectValue={ this.state.item_select_fraccion_legislativa }
+                                                    selectOnchange={ this.handlerSelectFraccionLegislativa }
+                                                    selectoptions={ this.state.data_select_fraccion_legislativa }
                                                     selectIsSearchable={true}
                                                     selectclassNamePrefix="selectReact__value-container"
                                                     spanClass=""

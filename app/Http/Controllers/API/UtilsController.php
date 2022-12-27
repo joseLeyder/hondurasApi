@@ -95,15 +95,16 @@ class UtilsController extends Controller
         $items = FraccionLegislativa::select(
             'id',
             'nombre'
-        )->with("fraccionLegislativaImagen")->where(
-                'activo',
-                1
-            )->get()->toJson(JSON_PRETTY_PRINT);
+        )->where(
+            'activo',
+            1
+        )->get()->toJson(JSON_PRETTY_PRINT);
 
         return response(
             $items,
             200
         );
+
     }
     
     public function getComboComisionTipoCongresista()

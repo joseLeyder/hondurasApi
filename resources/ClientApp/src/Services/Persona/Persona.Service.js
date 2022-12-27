@@ -15,10 +15,12 @@ class PersonaDataService {
         genero_id,
         idFilter,
         comision_id,
+        fraccion_legislativa_id,
         page,
         rows,
         search) {
-        return await http.get(`/${NombreDelModulo}?lugar_nacimiento_id=${lugar_nacimiento_id}&profesion_id=${profesion_id}&grado_estudio_id=${grado_estudio_id}&genero_id=${genero_id}&idFilter=${idFilter}&comision_id=${comision_id}&page=${page}&rows=${rows}&search=${search}`);
+        //return await http.get(`/${NombreDelModulo}?lugar_nacimiento_id=${lugar_nacimiento_id}&profesion_id=${profesion_id}&grado_estudio_id=${grado_estudio_id}&genero_id=${genero_id}&idFilter=${idFilter}&comision_id=${comision_id}&page=${page}&rows=${rows}&search=${search}`);
+        return await http.get(`/${NombreDelModulo}?lugar_nacimiento_id=${lugar_nacimiento_id}&profesion_id=${profesion_id}&grado_estudio_id=${grado_estudio_id}&genero_id=${genero_id}&idFilter=${idFilter}&comision_id=${comision_id}&fraccion_legislativa_id=${fraccion_legislativa_id}&page=${page}&rows=${rows}&search=${search}`);
     }
     async get(id) {
         return await http.get(`/${NombreDelModulo}/${id}`);
@@ -32,8 +34,10 @@ class PersonaDataService {
         genero_id,
         idFilter,
         comision_id,
+        fraccion_legislativa_id,
         search) {
-        return await http.get(`/${NombreDelModulo}/totalrecords?lugar_nacimiento_id=${lugar_nacimiento_id}&profesion_id=${profesion_id}&grado_estudio_id=${grado_estudio_id}&genero_id=${genero_id}&idFilter=${idFilter}&comision_id=${comision_id}&search=${search}`);
+        // await http.get(`/${NombreDelModulo}/totalrecords?lugar_nacimiento_id=${lugar_nacimiento_id}&profesion_id=${profesion_id}&grado_estudio_id=${grado_estudio_id}&genero_id=${genero_id}&idFilter=${idFilter}&comision_id=${comision_id}&search=${search}`);
+        return await http.get(`/${NombreDelModulo}/totalrecords?lugar_nacimiento_id=${lugar_nacimiento_id}&profesion_id=${profesion_id}&grado_estudio_id=${grado_estudio_id}&genero_id=${genero_id}&idFilter=${idFilter}&comision_id=${comision_id}&fraccion_legislativa_id=${fraccion_legislativa_id}&search=${search}`);
     }
 }
 

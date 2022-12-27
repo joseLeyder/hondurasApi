@@ -28,7 +28,8 @@ const fieldsConst = {
     corporacion_id: '',         alcance_id: '',             sinopsis: "",
     proyecto_ley_estado: [],    proyecto_ley_autor_legislativos: [],     proyecto_ley_autor_personas: [],
     proyecto_ley_ponente: [],   user: auth.username(),      se_acumula_a_id: '',
-    comision_asamblea_id:"",    comision_uccaeps_id:""
+    comision_asamblea_id:"",    comision_uccaeps_id:"",     fecha_cuatrienal:"",
+    fecha_dictamen:""
 };
 const errorsConst = {
     id: '',                     titulo: "",                 alias: "",
@@ -38,7 +39,8 @@ const errorsConst = {
     corporacion_id: '',         alcance_id: '',             sinopsis: "",
     proyecto_ley_estado: '',    proyecto_ley_autor_legislativos: [],     proyecto_ley_autor_personas: [],
     proyecto_ley_ponente: [],   user: '',                   se_acumula_a_id: '',
-    comision_asamblea_id:"",    comision_uccaeps_id:""
+    comision_asamblea_id:"",    comision_uccaeps_id:"",      fecha_cuatrienal:"",
+    fecha_dictamen:""
 };
 const buttonList = [
     [
@@ -87,7 +89,7 @@ const defaultItemSearch = {
 };
 const defaultAutorOtro = { id: "", nombre: "" , activo: true };
 const defaultLegislatura = { value: "", label: "Seleccione legislatura" };
-const defaultCuatrienio = { value: "", label: "Seleccione cuatrienio" };
+const defaultCuatrienio = { value: "", label: "Seleccione un periodo legislativo" };
 const defaultTipoProyecto = { value: "", label: "Seleccione tipo de expediente" };
 const defaultComisionUCCAEPS = { value: "", label: "Seleccione una comisión de UCCAEPS" };
 const defaultComisionAsamblea = { value: "", label: "Seleccione una comisión de asamblea" };
@@ -133,6 +135,8 @@ const default_item_error_estado_ponente = {
 const default_item_select_estado_proyecto_ley = { value: "", label: "Seleccione un estado" };
 const default_item_select_estado_corporacion = { value: "", label: "Seleccione una corporación" };
 const default_item_select_estado_comision = { value: "", label: "Seleccione una comisión" };
+// const default_item_select_comision_uccaeps = { value: "", label: "Seleccione una comisión de uccaeps" };
+// const default_item_select_comision_asamblea = { value: "", label: "Seleccione una comisión de asamblea" };
 //</editor-fold>
 
 //<editor-fold desc="Item autor">
@@ -573,6 +577,7 @@ class CrearProyectoLey extends Component {
         }
 
         if (data.id === 0) {
+            console.log(data);
             await ProyectoLeyfieldsService.create(data)
                 .then((response) => {
                     responseData = response.data;
@@ -1699,7 +1704,10 @@ class CrearProyectoLey extends Component {
                 fields.activo = data.activo;
                 fields.proyecto_ley_estado = data.proyecto_ley_estado;
                 fields.proyecto_ley_autor_personas = [];
-
+                fields.comision_asamblea_id = data.comision_asamblea_id;
+                fields.comision_uccaeps_id = data.comision_uccaeps_id;
+                fields.fecha_cuatrienal = data.fecha_cuatrienal;
+                fields.fecha_dictamen = data.fecha_dictamen;    
                 let item_selected_acumula=[];
                 let estados = [];
                 estados = data.proyecto_ley_estado;
@@ -2256,7 +2264,7 @@ class CrearProyectoLey extends Component {
                                                                 inputName="numero_camara"
                                                                 inputType="text"
                                                                 inputClass="form-control"
-                                                                inputplaceholder="Ingrese el número en cámara"
+                                                                inputplaceholder="Ingrese el número de proyecto"
                                                                 inputValue={ this.state.fields.numero_camara || "" }
                                                                 inputOnchange={(e) => {
                                                                     let fields = this.state.fields;
@@ -2355,12 +2363,12 @@ class CrearProyectoLey extends Component {
                                                     <div className="col-md-9">
                                                         <div className="input-group">
                                                             <DatePicker
-                                                                id="fecha_radicacion"
+                                                                id="fecha_cuatrienal"
                                                                 showInputTime={ false }
                                                                 divClass="input-group"
                                                                 dateSelected={
-                                                                    this.state.fields.fecha_radicacion
-                                                                        ? FechaMysql.DateFormatMySql(this.state.fields.fecha_radicacion)
+                                                                    this.state.fields.fecha_cuatrienal
+                                                                        ? FechaMysql.DateFormatMySql(this.state.fields.fecha_cuatrienal)
                                                                         : null
                                                                 }
                                                                 onChangeDate={(e) => {
@@ -2376,13 +2384,13 @@ class CrearProyectoLey extends Component {
                                                                             ...prevState,
                                                                             fields: {
                                                                                 ...prevState.fields,
-                                                                                fecha_radicacion: fecha,
+                                                                                fecha_cuatrienal: fecha,
                                                                             },
                                                                         })
                                                                     );
                                                                 }}
                                                                 spanClass="error"
-                                                                spanError={ this.state.errors.fecha_radicacion || "" }
+                                                                spanError={ this.state.errors.fecha_cuatrienal || "" }
                                                                 divClassSpanType={ 1 }
                                                                 divClassSpan="input-group-addon"
                                                                 divClassSpanI="fa fa-calendar"
@@ -2396,12 +2404,12 @@ class CrearProyectoLey extends Component {
                                                     <div className="col-md-9">
                                                         <div className="input-group">
                                                             <DatePicker
-                                                                id="fecha_radicacion"
+                                                                id="fecha_dictamen"
                                                                 showInputTime={ false }
                                                                 divClass="input-group"
                                                                 dateSelected={
-                                                                    this.state.fields.fecha_radicacion
-                                                                        ? FechaMysql.DateFormatMySql(this.state.fields.fecha_radicacion)
+                                                                    this.state.fields.fecha_dictamen
+                                                                        ? FechaMysql.DateFormatMySql(this.state.fields.fecha_dictamen)
                                                                         : null
                                                                 }
                                                                 onChangeDate={(e) => {
@@ -2417,13 +2425,13 @@ class CrearProyectoLey extends Component {
                                                                             ...prevState,
                                                                             fields: {
                                                                                 ...prevState.fields,
-                                                                                fecha_radicacion: fecha,
+                                                                                fecha_dictamen: fecha,
                                                                             },
                                                                         })
                                                                     );
                                                                 }}
                                                                 spanClass="error"
-                                                                spanError={ this.state.errors.fecha_radicacion || "" }
+                                                                spanError={ this.state.errors.fecha_dictamen || "" }
                                                                 divClassSpanType={ 1 }
                                                                 divClassSpan="input-group-addon"
                                                                 divClassSpanI="fa fa-calendar"
@@ -2469,7 +2477,7 @@ class CrearProyectoLey extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="form-group">
-                                                    <label className="col-md-3 control-label"> Comision de UCCAEPS </label>
+                                                    <label className="col-md-3 control-label"> Comision interna </label>
                                                     <div className="col-md-9">
                                                         <div className="input-group">
                                                             <Select
@@ -2487,7 +2495,7 @@ class CrearProyectoLey extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="form-group">
-                                                    <label className="col-md-3 control-label"> Comision de asamblea </label>
+                                                    <label className="col-md-3 control-label"> Comision de asamblea legislativa </label>
                                                     <div className="col-md-9">
                                                         <div className="input-group">
                                                             <Select

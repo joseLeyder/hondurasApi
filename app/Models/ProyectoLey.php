@@ -62,31 +62,46 @@ class ProyectoLey extends Model
             'fecha_radicacion' => 'required',
             // 'legislatura_id' => 'numeric|required|min:0|not_in:0',
             'cuatrienio_id' => 'numeric|required|min:0|not_in:0',
+            'comision_asamblea_id' => 'numeric|required|min:0|not_in:0',
+            'comision_uccaeps_id' => 'numeric|required|min:0|not_in:0',
             'tipo_proyecto_id' => 'numeric|required|min:0|not_in:0',
             'iniciativa_id' => 'numeric|required|min:0|not_in:0',
             'tema_id_principal' => 'numeric|required|min:0|not_in:0',
-            'sinopsis' => 'required'
+            'sinopsis' => 'required',
+            'fecha_cuatrienal' => 'required',
+            'fecha_dictamen' => 'required',
         ];
     }
 
     public static $rulesPutMessages = [
         'titulo.required' => 'El título es requerido.',
         'fecha_radicacion.required' => 'La fecha de radicación es requerida.',
-
+        'fecha_cuatrienial.required' => 'La fecha cuatrienial es requerida',
+        'fecha_dictamen.required' => 'La fecha estimada de dictamen es requerida',
         // 'legislatura_id.numeric' => 'La legislatura es requerido.',
         // 'legislatura_id.required' => 'La legislatura es requerido.',
         // 'legislatura_id.min' => 'La legislatura es requerido.',
         // 'legislatura_id.not_in' => 'La legislatura es requerido.',
 
-        'cuatrienio_id.numeric' => 'El cuatrienio es requerido.',
-        'cuatrienio_id.required' => 'El cuatrienio es requerido.',
-        'cuatrienio_id.min' => 'El cuatrienio es requerido.',
-        'cuatrienio_id.not_in' => 'El cuatrienio es requerido.',
+        'cuatrienio_id.numeric' => 'El periodo legislativo es requerido.',
+        'cuatrienio_id.required' => 'El periodo legislativo es requerido.',
+        'cuatrienio_id.min' => 'El periodo legislativo es requerido.',
+        'cuatrienio_id.not_in' => 'El periodo legislativo es requerido.',
 
-        'tipo_proyecto_id.numeric' => 'El tipo de proyecto de ley es requerido.',
-        'tipo_proyecto_id.required' => 'El tipo de proyecto de ley es requerido.',
-        'tipo_proyecto_id.min' => 'El tipo de proyecto de ley es requerido.',
-        'tipo_proyecto_id.not_in' => 'El tipo de proyecto de ley es requerido.',
+        'comision_uccaeps_id.numeric' => 'La comisión interna es requerida.',
+        'comision_uccaeps_id.required' => 'La comisión interna es requerida.',
+        'comision_uccaeps_id.min' => 'La comisión interna es requerida.',
+        'comision_uccaeps_id.not_in' => 'La comisión interna es requerida.',
+        
+        'comision_asamblea_id.numeric' => 'La comisión de asamblea legislativa es requerida.',
+        'comision_asamblea_id.required' => 'La comisión de asamblea legislativa es requerida.',
+        'comision_asamblea_id.min' => 'La comisión de asamblea legislativa es requerida.',
+        'comision_asamblea_id.not_in' => 'La comisión de asamblea legislativa es requerida.',
+
+        'tipo_proyecto_id.numeric' => 'El tipo de expediente es requerido.',
+        'tipo_proyecto_id.required' => 'El tipo de expediente es requerido.',
+        'tipo_proyecto_id.min' => 'El tipo de expediente es requerido.',
+        'tipo_proyecto_id.not_in' => 'El tipo de expediente es requerido.',
 
         'iniciativa_id.numeric' => 'La iniciativa es requerido.',
         'iniciativa_id.required' => 'La iniciativa es requerido.',
@@ -117,7 +132,11 @@ class ProyectoLey extends Model
         'usercreated',
         'usermodifed',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'fecha_cuatrienal',
+        'fecha_dictamen',
+        'comision_uccaeps_id',
+        'comision_asamblea_id'
     ];
 
     protected $hidden = [
