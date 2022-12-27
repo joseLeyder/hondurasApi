@@ -116,6 +116,12 @@ const default_item_error_estado = {
     orden:'',                       activo: '',                     archivo: '',
     comisiones:'',                  tipo_estado:'',                 ponentes:''
 };
+const default_item_alerta = {
+    id: 0,                          informacion: "",                archivos: []
+};
+const default_item_error_alerta = {
+    id: 0,                          informacion: "",                archivos: []
+};
 const default_item_estado_comision = {
     id: 0,                          proyecto_ley_id: '',              comision_id: '',
     activo: true
@@ -459,6 +465,8 @@ class CrearProyectoLey extends Component {
 
             item_estado: Object.assign({}, default_item_estado),
             item_error_estado: Object.assign({}, default_item_error_estado),
+            item_alerta: Object.assign({}, default_item_alerta),
+            item_error_alerta: Object.assign({}, default_item_error_alerta),
             item_estado_comision: Object.assign({}, default_item_estado_comision),
             item_error_estado_comision: Object.assign({}, default_item_error_estado_comision),
             item_estado_ponente: Object.assign({}, default_item_estado_ponente),
@@ -1453,6 +1461,10 @@ class CrearProyectoLey extends Component {
             item_error_estado: Object.assign({}, default_item_error_estado),
             item_select_estado_proyecto_ley: Object.assign({}, default_item_select_estado_proyecto_ley),
             item_select_estado_corporacion: Object.assign({}, default_item_select_estado_corporacion),
+        });
+    };
+    handlerResetModalAlerta = () => {
+        this.setState({
         });
     };
     handlerResetModalEstadoComision = async () => {
@@ -2809,7 +2821,7 @@ class CrearProyectoLey extends Component {
                                             </div>
 
                                             <div
-                                                className={`tab-pane active`}
+                                                className={`tab-pane`}
                                                 id={`tab-alertas`}
                                             >
                                                 <div className="col-md-12">
@@ -2844,7 +2856,7 @@ class CrearProyectoLey extends Component {
 
                                                 <div
                                                     className="modal"
-                                                    id="modal-estado"
+                                                    id="modal-alerta"
                                                     tabIndex="-1"
                                                     role="dialog"
                                                     aria-labelledby="largeModalHead"
@@ -2870,150 +2882,49 @@ class CrearProyectoLey extends Component {
                                                                     id="largeModalHead"
                                                                 >
                                                                     <i className="fa fa-list"/>{" "}
-                                                                    {this.state.item_estado.id === 0 ? 'Crear' : 'Modificar'} estado
+                                                                    {this.state.item_alerta.id === 0 ? 'Crear' : 'Modificar'} alerta
                                                                 </h4>
                                                             </div>
                                                             <div className="modal-body">
                                                                 <div className="row">
-                                                                    <div className="col-md-6">
-                                                                        <div className="form-group">
-                                                                            <div className="input-group">
-                                                                                <label> Fecha </label>
-                                                                                <DatePicker
-                                                                                    id="item_estado_fecha"
-                                                                                    showInputTime={ false }
-                                                                                    divClass="input-group"
-                                                                                    dateSelected={
-                                                                                        this.state.item_estado.fecha
-                                                                                            ? FechaMysql.DateFormatMySql(this.state.item_estado.fecha)
-                                                                                            : null
-                                                                                    }
-                                                                                    onChangeDate={(e) => {
-                                                                                        let fecha = e;
-
-                                                                                        if (!fecha) {
-                                                                                            fecha = FechaMysql.DateFormatMySql(new Date());
-                                                                                        }
-                                                                                        fecha = FechaMysql.DateFormatMySql(fecha);
-
-                                                                                        this.setState(
-                                                                                            (prevState) => ({
-                                                                                                ...prevState,
-                                                                                                item_estado: {
-                                                                                                    ...prevState.item_estado,
-                                                                                                    fecha: fecha,
-                                                                                                },
-                                                                                            })
-                                                                                        );
-                                                                                    }}
-                                                                                    spanClass="error"
-                                                                                    spanError={ this.state.item_error_estado.fecha || "" }
-                                                                                    divClassSpanType={ 1 }
-                                                                                    divClassSpan="input-group-addon"
-                                                                                    divClassSpanI="fa fa-calendar"
-                                                                                    maxDate={new Date()}
-                                                                                />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    {/* <div className="col-md-6">
-                                                                        <div className="form-group">
-                                                                            <div className="input-group">
-                                                                                <label> Orden </label>
-                                                                                <Input
-                                                                                    divClass="input-group"
-                                                                                    inputName="item_estado_orden"
-                                                                                    inputType="text"
-                                                                                    inputClass="form-control"
-                                                                                    inputplaceholder="Ingrese el orden"
-                                                                                    inputValue={ this.state.item_estado.orden || "" }
-                                                                                    inputOnchange={(e) => {
-                                                                                        let value = e.target.value;
-                                                                                        let exp_reg = /^[0-9]*$/;
-
-                                                                                        if(exp_reg.test(value)){
-                                                                                            let item_estado = this.state.item_estado;
-                                                                                            let item_error_estado = this.state.item_error_estado;
-                                                                                            item_estado = validForm.handleChangeField("orden", item_estado, e);
-                                                                                            item_error_estado = validForm.handleChangeErrors("orden", item_error_estado, e);
-                                                                                            this.setState({
-                                                                                                item_estado: item_estado,
-                                                                                                item_error_estado: item_error_estado,
-                                                                                            });
-                                                                                        }
-                                                                                        else{
-                                                                                            let item_error_estado = this.state.item_error_estado;
-                                                                                            item_error_estado.orden = 'Solo números mayores a 0';
-                                                                                            this.setState({
-                                                                                                item_error_estado: item_error_estado,
-                                                                                            });
-                                                                                        }
-                                                                                    }}
-                                                                                    spanClass="error"
-                                                                                    spanError={ this.state.item_error_estado.orden || ""  }
-                                                                                    divClassSpanType={ 1 }
-                                                                                    divClassSpan="input-group-addon"
-                                                                                    divClassSpanI="fa fa-indent"
-                                                                                />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div> */}
-                                                                    <div className="col-md-6">
-                                                                        <div className="form-group">
-                                                                            <div className="input-group">
-                                                                                <label> Estado </label>
-                                                                                <div className='input-group'>
-                                                                                    <span className="input-group-addon">
-                                                                                        <i className="fa fa-user"/>
-                                                                                    </span>
-                                                                                    <Select
-                                                                                        divClass=""
-                                                                                        selectplaceholder="Seleccione un estado"
-                                                                                        selectValue={ this.state.item_select_estado_proyecto_ley }
-                                                                                        selectOnchange={(e) => {
-                                                                                            this.handlerEstadoProyectoDeLeyEstado(e);
-                                                                                        }}
-                                                                                        selectoptions={ this.state.data_select_estado_proyecto_ley }
-                                                                                        selectIsSearchable={ true }
-                                                                                        selectclassNamePrefix="selectReact__value-container"
-                                                                                        spanClass="error"
-                                                                                        spanError={ this.state.item_error_estado.estado_proyecto_ley_id || "" }
-                                                                                    />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
                                                                     <div className="col-md-12">
-                                                                        <div className="form-group">
-                                                                            <div className="input-group">
-                                                                                <label> Observaciones </label>
-                                                                                <textarea
-                                                                                    value={this.state.item_estado.observaciones || ""}
-                                                                                    className="form-control"
-                                                                                    rows="10"
-                                                                                    maxLength={368}
-                                                                                    onChange={(e) => {
-                                                                                        let item_estado = this.state.item_estado;
-                                                                                        let item_error_estado = this.state.item_error_estado;
-                                                                                        item_estado = validForm.handleChangeFieldJodiEditor("observaciones", item_estado, e.currentTarget.value);
-                                                                                        item_error_estado = validForm.handleChangeErrors("observaciones", item_error_estado, e.currentTarget.value);
-                                                                                        this.setState({
-                                                                                            item_error: item_estado,
-                                                                                            item_error_estado: item_error_estado,
-                                                                                        });
-                                                                                    }}
-                                                                                />
-                                                                                <span className="error">
-                                                                                    {this.state.item_error_estado.observaciones || ""}
-                                                                                </span>
-                                                                            </div>
+                                                                    <div className="form-group">
+                                                                        <label className="col-md-3 control-label">
+                                                                            Información de interés
+                                                                        </label>
+                                                                        <div className="col-md-9">
+                                                                            <SunEditor
+                                                                                placeholder="..."
+                                                                                setContents={ this.state.item_alerta.informacion || "" }
+                                                                                
+                                                                                onChange={(e) => {
+                                                                                    let item_alerta = this.state.item_alerta;
+                                                                                    let item_error_alerta = this.state.item_error_alerta;
+                                                                                    item_alerta = validForm.handleChangeFieldJodiEditor("informacion", item_alerta, e);
+                                                                                    item_error_alerta = validForm.handleChangeErrors("informacion", item_error_alerta, e);
+                                                                                    this.setState({
+                                                                                        item_error: item_alerta,
+                                                                                        item_error_alerta: item_error_alerta,
+                                                                                    });
+                                                                                }}
+                                                                                lang="es"
+                                                                                setOptions={{
+                                                                                    buttonList: buttonList,
+                                                                                    height: 400,
+                                                                                }}
+                                                                            />
+                                                                            <span className="error">
+                                                                                {/* { this.state.errors.sinopsis || "" } */}
+                                                                                {this.state.item_error_alerta.informacion || ""}
+                                                                            </span>
                                                                         </div>
+                                                                    </div>
                                                                     </div>
                                                                 </div>
                                                                 <hr />
                                                                 <p>
                                                                     <i className="fa fa-info-circle"/>{" "}
-                                                                    El estado del proyecto de ley aún no esta registrado en la base de datos.
+                                                                    La alerta aún no está registrada en la base de datos.
                                                                     Debe guardar completamente el formulario.
                                                                 </p>
                                                                 <div className="panel-footer">
@@ -3021,14 +2932,14 @@ class CrearProyectoLey extends Component {
                                                                         type="button"
                                                                         className="btn btn-default"
                                                                         data-dismiss="modal"
-                                                                        ref="close_modal_estado"
+                                                                        ref="close_modal_alerta"
                                                                     >
                                                                         Cerrar
                                                                     </button>
                                                                     <button
                                                                         type="button"
                                                                         onClick={async (e) => {
-                                                                            await this.saveSubmitEstado(e);
+                                                                            await this.saveSubmitAlerta(e);
                                                                         }}
                                                                         className="btn btn-success pull-right"
                                                                     >
