@@ -223,6 +223,13 @@ class UtilsDataService {
     async getAutorFilterPaginationTotalRecord(data) {
         return await http.post(`/${NombreDelModulo}/getAutorFilterPaginationTotalRecord`, data);
     }
+    async getComboDiputado(filter = 1){
+        return await http.get(`/${NombreDelModulo}/getComboDiputados?idFilter=${filter}`);
+    }
+    async getComboProyectoLey(){
+        return await http.get(`/${NombreDelModulo}/getComboProyectosDeLey`);
+    }
+    
 }
 
 export default new UtilsDataService();

@@ -1275,6 +1275,17 @@ class UtilsController extends Controller
             200
         );
     }
+    public function getComboProyectosDeLey()
+    {
+        $items = ProyectoLey::select('id','titulo')
+        ->where('activo',1)
+        ->get()->toJson(JSON_PRETTY_PRINT);
+
+        return response(
+            $items,
+            200
+        );
+    }
     public function getComboTipoRespuestaVotacion(){
         $items = TipoRespuestaVotacion::select(
             'id',
@@ -1678,6 +1689,18 @@ class UtilsController extends Controller
         ->where('apellidos', 'LIKE', '%' . $request->input('search') . '%' )
         ->skip(($request->input('page') - 1) * $request->input('rows'))
         ->take($request->input('rows'))
+        ->orderBy('id','desc')
+        ->get()
+        ->toJson(JSON_PRETTY_PRINT);
+
+        return response($items, 200);
+    }
+    public function getComboDiputados(Request $request){
+        $filter = $request->input('idFilter');
+
+        $items = Persona::select('id','nombres', 'apellidos', 'municipio_id_nacimiento')
+        ->with("LugarNacimiento", "Profesion", "Imagenes")
+        ->where('activo', ($filter != "-1") ? '=' : '!=', $filter)
         ->orderBy('id','desc')
         ->get()
         ->toJson(JSON_PRETTY_PRINT);

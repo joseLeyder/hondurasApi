@@ -114,6 +114,7 @@ Route::get('utils/getComboTipoActividadAgenda',[UtilsController::class,'getCombo
 Route::post('utils/getComboLegislaturaFilter',[UtilsController::class,'getComboLegislaturaFilter']);
 Route::post('utils/getComboComisionMiembro',[UtilsController::class,'getComboComisionMiembro']);
 Route::get('utils/getComboProyectosDeLeyByLegislaturaCuatrienio',[UtilsController::class,'getComboProyectosDeLeyByLegislaturaCuatrienio']);
+Route::get('utils/getComboProyectosDeLey',[UtilsController::class,'getComboProyectosDeLey']);
 Route::get('utils/getComboGruposEdad',[UtilsController::class,'getComboGruposEdad']);
 Route::get('utils/getComboTipoRespuestaVotacion',[UtilsController::class,'getComboTipoRespuestaVotacion']);
 Route::get('utils/getControlPoliticoFilter',[UtilsController::class,'getControlPoliticoFilter']);
@@ -131,6 +132,7 @@ Route::get('utils/getAllPersonasNoCongresistas',[UtilsController::class,'getAllP
 Route::get('utils/totalrecordsPersonasNoCongresistas',[UtilsController::class,'totalrecordsPersonasNoCongresistas']);
 Route::post('utils/getComboAlcanceFilter',[UtilsController::class,'getComboAlcanceFilter']);
 Route::get('utils/getComboPersonas',[UtilsController::class,'getComboPersonas']);
+Route::get('utils/getComboDiputados',[UtilsController::class,'getComboDiputados']);
 Route::get('utils/getComboTipoVotacion',[UtilsController::class,'getComboTipoVotacion']);
 Route::get('utils/getComboClaseVotacion',[UtilsController::class,'getComboClaseVotacion']);
 Route::get('utils/totalrecordsComboPersonas',[UtilsController::class,'totalrecordsComboPersonas']);
@@ -365,6 +367,13 @@ Route::delete('proyectoLey/{id}', [ProyectoLeyController::class, 'destroy'])->mi
 Route::get('proyectoLey/{id}', [ProyectoLeyController::class, 'show'])->middleware(['jwt.cid:68']);
 Route::get('proyectoLey', [ProyectoLeyController::class, 'index'])->middleware(['jwt.cid:69']);
 
+// CtrlPolitico
+Route::get('ctrlPolitico', [CtrlPoliticoController::class, 'index']);
+Route::post('ctrlPolitico', [CtrlPoliticoController::class, 'store']);
+Route::put('ctrlPolitico/{id}', [CtrlPoliticoController::class, 'update']);
+Route::get('ctrlPolitico/totalrecords', [CtrlPoliticoController::class, 'totalrecords']);
+Route::get('ctrlPolitico/{id}', [CtrlPoliticoController::class, 'show']);
+Route::delete('ctrlPolitico/{id}', [CtrlPoliticoController::class, 'destroy']);
 //ControlPolitico
 Route::get('controlPolitico/totalrecords', [ControlPoliticosController::class, 'totalrecords']);
 Route::get('controlPolitico', [ControlPoliticosController::class, 'index']);
