@@ -16,6 +16,9 @@ import {Constantes} from "../../../Constants/Constantes.js";
 import {ModuloPermiso} from "../../../Permisos/ModuloPermiso";
 import ValidarPermiso from "../../../Permisos/ValidarPermiso";
 import TableReact from "../../../Components/TableReact";
+import 'react-dropzone-uploader/dist/styles.css'
+import * as FileCfg from "../../../Utils/FileConfig";
+import Dropzone from 'react-dropzone-uploader'
 
 const title_lowercase = "proyecto de ley";
 const title_sentence = "Proyecto de ley";
@@ -29,7 +32,7 @@ const fieldsConst = {
     proyecto_ley_estado: [],    proyecto_ley_autor_legislativos: [],     proyecto_ley_autor_personas: [],
     proyecto_ley_ponente: [],   user: auth.username(),      se_acumula_a_id: '',
     comision_asamblea_id:"",    comision_uccaeps_id:"",     fecha_cuatrienal:"",
-    fecha_dictamen:""
+    fecha_dictamen:"",          alertas: [],
 };
 const errorsConst = {
     id: '',                     titulo: "",                 alias: "",
@@ -40,7 +43,7 @@ const errorsConst = {
     proyecto_ley_estado: '',    proyecto_ley_autor_legislativos: [],     proyecto_ley_autor_personas: [],
     proyecto_ley_ponente: [],   user: '',                   se_acumula_a_id: '',
     comision_asamblea_id:"",    comision_uccaeps_id:"",      fecha_cuatrienal:"",
-    fecha_dictamen:""
+    fecha_dictamen:"",           alertas:[]
 };
 const buttonList = [
     [
@@ -117,10 +120,12 @@ const default_item_error_estado = {
     comisiones:'',                  tipo_estado:'',                 ponentes:''
 };
 const default_item_alerta = {
-    id: 0,                          informacion: "",                archivos: []
+    id: 0,                          informacion: "",                archivos: [],
+    archivo : "",                   activo:true
 };
 const default_item_error_alerta = {
-    id: 0,                          informacion: "",                archivos: []
+    id: "",                          informacion: "",                archivos: "",
+    archivo:""                         
 };
 const default_item_estado_comision = {
     id: 0,                          proyecto_ley_id: '',              comision_id: '',
@@ -305,7 +310,7 @@ class CrearProyectoLey extends Component {
                             },
                             {
                                 Header: "Alerta",
-                                accessor: "descripcion",
+                                accessor: "informacion",
                             },
                             {
                                 Header: "Activo",
@@ -359,7 +364,7 @@ class CrearProyectoLey extends Component {
                                             : "btn-warning"} eliminar_alerta`}
                                         style={{ width: "100%" }}
                                         data-id={tableProps.row.values.id}
-                                        data-titulo={tableProps.row.values["descripción"] }
+                                        data-informacion={tableProps.row.values["informacion"] }
                                         data-activo={tableProps.row.values.activo}
                                     >
                                         <i className="fa fa-eraser"/>{" "}
@@ -460,6 +465,7 @@ class CrearProyectoLey extends Component {
             title_sentence: title_sentence,
             autores_otros: [],
             current_tmp_id_estado: 0,
+            current_tmp_id_alerta: 0,
             current_estado_id_select: '',
             item_desactivar: Object.assign({},default_item_desactivar),
 
@@ -496,6 +502,34 @@ class CrearProyectoLey extends Component {
             active_autores_legislativos: 'active',
             active_autores_personas: ''
         };
+    }
+
+    handleChangeStatus = ({ meta, file }, status) => {
+
+        let item_alerta = this.state.item_alerta;
+        let item_error_alerta = this.state.item_error_alerta;
+        item_alerta.archivo = file;
+        var sizefile = parseInt(file.size / 1024);
+        item_error_alerta = validForm.cleanErrors(item_error_alerta);
+        if (item_alerta.archivo != null && item_alerta.archivo != undefined) {
+            if(sizefile > 500000){
+                item_error_alerta.archivo = "El tamaño del archivo no debe ser mayor a 50MB";
+            }else{
+                let fileext = FileCfg.GetInfoFile(file);
+                let typesext = FileCfg.TypesAccepted([FileCfg.Documents]);
+                if (typesext.indexOf(fileext) === -1) {
+                    item_error_alerta.archivo = "Selecciona un archivo válido";
+
+                    this.setState({ item_error_alerta: item_error_alerta, });
+                    return false;
+                }
+                this.setState({ item_alerta: item_alerta, });
+            }
+
+        } else {
+            item_error_alerta.archivo = "Seleccione un archivo";
+        }
+
     }
 
     //<editor-fold desc="Generales">
@@ -905,6 +939,29 @@ class CrearProyectoLey extends Component {
         }
         document.querySelector(`#modal-activar-desactivar-estado button[data-dismiss="modal"]`).click();
     };
+
+    deleteSubmitAlerta = async (e) => {
+        e.preventDefault();
+        let array = [...this.state.fields.alertas];
+        let alerta_id = this.state.item_desactivar.id;
+        let index = this.get_index_in_array('id', alerta_id, array);
+
+        if (index !== -1) {
+            array.splice(index, 1);
+            this.setState((prevState) => ({
+                ...prevState,
+                fields: {
+                    ...prevState.fields,
+                    alertas: array
+                },
+                index_alertas:{
+                    ...prevState.index_alertas,
+                    data:array
+                }
+            }));
+        }
+        document.querySelector(`#modal-activar-desactivar-alerta button[data-dismiss="modal"]`).click();
+    };
     createUrl = () => {
         let gaceta_url = this.state.item_estado.gaceta_url;
         if (!gaceta_url) {
@@ -930,7 +987,94 @@ class CrearProyectoLey extends Component {
         }
     }
     //</editor-fold>
+    saveSubmitAlerta = async () => {
+        let hasError = false;
+        let item = Object.assign({}, this.state.item_alerta);
+        let itemError = Object.assign({}, default_item_error_alerta);
+       
+        if (!item.informacion && !item.archivo) {
+            hasError = true;
+            itemError.informacion = "Ingrese la información o elija un archivo.";
+            itemError.archivo = "Ingrese la información o elija un archivo.";
+        }
 
+        if (hasError) {
+            this.setState((prevState) => ({
+                ...prevState,
+                item_error_alerta: itemError,
+            }));
+
+           
+        } else {
+            // Verificamos si es nuevo o editar
+            // Si el id ya se encuentra en el array de proyecto de leys entoces es editar
+            let array = [...this.state.fields.alertas];//000000
+            let alerta_id = item.id;
+            let index = this.get_index_in_array('id', alerta_id, array);
+
+            // Si es -1 significa que no lo encontro por lo que es nuevo
+            if(index === -1){
+                
+                let id = this.state.current_tmp_id_alerta + -1; 
+                item.id = id;
+                this.setState((prevState) => ({
+                    ...prevState,
+                    item_error_alerta: itemError,
+                    item_alerta: Object.assign({}, default_item_alerta),
+                    current_tmp_id_alerta: id, 
+                    fields: {
+                        ...prevState.fields,
+                        alertas: [
+                            ...prevState.fields.alertas,
+                            item,
+                        ],
+                    },
+                }), ()=>{
+                    this.refs.close_modal_alerta.click();
+                    let data = this.state.fields.alertas;
+                    
+                    this.setState((prevState) => ({
+                        ...prevState,
+                        index_alertas:{
+                            ...prevState.index_alertas,
+                            data:data
+                        }
+                    }));
+                });
+                console.log(this.state.index_alertas);
+            }
+            //1111111111
+            // Como es diferente a -1 es por que fue encontrado en el array de proyectos de ley, por lo que es editar
+            else{
+                array[index].id = item.id;
+                array[index].informacion = item.informacion;
+                array[index].archivo = item.archivo;
+                array[index].activo = item.activo;
+
+                this.setState((prevState) => ({
+                    ...prevState,
+                    item_error_alerta: itemError,
+                    item_alerta: Object.assign({}, default_item_alerta),
+                    fields: {
+                        ...prevState.fields,
+                        alertas: array
+                    },
+                }), ()=>{
+                    this.refs.close_modal_alerta.click();
+                    let data = this.state.fields.alertas;
+                    this.setState((prevState) => ({
+                        ...prevState,
+                        index_alerta:{
+                            ...prevState.index_alerta,
+                            data:data
+                        }
+                    }));
+                });
+            }
+
+
+        }
+    };
     //<editor-fold desc="Handlers">
     handlerClick = async (e) => {
         let element = e.target;
@@ -997,6 +1141,24 @@ class CrearProyectoLey extends Component {
                 this.setSelectComisionToBuscador(id)
             });
         }
+
+        if (element.classList.contains("eliminar_alerta")) {
+            let id = Number(element.getAttribute("data-id"));
+            let titulo = element.getAttribute("data-informacion");
+            let activo = element.getAttribute("data-activo") === 'true' ? 1 : 0;
+           
+            this.handlerDesactivarAlerta(id, titulo, activo);
+        }
+        // else if (element.parentNode.classList.contains("eliminar_alerta")) {
+        //     let id = Number(element.parentNode.getAttribute("data-id"));
+        //     await this.handlerResetModalEstadoComision();
+        //     this.setState((prevState) => ({
+        //         ...prevState,
+        //         current_estado_id_select: id
+        //     }), () =>{
+        //         this.setSelectComisionToBuscador(id)
+        //     });
+        // }
 
         // Abriendo editar estado
         if (element.classList.contains("editar_estado")) {
@@ -1075,8 +1237,62 @@ class CrearProyectoLey extends Component {
                 });
             }
         }
+        // Abriendo editar alerta
+        if (element.classList.contains("editar_alerta")) {
+            let id = Number(element.getAttribute("data-id"));
+            this.handlerResetModalAlerta();
+            let array = [...this.state.fields.alertas];
+            let index = this.get_index_in_array('id', id, array);
+            if(index !== -1){
+                let alerta = this.state.fields.alertas[index];
+                let item_alerta = Object.assign({}, default_item_alerta);
+                item_alerta.id = alerta.id;
+                item_alerta.informacion = alerta.informacion;             
+                item_alerta.activo = alerta.activo;
+                item_alerta.archivo = alerta.archivo;
+                console.log(item_alerta.archivo);
+                //this.handleChangeStatus(null, item_alerta.archivo);
+                //('#dzu-dropzone').removeAllFiles()
+                // Dropzone.forElement('#DZarchivo').removeAllFiles(true);
+                this.setState({
+                    item_alerta: item_alerta,
+                },()=>{
+                    
+                });
+            }
+        }
+        else if (element.parentNode.classList.contains("editar_estado")) {
+            let id = Number(element.parentNode.getAttribute("data-id"));
+            this.handlerResetModalAlerta();
+            let array = [...this.state.fields.alertas];
+            let index = this.get_index_in_array('id', id, array);
+            if(index !== -1){
+                let alerta = this.state.fields.alertas[index];
+                let item_alerta = Object.assign({}, default_item_alerta);
+                item_alerta.id = alerta.id;
+                item_alerta.informacion = alerta.informacion;             
+                item_alerta.activo = alerta.activo;
+                item_alerta.archivo = alerta.archivo;
+                this.setState({
+                    item_alerta: item_alerta,
+                },()=>{                    
+                });
+            }
+        }
     }
     handlerDesactivarEstado = (id, titulo, activo) => {
+        let item_desactivar = Object.assign({},default_item_desactivar);
+        item_desactivar.id = id;
+        item_desactivar.titulo = titulo;
+        item_desactivar.activo = activo;
+        this.setState({
+            item_desactivar: item_desactivar,
+        });
+    };
+    handlerDesactivarAlerta = (id, titulo, activo) => {
+        console.log(id);
+        console.log(titulo);
+        console.log(activo);
         let item_desactivar = Object.assign({},default_item_desactivar);
         item_desactivar.id = id;
         item_desactivar.titulo = titulo;
@@ -1465,6 +1681,8 @@ class CrearProyectoLey extends Component {
     };
     handlerResetModalAlerta = () => {
         this.setState({
+            item_alerta: Object.assign({}, default_item_alerta),
+            item_error_alerta: Object.assign({}, default_item_error_alerta),
         });
     };
     handlerResetModalEstadoComision = async () => {
@@ -2893,6 +3111,7 @@ class CrearProyectoLey extends Component {
                                                                             Información de interés
                                                                         </label>
                                                                         <div className="col-md-9">
+                                                                            <div style={{position:'relative'}}>
                                                                             <SunEditor
                                                                                 placeholder="..."
                                                                                 setContents={ this.state.item_alerta.informacion || "" }
@@ -2913,11 +3132,30 @@ class CrearProyectoLey extends Component {
                                                                                     height: 400,
                                                                                 }}
                                                                             />
+                                                                            </div>
                                                                             <span className="error">
                                                                                 {/* { this.state.errors.sinopsis || "" } */}
                                                                                 {this.state.item_error_alerta.informacion || ""}
                                                                             </span>
                                                                         </div>
+                                                                    </div>
+                                                                    <div className={`form-group`}>
+                                                                        <label className="col-md-3 control-label">Documento</label>
+                                                                        <div className="col-md-9 ">
+                                                                            <Dropzone
+                                                                            id="DZarchivo"
+                                                                                maxFiles={1}
+                                                                                multiple={false}
+                                                                                inputContent="Selecciona un documento"
+                                                                                onChangeStatus={this.handleChangeStatus.bind(this)}
+                                                                                accept=".pdf"
+                                                                            />
+                                                                            <span className="error">
+                                                                                {/* { this.state.errors.sinopsis || "" } */}
+                                                                                {this.state.item_error_alerta.archivo || ""}
+                                                                            </span>
+                                                                        </div>
+                                                                        
                                                                     </div>
                                                                     </div>
                                                                 </div>
@@ -3034,6 +3272,25 @@ class CrearProyectoLey extends Component {
                                     </div>
                                 </form>
                             </div>
+
+                            <div className={`message-box message-box-${this.state.item_desactivar.activo ? "danger" : "info"} animated fadeIn`} id="modal-activar-desactivar-alerta">
+                                <form>
+                                    <div className="mb-container">
+                                        <div className="mb-middle">
+                                            <div className="mb-title"><span className={`fa fa-${this.state.item_desactivar.activo ? "eraser" : "check"}`}/> {this.state.item_desactivar.activo ? "Desactivar" : "Activar"} alerta</div>
+                                            <div className="mb-content">
+                                                <p>{`¿Está seguro que desea ${this.state.item_desactivar.activo ? "desactivar" : "activar"} la alerta ${this.state.item_desactivar.titulo}? Puede volver a ${this.state.item_desactivar.activo ? "activarlo" : "desactivarlo"} en cualquier otro momento.`}</p>
+                                            </div>
+                                            <div className="mb-footer">
+                                                <button type="button" className="btn btn-primary btn-lg pull-right" onClick={async (e) => { await this.deleteSubmitAlerta(e) }} >{this.state.item_desactivar.activo ? "Desactivar" : "Activar"}</button>
+                                                &nbsp;
+                                                <button className="btn btn-default btn-lg pull-right" type="button" data-dismiss="modal">Cancelar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
                 </div>
