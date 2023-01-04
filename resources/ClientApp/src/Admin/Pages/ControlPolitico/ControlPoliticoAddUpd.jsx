@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ControlPoliticoDataService from "../../../Services/Congreso/ControlPolitico.Service";
+import CtrlPoliticoService from "../../../Services/Congreso/CtrlPolitico.service";
 import UtilsDataService from "../../../Services/General/Utils.Service";
 import Input from "../../../Components/Input";
 import DatePicker from "../../../Components/DatePicker";
@@ -20,36 +21,19 @@ const auth = new AuthLogin();
 const validForm = new ValidForm();
 const constFileds = {
     id: 0,
-    legislatura_id: 0,
-    cuatrienio_id: 0,
-    estado_control_politico_id: 0,
-    tema_id_principal: 0,
-    tema_id_secundario: 0,
-    comision_id: 0,
-    corporacion_id: 0,
-    plenaria: false,
-    control_politico_tags: [],
-    tags: "",
-    detalles: "",
-    numero_proposicion: "",
-    titulo: "",
+    tema:"",
+    proyecto_ley_id: 0,
+    persona_id: 0,
     fecha: new Date(),
+    intervencion:'',
     user: ""
 };
 const constErrors = {
     id: '',
-    legislatura_id: '',
-    cuatrienio_id: '',
-    estado_control_politico_id: '',
-    tema_id_principal: '',
-    tema_id_secundario: '',
-    comision_id: '',
-    corporacion_id: '',
-    plenaria: '',
-    tags: "",
-    detalles: "",
-    numero_proposicion: "",
-    titulo: "",
+    tema: '',
+    proyecto_ley_id: '',
+    intervencion: '',
+    persona_id: '',
     fecha: "",
     activo: '',
 };
@@ -98,14 +82,9 @@ const buttonList = [
         "template",
     ],
 ];
-const SelectLegislatura = { value: -1, label: 'Seleccione legislatura' };
-const SelectCuatrienio = { value: -1, label: 'Seleccione cuatrienio' };
-const SelectComision = { value: -1, label: 'Seleccione comision' };
-const SelectEstado = { value: -1, label: 'Seleccione estado' };
-const SelectTemaPrincipal = { value: -1, label: 'Seleccione tema principal' };
-const SelectTemaSecundario = { value: -1, label: 'Seleccione tema secundario' };
+
 const SelectCorporacion = { value: -1, label: 'Seleccione proyecto' };
-const SelectTipoComision = { value: -1, label: 'Seleccione tipo comision' };
+const SelectDiputado = { value: -1, label: 'Seleccione un Diputado' };
 
 class ControlPoliticoAddUpd extends Component {
     constructor(props) {
@@ -119,22 +98,12 @@ class ControlPoliticoAddUpd extends Component {
             loading: false,
             fields: constFileds,
             errors: constErrors,
-            selectLegislatura: SelectLegislatura,
-            dataSelectLegislatura: [SelectLegislatura],
-            selectCuatrienio: SelectCuatrienio,
-            dataSelectCuatrienio: [SelectCuatrienio],
-            selectComision: SelectComision,
-            dataSelectComision: [SelectComision],
-            selectEstado: SelectEstado,
-            dataSelectEstado: [SelectEstado],
-            selectTemaPrincipal: SelectTemaPrincipal,
-            dataSelectTemaPrincipal: [SelectTemaPrincipal],
-            selectTemaSecundario: SelectTemaSecundario,
-            dataSelectTemaSecundario: [SelectTemaSecundario],
+          
             selectCorporacion: SelectCorporacion,
+            SelectDiputado: SelectDiputado,
             dataSelectCorporacion: [SelectCorporacion],
-            selectTipoComision: SelectTipoComision,
-            dataSelectTipoComision: [SelectTipoComision],
+            dataSelectDiputado: [SelectDiputado],
+        
             glosarioSelected: [],
             glosarioData: [],
             url: "",
@@ -144,12 +113,9 @@ class ControlPoliticoAddUpd extends Component {
 
     componentDidMount = async () => {
         this.resetFields();
-        //await this.getComboCuatrienio();
-        
-        //await this.getComboEstado();
-        //await this.getComboTema(-1);
-        //await this.getComboTemaSecundario(-1);
-        //await this.getComboCorporacion();
+     
+        await this.getComboCorporacion();
+        await this.getComboDiputado();
         this.state.fields.id = this.state.id;
         this.state.fields.user = auth.username();
 
@@ -161,32 +127,13 @@ class ControlPoliticoAddUpd extends Component {
     };
 
     //Combos
-    getComboComision = async (corporacion, tipoComision) => {
-        this.setState({ loading: true });
-        await UtilsDataService.getComboComisiones(corporacion, tipoComision)
-            .then(response => {
-                let combo = [];
-                response.data.forEach(i => {
-                    combo.push({ value: i.id, label: i.nombre })
-                })
-                combo.unshift(SelectComision)
-                this.setState({
-                    dataSelectComision: combo,
-                    loading: false
-                })
-            })
-            .catch(error => {
-                console.log("Error:" + error.message);
-                this.setState({ loading: false });
-            });
-    }
-
+    
     getComboCorporacion = async () => {
         this.setState({ loading: true });
-        await UtilsDataService.getComboCorporacion().then(response => {
+        await UtilsDataService.getComboProyectoLey().then(response => {
             let combo = [];
             response.data.forEach(i => {
-                combo.push({ value: i.id, label: i.nombre })
+                combo.push({ value: i.id, label: i.titulo })
             })
             combo.unshift(SelectCorporacion)
             this.setState({
@@ -195,123 +142,22 @@ class ControlPoliticoAddUpd extends Component {
             });
         });
     }
-
-    getComboTipoComision = async (idCorporacion) => {
+    getComboDiputado = async () => {
         this.setState({ loading: true });
-        await UtilsDataService.getComboTipoComisionFilter({corporacion_id: idCorporacion})
-            .then(response => {
-                let combo = [];
-                response.data.forEach(i => {
-                    combo.push({ value: i.id, label: i.nombre })
-                })
-                combo.unshift(SelectTipoComision)
-                this.setState({
-                    dataSelectTipoComision: combo,
-                    loading: false
-                });
-            });
-    }
-
-    getComboLegislatura = async (select) => {
-        this.setState({ loading: true });
-        await UtilsDataService.getComboLegislatura(select)
-            .then(response => {
-                let combo = [];
-                response.data.forEach(i => {
-                    combo.push({ value: i.id, label: i.nombre })
-                })
-                combo.unshift(SelectLegislatura)
-                this.setState({
-                    dataSelectLegislatura: combo,
-                    loading: false
-                })
+        await UtilsDataService.getComboDiputado().then(response => {
+            console.log("Response->",response)
+            let combo = [];
+            response.data.forEach(i => {
+                combo.push({ value: i.id, label: i.nombres })
             })
-            .catch(error => {
-                console.log("Error:" + error.message);
-                this.setState({ loading: false });
+            combo.unshift(SelectDiputado)
+            this.setState({
+                dataSelectDiputado: combo,
+                loading: false
             });
+        });
     }
-
-    getComboCuatrienio = async () => {
-        this.setState({ loading: true });
-        await UtilsDataService.getComboCuatrienio()
-            .then(response => {
-                let combo = [];
-                response.data.forEach(i => {
-                    combo.push({ value: i.id, label: i.nombre })
-                })
-                combo.unshift(SelectCuatrienio)
-                this.setState({
-                    dataSelectCuatrienio: combo,
-                    loading: false
-                })
-            })
-            .catch(error => {
-                console.log("Error:" + error.message);
-                this.setState({ loading: false });
-            });
-    }
-
-    getComboEstado = async () => {
-        this.setState({ loading: true });
-        await UtilsDataService.getComboEstadoControlPolitico()
-            .then(response => {
-                let combo = [];
-                response.data.forEach(i => {
-                    combo.push({ value: i.id, label: i.nombre })
-                })
-                combo.unshift(SelectEstado)
-                this.setState({
-                    dataSelectEstado: combo,
-                    loading: false
-                })
-            })
-            .catch(error => {
-                console.log("Error:" + error.message);
-                this.setState({ loading: false });
-            });
-    }
-
-    getComboTema = async (idExcluded) => {
-        this.setState({ loading: true });
-        await UtilsDataService.getComboTemaControlPoliticoFilter({ id: null, nombre: '', activo: null, idExcluded: idExcluded })
-            .then(response => {
-                let combo = [];
-                response.data.forEach(i => {
-                    combo.push({ value: i.id, label: i.nombre })
-                })
-                combo.unshift(SelectTemaPrincipal)
-                this.setState({
-                    dataSelectTemaPrincipal: combo,
-                    dataSelectTemaSecundario: combo,
-                    loading: false
-                })
-            })
-            .catch(error => {
-                console.log("Error:" + error.message);
-                this.setState({ loading: false });
-            });
-    }
-    getComboTemaSecundario = async (idExcluded) => {
-        this.setState({ loading: true });
-        await UtilsDataService.getComboTemaControlPoliticoFilter({ id: null, nombre: '', activo: null, idExcluded: idExcluded })
-            .then(response => {
-                let combo = [];
-                response.data.forEach(i => {
-                    combo.push({ value: i.id, label: i.nombre })
-                })
-                combo.unshift(SelectTemaSecundario)
-                this.setState({
-                    dataSelectTemaSecundario: combo,
-                    loading: false
-                })
-            })
-            .catch(error => {
-                console.log("Error:" + error.message);
-                this.setState({ loading: false });
-            });
-    }
-
+    
     setSelectValue = (id, dataSelect, filter) => {
         let select = this.state[`${dataSelect}`];
         id = Number.parseInt(id);
@@ -324,92 +170,22 @@ class ControlPoliticoAddUpd extends Component {
             }
         }
     };
-    getComboGlosarioLegislativo = async () => {
-        let glosario = this.state.glosarioData;
-        await UtilsDataService.getComboGlosarioLegislativo().then(response => {
-            glosario = response.data;
-        })
-        let fields = this.state.fields;
-        let glosarioSelected = [];
-        fields.control_politico_tags.forEach(x => {
-            glosarioSelected.push(glosario.filter((y)=> { return y.id === x.glosario_legislativo_id })[0])
-        });
-        this.setState({glosarioData: glosario, glosarioSelected})
-    }
+   
     //End combos
 
 
     //Handlers
 
-    handleSelectComision = async (selectComision) => {
-        this.setState({ selectComision: selectComision });
-    }
-    handleSelectCuatrienio = async (selectCuatrienio) => {
-        this.setState({ selectCuatrienio: selectCuatrienio, selectLegislatura: SelectLegislatura });
-        await this.getComboLegislatura(selectCuatrienio.value);
-    }
-    handleSelectLegislatura = async (selectLegislatura) => {
-        this.setState({ selectLegislatura: selectLegislatura });
-    }
-    handleSelectEstado = async (selectEstado) => {
-        this.setState({ selectEstado: selectEstado });
-    }
-    handleSelectTema = async (selectTema) => {
-        this.setState({ selectTemaPrincipal: selectTema });
-    }
-    handleSelectTemaSecundario = async (selectTema) => {
-        this.setState({ selectTemaSecundario: selectTema });
-    }
     handleSelectCorporacion = async (selectCorporacion) => {
-        this.setState({ selectCorporacion: selectCorporacion, selectTipoComision: SelectTipoComision, selectComision: SelectComision });
-        this.getComboTipoComision(selectCorporacion.value);
-        this.getComboComision(-1, -1);
+        this.setState({ selectCorporacion: selectCorporacion});
+
+    }
+    handleSelectDiputado = async (selectDiputado) => {
+        this.setState({ SelectDiputado: selectDiputado });
+     
     }
 
-    handleSelectTipoComision = async (selectTipoComision) => {
-        this.setState({ selectTipoComision: selectTipoComision, selectComision: SelectComision });
-        this.getComboComision(this.state.selectCorporacion.value, selectTipoComision.value);
-    }
 
-    selectWordHandler = (selectedWord) => {
-        let fields = this.state.fields;
-        let cFiltred = fields.control_politico_tags.filter((x)=> {return x.glosario_legislativo_id === selectedWord.id})
-        if(typeof cFiltred.length === 'undefined' || cFiltred.length === 0){ // Si no hay ninguno igual agregado
-            let glosarioSelected = this.state.glosarioSelected;
-            let conceptoObject = {
-                id: 0,
-                control_politico_id: this.state.id,
-                glosario_legislativo_id: selectedWord.id,
-                nombre: selectedWord.palabra,
-                activo: 1
-            }
-            glosarioSelected.push(selectedWord);
-            fields.control_politico_tags.push(conceptoObject);
-            this.setState({glosarioSelected, fields})
-        }
-        else{ // Significa que lo encontró pero en activo 0
-            fields.control_politico_tags.forEach(x => {
-                if(x.glosario_legislativo_id === selectedWord.id)
-                    x.activo = 1
-            })
-        }
-    }
-    unselectWordHandler = (unselectedWord) => {
-        let fields = this.state.fields;
-        let glosarioSelected = this.state.glosarioSelected;
-
-        let cFiltred = fields.control_politico_tags.filter((x)=> {return x.glosario_legislativo_id === unselectedWord.id})[0]
-        if(cFiltred.id === 0) // Si tiene 0 de id, entonces lo eliminamos e la lista
-            fields.control_politico_tags = fields.control_politico_tags.filter((x)=> {return x.glosario_legislativo_id !== unselectedWord.id})
-        else{ // Si no, solo ponemos el activo en falso
-            fields.control_politico_tags.forEach(x => {
-                if(x.glosario_legislativo_id === unselectedWord.id)
-                    x.activo = 0
-            })
-        }
-        glosarioSelected = glosarioSelected.filter((x)=> {return x.id !== unselectedWord.id}) //Aquí si o si lo eliminamos
-        this.setState({glosarioSelected, fields})
-    }
     //End handlers
 
     //Metodos
@@ -418,13 +194,13 @@ class ControlPoliticoAddUpd extends Component {
         this.setState({ loading: true });
         let fields = null;
         let txtDetalles = this.state.txtDetalles;
-        await ControlPoliticoDataService.get(id)
+        await CtrlPoliticoService.get(id)
             .then((response) => {
                 fields = this.state.fields;
                 let errors = this.state.errors;
                 fields = response.data[0];
-                txtDetalles = fields.detalles;
-                console.log(fields);
+                txtDetalles = fields.intervencion;
+                console.log(fields,txtDetalles);
                 Object.assign(fields, { user: auth.username() });
             })
             .catch((e) => {
@@ -434,55 +210,25 @@ class ControlPoliticoAddUpd extends Component {
                 console.log(e);
             });
         if (fields !== null) {
-            await this.getComboLegislatura(fields.cuatrienio_id);
-            await this.getComboTipoComision(fields.corporacion_id);
-            if(fields.comision !== null)
-                await this.getComboComision(fields.corporacion_id, fields.comision.tipo_comision_id)
+            // await this.getComboLegislatura(fields.cuatrienio_id);
+            // await this.getComboTipoComision(fields.corporacion_id);
+            // if(fields.comision !== null)
+            //     await this.getComboComision(fields.corporacion_id, fields.comision.tipo_comision_id)
             this.setState({
                 fields: fields,
                 loading: false,
-                txtDetalles: txtDetalles
+                intervencion: txtDetalles
             }, () => {
                 this.setSelectValue(
-                    fields.legislatura_id,
-                    "dataSelectLegislatura",
-                    "selectLegislatura"
-                );
-                this.setSelectValue(
-                    fields.comision !== null ? fields.comision.tipo_comision_id : -1,
-                    "dataSelectTipoComision",
-                    "selectTipoComision"
-                );
-                this.setSelectValue(
-                    fields.comision_id !== null ? fields.comision_id : -1,
-                    "dataSelectComision",
-                    "selectComision"
-                );
-                this.setSelectValue(
-                    fields.cuatrienio_id,
-                    "dataSelectCuatrienio",
-                    "selectCuatrienio"
-                );
-                this.setSelectValue(
-                    fields.estado_control_politico_id,
-                    "dataSelectEstado",
-                    "selectEstado"
-                );
-                this.setSelectValue(
-                    fields.tema_id_principal,
-                    "dataSelectTemaPrincipal",
-                    "selectTemaPrincipal"
-                );
-                this.setSelectValue(
-                    fields.tema_id_secundario,
-                    "dataSelectTemaSecundario",
-                    "selectTemaSecundario"
-                );
-                this.setSelectValue(
-                    fields.corporacion_id,
+                    fields.proyecto_ley_id,
                     "dataSelectCorporacion",
                     "selectCorporacion"
-                )
+                );
+                this.setSelectValue(
+                    fields.persona_id ,
+                    "dataSelectDiputado",
+                    "SelectDiputado"
+                );              
             });
         }
     };
@@ -493,29 +239,16 @@ class ControlPoliticoAddUpd extends Component {
         this.setState({ errors: errors, loading: true });
         let data = this.state.fields;
         data.fecha = FechaMysql.DateFormatMySql(data.fecha);
-        data.legislatura_id = this.state.selectLegislatura.value;
-        data.cuatrienio_id = this.state.selectCuatrienio.value;
-        data.comision_id = this.state.selectComision.value === -1 ? null : this.state.selectComision.value;
-        data.estado_control_politico_id = this.state.selectEstado.value;
-        data.tema_id_principal = this.state.selectTemaPrincipal.value;
-        data.tema_id_secundario = this.state.selectTemaSecundario.value === -1 ? null : this.state.selectTemaSecundario.value;
-        data.corporacion_id = this.state.selectCorporacion.value;
-        data.plenaria = this.state.selectComision.value === -1 ? 1 : 0;
-        data.detalles = this.state.txtDetalles;
-        let control_politico_tags = data.control_politico_tags;
-        let tags = '';
-        control_politico_tags.map( concepto =>{
-            // let cFiltred = fields.control_politico_tags.filter((x)=> {return x.glosario_legislativo_id === concepto.glosario_legislativo_id})
-            tags = tags + concepto.nombre + ', ';
-        });
-        data.tags = tags;
+        data.proyecto_ley_id = this.state.selectCorporacion.value;
+        data.persona_id = this.state.SelectDiputado.value;
         data.user = auth.username();
         let responseData;
         console.log(data);
         if (data.id === 0) {
-            await ControlPoliticoDataService.create(data)
+            await CtrlPoliticoService.create(data)
                 .then((response) => {
                     responseData = response.data;
+                    console.log(responseData);
                 })
                 .catch(function (error) {
                     errors = validForm.displayErrors(
@@ -524,7 +257,7 @@ class ControlPoliticoAddUpd extends Component {
                     );
                 });
         } else {
-            await ControlPoliticoDataService.update(data.id, data)
+            await CtrlPoliticoService.update(data.id, data)
                 .then((response) => {
                     responseData = response.data;
                 })
@@ -591,7 +324,7 @@ class ControlPoliticoAddUpd extends Component {
                                                                 inputValue={
                                                                     this.state
                                                                         .fields
-                                                                        .titulo ||
+                                                                        .tema ||
                                                                     ""
                                                                 }
                                                                 inputOnchange={(
@@ -651,12 +384,31 @@ class ControlPoliticoAddUpd extends Component {
                                                                 selectIsSearchable={false}
                                                                 selectclassNamePrefix="selectReact__value-container"
                                                                 spanClass="error"
-                                                                spanError={this.state.errors["corporacion_id"] || ''} >
+                                                                spanError={this.state.errors["proyecto_ley_id"] || ''} >
                                                             </Select>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+                                                   <div className="form-group">
+                                                    <label className="col-md-3 control-label">
+                                                        Diputado
+                                                    </label>
+                                                    <div className="col-md-9">
+                                                        <div style={{ minWidth: "200px" }}>
+                                                            <Select
+                                                                divClass=""
+                                                                selectplaceholder="Seleccione"
+                                                                selectValue={this.state.SelectDiputado}
+                                                                selectOnchange={this.handleSelectDiputado}
+                                                                selectoptions={this.state.dataSelectDiputado}
+                                                                selectIsSearchable={false}
+                                                                selectclassNamePrefix="selectReact__value-container"
+                                                                spanClass="error"
+                                                                spanError={this.state.errors["persona_id"] || ''} >
+                                                            </Select>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div className="form-group">
                                                     <label className="col-md-3 control-label">
                                                         Fecha
@@ -690,12 +442,12 @@ class ControlPoliticoAddUpd extends Component {
                                                     </label>
                                                     <div className="col-md-9">
                                                         <SunEditor
-                                                            setContents={this.state.txtDetalles || ""}
+                                                            setContents={this.state.intervencion || ""}
                                                             onChange={(e) => {
-                                                                let fields = this.state;
+                                                                let fields = this.state.fields;
                                                                 let errors = this.state.errors;
-                                                                fields = validForm.handleChangeFieldJodiEditor("txtDetalles", fields, e);
-                                                                errors = validForm.handleChangeErrors("detalles", errors, e);
+                                                                fields = validForm.handleChangeFieldJodiEditor("intervencion", fields, e);
+                                                                errors = validForm.handleChangeErrors("intervencion", errors, e);
                                                                 this.setState({ state: fields, errors: errors, });
                                                             }}
                                                             setOptions={{
@@ -704,7 +456,7 @@ class ControlPoliticoAddUpd extends Component {
                                                             }}
                                                         />
                                                         <span className="error">
-                                                            {this.state.errors["descripcion"] || ""}
+                                                            {this.state.errors["intervencion"] || ""}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -759,7 +511,7 @@ class ControlPoliticoAddUpd extends Component {
                                         <span className="sr-only">Cerrar</span>
                                     </button>
                                     <h4 className="modal-title" id="largeModalHead">
-                                    <i class="fas fa-font"></i>{" "}
+                                    <i className="fas fa-font"></i>{" "}
                                         Seleccionar conceptos
                                     </h4>
                                 </div>

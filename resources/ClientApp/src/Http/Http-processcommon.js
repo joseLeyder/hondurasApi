@@ -3,7 +3,7 @@ import AuthLogin from "../Utils/AuthLogin";
 
 const auth = new AuthLogin();
 let instance = axios.create({
-    baseURL: 'http://localhost:8000/api',
+    baseURL: 'http://127.0.0.1:8000/api',
     // baseURL: 'https://anepobservatorio.com/aservice/api',
     // baseURL: 'https://cohepobservatorio.com/aservice/api',
     // baseURL: 'https://pruebasmorant.com.mx/clienteoit.pruebasmorant.com.mx/aservice/api',

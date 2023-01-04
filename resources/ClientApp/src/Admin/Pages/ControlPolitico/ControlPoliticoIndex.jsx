@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TableReactExtends from "../../../Components/TableReactExtends";
 import ControlPoliticoDataService from "../../../Services/Congreso/ControlPolitico.Service";
+import CtrlPoliticoService from '../../../Services/Congreso/CtrlPolitico.service';
 import UtilsDataService from "../../../Services/General/Utils.Service";
 import Spinner from '../../../Components/Spinner';
 import Select from '../../../Components/Select';
@@ -64,11 +65,11 @@ class ControlPoliticoIndex extends Component {
                             },
                             {
                                 Header: "Proyecto de ley",
-                                accessor: "proyecto"
+                                accessor: "proyecto_ley.titulo"
                             },
                             {
                                 Header: "Diputado",
-                                accessor: "Diputado"
+                                accessor: "persona.nombres"
                             },
                             {
                                 Header: 'Activo',
@@ -318,7 +319,7 @@ class ControlPoliticoIndex extends Component {
         this.setState({ errors: errors, loading: true });
 
         let responseData;
-        await ControlPoliticoDataService.delete(this.state.desactivarControlPolitico["id"])
+        await CtrlPoliticoService.delete(this.state.desactivarControlPolitico["id"])
             .then(response => {
                 responseData = response.data;
             })
@@ -337,21 +338,17 @@ class ControlPoliticoIndex extends Component {
     getAll = async (idFilterActive, page, rows, search) => {
         this.setState({ loading: true });
         let tableInfo = this.state.tableInfo;
-        let legislatura = this.state.filterLegislatura;
-        let cuatrienio = this.state.filterCuatrienio;
-        let comision = this.state.filterComision;
-        let estado = this.state.filterEstado;
-        let corporacion = this.state.filterCorporacion
-        await ControlPoliticoDataService.getAll(
-            idFilterActive, corporacion.value, legislatura.value, cuatrienio.value, comision.value, estado.value, search, page, rows)
+        await CtrlPoliticoService.getAll(
+            idFilterActive, search, page, rows)
             .then(response => {
                 tableInfo["data"] = response.data;
+                console.log(response.data)
             })
             .catch(e => {
                 console.log(e);
             });
 
-        await ControlPoliticoDataService.getTotalRecordsControlPolitico(idFilterActive, corporacion.value, legislatura.value, cuatrienio.value, comision.value, estado.value, search)
+        await CtrlPoliticoService.getTotalRecordsControlPolitico(idFilterActive, search)
             .then(response => {
                 tableInfo["totalRows"] = response.data;
             })
