@@ -12,10 +12,9 @@ class Comision extends Model
     public static $rulesPost                        = [
         'nombre'                                    => 'required|max:200|min:3',
         'descripcion'                               => 'required|min:3',
-        'imagen'                                    => 'required',
         'tipo_comision_id'                          => 'required|int|min:1',
         'datosContacto.*.cuenta'                    => 'exclude_if:datosContacto.*.activo,0|required|max:200|min:3',
-        'miembros.*.congresista_id'                 => 'exclude_if:miembros.*.activo,0|required|int|min:1',
+        'miembros.*.persona_id'                 => 'exclude_if:miembros.*.activo,0|required|int|min:1',
     ];
     public static $rulesPostMessages = [
         'nombre.required'                   => 'El nombre de la comisión es requerido.',
@@ -23,12 +22,12 @@ class Comision extends Model
         'nombre.min'                        => 'El nombre de la comisión no puede ser menor a :min caracteres.',
         'descripcion.required'              => 'La descripción es requerida.',
         'descripcion.min'                   => 'La descripción de la comisión no puede ser menor a :min caracteres.',
-        'imagen.required'                   => 'La imagen es requerida',
+        // 'imagen.required'                   => 'La imagen es requerida',
         'tipo_comision_id.min'              => 'Debe seleccionar un tipo de comisión',
         'datosContacto.*.cuenta.required'   => 'El dato de contacto es requerido.',
         'datosContacto.*.cuenta.max'        => 'El dato de contacto no puede ser mayor a :max caracteres.',
         'datosContacto.*.cuenta.min'        => 'El dato de contacto no puede ser menor a :min caracteres.',
-        'miembros.*.congresista_id.min'     => 'Debe seleccionar un congresista',
+        'miembros.*.persona_id.min'     => 'Debe seleccionar un congresista',
     ];
 
     public static $rulesPut         = [

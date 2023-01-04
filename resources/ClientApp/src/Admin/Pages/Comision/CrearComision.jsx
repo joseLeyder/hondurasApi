@@ -373,6 +373,7 @@ class CrearComision extends Component {
     componentDidMount = async () => {
         this.resetFields();
         await this.getComboDatosContacto();
+        await this.getComboTipoComision();
         await this.getAllPersonas(1, this.state.buscadorPersona.page, this.state.buscadorPersona.rows, this.state.buscadorPersona.search);
         this.state.fields.id = this.state.id;
         this.state.fields.user = auth.username();
@@ -831,6 +832,21 @@ class CrearComision extends Component {
             });
     };
 
+    getComboTipoComision = async () => {
+        this.setState({ loading: true });
+        await UtilsDataService.getComboTipoComision()
+            .then((response) => {
+                response.data.map((item) => {
+                    this.state.dataSelectTipoComision.push({
+                        value: item.id,
+                        label: item.nombre,
+                    });
+                });
+                let data = response.data;
+                this.setState({ loading: false });
+            });
+    };
+
     saveSubmit = async () => {
         let errors = this.state.errors;
         errors = validForm.cleanErrors(errors);
@@ -839,7 +855,7 @@ class CrearComision extends Component {
         data.descripcion = this.state.txtDescripcion;
         data.fechaDeCreacion = FechaMysql.DateFormatMySql(data.dpfechaCreacion);
         data.imagen = this.state.imagesResized;
-        // data.tipo_comision_id = this.state.selectTipoComision.value;
+        data.tipo_comision_id = this.state.selectTipoComision.value;
         // data.corporacion_id = this.state.selectCorporacion.value;
         data.user = auth.username();
         let responseData;
@@ -984,6 +1000,24 @@ class CrearComision extends Component {
                                                                 divClassSpan="input-group-addon"
                                                                 divClassSpanI="fa fa-indent"
                                                             />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="form-group">
+                                                    <label className="col-md-3 control-label">Tipo de comisión</label>
+                                                    <div className="col-md-9">
+                                                        <div className="input-group">
+                                                            <Select
+                                                                divClass=""
+                                                                selectplaceholder="Seleccione"
+                                                                selectValue={this.state.selectTipoComision}
+                                                                selectIsSearchable={false}
+                                                                selectoptions={this.state.dataSelectTipoComision}
+                                                                selectOnchange={this.handleFilterTipoComision}
+                                                                selectclassNamePrefix="selectReact__value-container"
+                                                                spanClass="error"
+                                                                spanError={this.state.errors.tipo_comision_id || ''} >
+                                                            </Select>
                                                         </div>
                                                     </div>
                                                 </div>
