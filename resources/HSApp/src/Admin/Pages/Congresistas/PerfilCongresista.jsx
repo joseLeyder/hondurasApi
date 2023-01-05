@@ -81,7 +81,8 @@ class PerfilCongresista extends React.Component {
                     title: 'comision.nombre',
                      description:
                          [
-                             { title: "Tema principal", text: "comision.nombre" }
+                            //  { title: "Comisión: ", text: "comision.nombre" },
+                            //  { title: "Tipo: ", text: "comision.tipocomision.nombre" },
                          ]
                 },
                 totalRows: 0,
@@ -287,8 +288,8 @@ class PerfilCongresista extends React.Component {
                                         <div className="lg:w-1/3 lg:px-4 pt-5 lg:pt-0">
                                             <div
                                                 className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
-                                                <p className="mt-2">Departamento</p>
-                                                <div className="text-primary mt-1 text-xl leading-none">{this.state.data.lugar_nacimiento?.nombre || "Sin dpto. asignado"}</div>
+                                                <p className="mt-2">Provincia</p>
+                                                <div className="text-primary mt-1 text-xl leading-none">{this.state.data.lugar_nacimiento?.nombre || "Sin provincia asignada"}</div>
                                             </div>
                                             <div
                                                 className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">

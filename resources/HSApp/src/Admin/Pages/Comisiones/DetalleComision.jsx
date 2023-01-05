@@ -484,11 +484,11 @@ class DetalleComision extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="itemSection">
+                        {/* <div className="itemSection">
                             <figure>
                                 <img src={this.getImgComision()} alt={this.state.fields.nombre} />
                             </figure>
-                        </div>
+                        </div> */}
                     </div>
                 </main>
             </>

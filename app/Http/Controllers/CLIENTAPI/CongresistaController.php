@@ -190,9 +190,11 @@ class CongresistaController extends Controller
     public function getComisionesByIdCongresista(Request $request, $id){
         $search = $request->input("search");
         $Comisiones = ComisionMiembro::where('persona_id', $id)
-        ->with("comision")
+        ->with("comision")        
         ->whereHas('comision', function($q) use ($search){
-            $q->where('nombre', 'LIKE', '%' . $search . '%');
+
+            $q->with("tipoComision")
+            ->where('nombre', 'LIKE', '%' . $search . '%');
         })
         ->skip(($request->input('page') - 1) * $request->input('rows'))
         ->take($request->input('rows'))

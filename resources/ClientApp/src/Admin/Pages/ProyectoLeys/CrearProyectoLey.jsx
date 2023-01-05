@@ -2589,7 +2589,7 @@ class CrearProyectoLey extends Component {
                                                     </div>
                                                 </div> */}
                                                 <div className="form-group">
-                                                    <label className="col-md-3 control-label"> Fecha cuatrienal </label>
+                                                    <label className="col-md-3 control-label"> Fecha de plazo cuatrienal </label>
                                                     <div className="col-md-9">
                                                         <div className="input-group">
                                                             <DatePicker
@@ -2707,7 +2707,7 @@ class CrearProyectoLey extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="form-group">
-                                                    <label className="col-md-3 control-label"> Comision interna </label>
+                                                    <label className="col-md-3 control-label"> Comisión interna </label>
                                                     <div className="col-md-9">
                                                         <div className="input-group">
                                                             <Select
@@ -2725,7 +2725,7 @@ class CrearProyectoLey extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="form-group">
-                                                    <label className="col-md-3 control-label"> Comision de asamblea legislativa </label>
+                                                    <label className="col-md-3 control-label"> Comisión de asamblea legislativa </label>
                                                     <div className="col-md-9">
                                                         <div className="input-group">
                                                             <Select
