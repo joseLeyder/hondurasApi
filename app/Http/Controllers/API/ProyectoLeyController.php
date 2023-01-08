@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Notificacion;
 use App\Models\Notificacion_usuario_cuenta;
 use App\Models\ProyectoLey;
+use App\Models\ProyectoLeyAlerta;
 use App\Models\ProyectoLeyAutor;
 use App\Models\ProyectoLeyEstado;
 use App\Models\UsuarioCuenta;
@@ -14,6 +15,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class ProyectoLeyController extends Controller
 {
@@ -523,5 +525,267 @@ class ProyectoLeyController extends Controller
         ->count();
 
         return response($count);
+    }
+
+/**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getAlertas(Request $request)
+    {
+        $query = ProyectoLeyAlerta::query();
+
+        if ($request->has('idFilter') && !is_null($request["idFilter"]))
+        {
+            $query->where(
+                'activo',
+                $request->idFilter
+            );
+        }
+
+        if ($request->has('id_proyecto_ley') && !is_null($request["id_proyecto_ley"]))
+        {
+            $query->where(
+                'proyecto_ley_id',
+                $request->id_proyecto_ley
+            );
+        }
+
+        if ($request->has('search') && !is_null($request["search"]))
+        {
+            $search = $request->input('search');
+            $query->Where(function($query) use ($search){
+                $query->Where('informacion', 'like', '%'. $search .'%');
+            });
+        }
+
+        $items = $query
+                ->skip(($request->input('page') - 1) * $request->input('rows'))->take($request->input('rows'))
+                ->orderBy('id','desc')
+                ->get()
+                ->toJson(JSON_PRETTY_PRINT);
+        return response($items);
+    }
+/**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function totalrecordsAlertas(Request $request)
+    {
+        $query = ProyectoLeyAlerta::query();
+
+        if ($request->has('idFilter') && !is_null($request["idFilter"]))
+        {
+            $query->where(
+                'activo',
+                $request->idFilter
+            );
+        }
+
+        if ($request->has('id_proyecto_ley') && !is_null($request["id_proyecto_ley"]))
+        {
+            $query->where(
+                'proyecto_ley_id',
+                $request->id_proyecto_ley
+            );
+        }
+
+        if ($request->has('search') && !is_null($request["search"]))
+        {
+            $search = $request->input('search');
+            $query->Where(function($query) use ($search){
+                $query->Where('informacion', 'like', '%'. $search .'%');
+            });
+        }
+
+        $items = $query
+                ->count();
+
+        return response($items);
+        
+    }
+    public function storeAlerta(Request $request)
+    {
+        $validator = Validator::make($request->all(), ProyectoLeyAlerta::rulesPost(), ProyectoLeyAlerta::$rulesPostMessages);
+        if ($validator->fails())
+            return response()->json($validator->errors(), 422);
+
+        DB::beginTransaction();
+        try
+        {
+            $item = new ProyectoLeyAlerta();
+            $user = $request->user;
+            $request->request->add(['usercreated' => $request->user]);
+            $result = $item->create($request->all());
+
+            if($result != null){
+                $id = $result->id;
+
+                $archivo = $request->file('archivo');
+
+                if($archivo != null){
+                    $path = $archivo->storeAs(
+                        '/alertas/'.$result->id, // Directorio
+                        $archivo->getClientOriginalName(), // Nombre real de la imagen
+                        'public' // disco
+                    );
+                    $item = ProyectoLeyAlerta::find($id);
+                    $item->url_archivo = $path;
+                    $item->save();  
+                }
+            }
+
+
+
+            // Creamos la notificación hacia los demás usuarios.
+            // $item_notificacion = [
+            //     'proyecto_ley_id' => $result->id,
+            //     'titulo' => "Creado",
+            //     'tipo' => 1,
+            //     'color' => '#00b963',
+            //     'icono' => 'la la-check-circle',
+            //     'mensaje' =>  'Se ha creado un nuevo proyecto de ley: ' . $result->titulo,
+            //     'usercreated' => $request->user,
+            //     'created_at' => Carbon::now()
+            // ];
+            // $notificacion = Notificacion::create($item_notificacion);
+            // UsuarioCuenta::all()
+            //     ->where('email', '!=', $user)
+            //     ->each(function(UsuarioCuenta $usuario_cuenta) use ($notificacion){
+            //         Notificacion_usuario_cuenta::insert([
+            //             'notificacion_id' => $notificacion->id,
+            //             'usuario_cuenta_id' => $usuario_cuenta->id,
+            //             'created_at' => Carbon::now()
+            //         ]);
+            //     });
+
+            DB::commit();
+            return response()->json(['message' => 'OK'],202);
+        }
+        catch (QueryException $ex)
+        {
+            DB::rollback();
+            return response()->json(['message' => $ex],422);
+        }
+    }
+    
+    public function updateAlerta(Request $request, $id)
+    {
+
+        $validator = Validator::make($request->all(), ProyectoLeyAlerta::rulesPut(), ProyectoLeyAlerta::$rulesPutMessages);
+        if ($validator->fails())
+        {
+            return response()->json(
+                $validator->errors(),
+                422
+            );
+        }
+
+        DB::beginTransaction();
+        try
+        {
+            $proyecto_ley_alerta = ProyectoLeyAlerta::find($id);
+            $user = $request->user;
+            $request->request->add(['usermodifed' => $request->user]);
+            $proyecto_ley_alerta->fill($request->all());
+            $proyecto_ley_alerta->save();
+
+            $file = $request->file('archivo');
+            if($file){
+                if(Storage::disk('public')->exists($proyecto_ley_alerta->url_archivo))
+                    Storage::disk('public')->delete($proyecto_ley_alerta->url_archivo);
+
+                $path = $file->storeAs(
+                    '/alertas/'.$proyecto_ley_alerta->id, // Directorio
+                    $file->getClientOriginalName(), // Nombre real de la imagen
+                    'public' // disco
+                );
+                $proyecto_ley_alerta->url_archivo = $path;
+            }
+            $proyecto_ley_alerta->save();
+            
+            
+            // Creamos la notificación hacia los demás usuarios.
+            // $item_notificacion = [
+            //     'proyecto_ley_id' => $proyecto_ley->id,
+            //     'titulo' => "Editado",
+            //     'tipo' => 2,
+            //     'color' => "rgba(255, 193, 7, 1)",
+            //     'icono' => "la la-edit",
+            //     'mensaje' =>  'Se ha editado el proyecto de ley: ' . $proyecto_ley->titulo,
+            //     'usercreated' => $request->user,
+            //     'created_at' => Carbon::now()
+            // ];
+            // $notificacion = Notificacion::create($item_notificacion);
+            // UsuarioCuenta::all()
+            //     ->where('email', '!=', $user)
+            //     ->each(function(UsuarioCuenta $usuario_cuenta) use ($notificacion){
+            //         Notificacion_usuario_cuenta::insert([
+            //             'notificacion_id' => $notificacion->id,
+            //             'usuario_cuenta_id' => $usuario_cuenta->id,
+            //             'created_at' => Carbon::now()
+            //         ]);
+            //     });
+
+            DB::commit();
+
+            return response()->json(
+                ['message' => 'OK'],
+                202
+            );
+        } catch (QueryException $ex)
+        {
+            DB::rollback();
+            return response()->json(
+                ['message' => $ex],
+                422
+            );
+        }
+        catch (Exception $ex)
+        {
+            DB::rollback();
+            return response()->json(
+                ['message' => $ex],
+                422
+            );
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showAlerta($id)
+    {
+        $item = ProyectoLeyAlerta::select(
+            [
+                'id',
+                'proyecto_ley_id',
+                'informacion',
+                'url_archivo',
+                'activo'
+            ]
+        )->where(
+                'id',
+                $id
+            )->with(
+                [
+                    'ProyectoLey'
+                ]
+            )->get()->first();
+
+        return response($item);
+    }
+
+    public function destroyAlerta($id)
+    {
+        $item = ProyectoLeyAlerta::find($id);
+        $item->activo = !$item->activo;
+        $item->save();
+        return response($item);
     }
 }

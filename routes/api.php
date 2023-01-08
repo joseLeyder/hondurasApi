@@ -360,12 +360,21 @@ Route::get('cargoIntegrante/{id}',[CargoIntegranteController::class,'show'])->mi
 Route::get('cargoIntegrante',[CargoIntegranteController::class,'index'])->middleware(['jwt.cid:219']);
 
 //Proyecto de ley
+Route::get('proyectoLey/totalrecordsAlertas', [ProyectoLeyController::class, 'totalrecordsAlertas'])->middleware(['jwt.cid:0']);
 Route::get('proyectoLey/totalrecords', [ProyectoLeyController::class, 'totalrecords'])->middleware(['jwt.cid:0']);
+Route::get('proyectoLey/getAlerta/{id}', [ProyectoLeyController::class, 'showAlerta'])->middleware(['jwt.cid:0']);
+Route::get('proyectoLey/getAlertas', [ProyectoLeyController::class, 'getAlertas'])->middleware(['jwt.cid:66']);
 Route::post('proyectoLey', [ProyectoLeyController::class, 'store'])->middleware(['jwt.cid:65']);
+Route::post('proyectoLey/storeAlerta', [ProyectoLeyController::class, 'storeAlerta'])->middleware(['jwt.cid:66']);
+Route::put('proyectoLey/updateAlerta/{id}', [ProyectoLeyController::class, 'updateAlerta'])->middleware(['jwt.cid:66']);
 Route::put('proyectoLey/{id}', [ProyectoLeyController::class, 'update'])->middleware(['jwt.cid:66']);
 Route::delete('proyectoLey/{id}', [ProyectoLeyController::class, 'destroy'])->middleware(['jwt.cid:67']);
+Route::delete('proyectoLey/deleteAlerta/{id}', [ProyectoLeyController::class, 'destroyAlerta'])->middleware(['jwt.cid:66']);
 Route::get('proyectoLey/{id}', [ProyectoLeyController::class, 'show'])->middleware(['jwt.cid:68']);
 Route::get('proyectoLey', [ProyectoLeyController::class, 'index'])->middleware(['jwt.cid:69']);
+
+// Route::get('proyectoLey/totalrecords', [ProyectoLeyController::class, 'totalrecords'])->middleware(['jwt.cid:66']);
+
 
 // CtrlPolitico
 Route::get('ctrlPolitico', [CtrlPoliticoController::class, 'index']);

@@ -58,6 +58,9 @@ import Votar from "./Admin/Pages/Votaciones/Votar";
 import CargoIntegrante from "./Admin/Pages/CargoIntegrantes/CargoIntegrante";
 import ProyectoLeys from "./Admin/Pages/ProyectoLeys/ProyectoLeys";
 import ProyectoLeyCrear from "./Admin/Pages/ProyectoLeys/CrearProyectoLey";
+import ProyectoLeyAlertas from "./Admin/Pages/ProyectoLeys/AlertasProyectoLey";
+import CrearAlertaProyectoLey from "./Admin/Pages/ProyectoLeys/CrearAlertaProyectoLey";
+import EditarAlertaProyectoLey from "./Admin/Pages/ProyectoLeys/EditarAlertaProyectoLey";
 import InformesPNUD from "./Admin/Pages/InformesPNUD/InformesPNUD";
 import ControlPoliticoIndex from './Admin/Pages/ControlPolitico/ControlPoliticoIndex';
 import ControlPolitico from './Admin/Pages/ControlPolitico/ControlPoliticoAddUpd';
@@ -331,6 +334,18 @@ export default class App extends Component {
                         <RouteLayout
                             path="/proyecto-ley-editar"
                             component={ProyectoLeyCrear}
+                        />
+                        <RouteLayout
+                            path="/proyecto-ley-alertas"
+                            component={ProyectoLeyAlertas}
+                        />
+                        <RouteLayout
+                            path="/proyecto-ley-crear-alertas"
+                            component={CrearAlertaProyectoLey}
+                        />
+                        <RouteLayout
+                            path="/proyecto-ley-editar-alertas"
+                            component={EditarAlertaProyectoLey}
                         />
                         <RouteLayout path="/informes-regionales" component={InformesPNUD}/>
                         {/* <RouteLayout path="/informe-crear" component={CrearInfomesPNUD}/> */}

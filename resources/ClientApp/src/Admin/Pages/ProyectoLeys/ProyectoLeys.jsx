@@ -85,6 +85,26 @@ class ProyectoLeys extends Component {
                         Header: "Acciones",
                         columns: [
                             {
+                                Header: "Alertas",
+                                id: "alertas",
+                                accessor: (str) => "alertas",
+                                Cell: (tableProps) => (
+                                    <ValidarPermiso
+                                        IdModuloPermisoValidar={ModuloPermiso.ProyectoDeLey.Obtener}
+                                        DefaultTemplate=
+                                            {
+                                                <a
+                                                    href={`#/proyecto-ley-alertas/${tableProps.row.values.id}`}
+                                                    data-id={tableProps.row.values.id}
+                                                    className="btn btn-info btn-block"
+                                                >
+                                                    <i className="fa fa-edit"></i> Alertas
+                                                </a>
+                                            }
+                                    />
+                                ),
+                            },
+                            {
                                 Header: "Editar",
                                 id: "editar",
                                 accessor: (str) => "editar",
