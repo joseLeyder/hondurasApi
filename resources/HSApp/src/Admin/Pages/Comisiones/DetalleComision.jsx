@@ -483,6 +483,12 @@ class DetalleComision extends React.Component {
                                     }
                                 </div>
                             </div>
+                            <div className="itemSection">
+                                <h3>Tipo de comisión</h3>
+                                <div className="autor-list-tags">
+                                    <p>{this.state.fields.tipo_comision.nombre}</p>
+                                </div>
+                            </div>
                         </div>
                         {/* <div className="itemSection">
                             <figure>

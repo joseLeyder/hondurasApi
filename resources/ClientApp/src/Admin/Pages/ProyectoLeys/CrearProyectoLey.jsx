@@ -2785,14 +2785,14 @@ class CrearProyectoLey extends Component {
                                                     Estados
                                                 </a>
                                             </li>
-                                            <li>
+                                            {/* <li>
                                                 <a
                                                     href={`#tab-alertas`}
                                                     data-toggle="tab"
                                                 >
                                                     Alertas importantes
                                                 </a>
-                                            </li>
+                                            </li> */}
                                             <li>
                                                 <a
                                                     href={`#tab-autores`}

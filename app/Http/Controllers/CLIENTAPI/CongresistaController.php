@@ -12,6 +12,7 @@ use App\Models\GrupoEdad;
 use App\Models\ProyectoLeyAutor;
 use App\Models\ProyectoLeyPonente;
 use App\Models\ControlPoliticoCitante;
+use App\Models\CtrlPolitico;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -214,6 +215,30 @@ class CongresistaController extends Controller
         return response($Comisiones, 200);
     }
 
+    public function getCtrlPoliticoByIdCongresista(Request $request, $id){
+        $search = $request->input("search");
+        $Intervenciones = CtrlPolitico::where('persona_id', $id)
+        ->with("proyectoLey")
+        ->whereHas('proyectoLey', function($q) use ($search){
+            $q->where('titulo', 'LIKE', '%' . $search . '%');
+        })    
+        ->skip(($request->input('page') - 1) * $request->input('rows'))
+        ->take($request->input('rows'))
+        ->get()
+        ->toJson(JSON_PRETTY_PRINT);
+        return response($Intervenciones, 200);
+    }
+
+    public function totalrecordsCtrlPoliticoByIdCongresista(Request $request, $id){
+        $search = $request->input("search");
+        $Intervenciones = CtrlPolitico::where('persona_id', $id)
+        ->with("proyectoLey")
+        ->whereHas('proyectoLey', function($q) use ($search){
+            $q->where('titulo', 'LIKE', '%' . $search . '%');
+        })   
+        ->count();
+        return response($Intervenciones, 200);
+    }
 
     public function getPonenciasByIdCongresista(Request $request, $id){
         $search = $request->input("search");

@@ -4,6 +4,7 @@ import AuthLogin from "../../../Utils/AuthLogin";
 import SunEditor from 'suneditor-react';
 import { Constantes } from "../../../Constants/Constantes.js"
 import PerfilCongresistaSubList from "../../../Components/CongresoVisible/PerfilCongresistaSubList";
+import PerfilCongresistaCtrlPoliticoSubList from "../../../Components/CongresoVisible/PerfilCongresistaCtrlPoliticoSubList";
 
 const auth = new AuthLogin();
 const dataConst = {
@@ -41,7 +42,8 @@ const dataConst = {
     comision_miembro: null,
     imagenes: [],
     contactos: [],
-    comision_miembros: []
+    comision_miembros: [],
+
 }
 class PerfilCongresista extends React.Component {
     constructor(props) {
@@ -54,6 +56,7 @@ class PerfilCongresista extends React.Component {
             subloaderPonencias: false,
             subloaderCitante: false,
             subloaderComisiones: false,
+            subloaderControlPolitico: false,
             listAutorias: {
                 data: [],
                 propiedades:
@@ -82,6 +85,24 @@ class PerfilCongresista extends React.Component {
                      description:
                          [
                             //  { title: "Comisión: ", text: "comision.nombre" },
+                            //  { title: "Tipo: ", text: "comision.tipocomision.nombre" },
+                         ]
+                },
+                totalRows: 0,
+                search: "",
+                page: 1,
+                rows: 8
+            },
+            listControlPolitico: {
+                data: [],
+                propiedades:
+                {
+                    id: 'id',
+                    title: 'tema',
+                     description:
+                         [
+                            {title : "Proyecto de ley: ", text: "proyecto_ley.titulo"},
+                              { title: "Intervención: ", text: "intervencion" },
                             //  { title: "Tipo: ", text: "comision.tipocomision.nombre" },
                          ]
                 },
@@ -154,12 +175,27 @@ class PerfilCongresista extends React.Component {
             1000
         );
     }
+
+    handlerPaginationCtrlPolitico = async (page, rows, search = "") => {
+        let listControlPolitico = this.state.listControlPolitico;
+        listControlPolitico.page = page;
+        listControlPolitico.rows = rows;
+        listControlPolitico.search = search;
+        this.setState({ listControlPolitico });
+        if (this.timeout) clearTimeout(this.timeout);
+        this.timeout = setTimeout(
+            async function () {
+                await this.getCtrlPoliticoByIdCongresista(this.state.id, search, page, rows);
+            }.bind(this),
+            1000
+        );
+    }
     // 
     componentDidMount = async () => {
         await this.getByID(this.state.id);
         await this.getAutoriasByIdCongresista(this.state.id);
         await this.getComisionesByIdCongresista(this.state.id);
-
+        await this.getControlPoliticoByIdCongresista(this.state.id);
     }
     // 
 
@@ -213,10 +249,36 @@ class PerfilCongresista extends React.Component {
         });
     };
 
+    getControlPoliticoByIdCongresista = async (id, search, page, rows) => {
+        this.setState({ subloaderControlPolitico: true });
+        let listControlPolitico = this.state.listControlPolitico;
+        await CongresistasDataService.getCtrlPoliticoByIdCongresista(id, search, page, rows).then((response) => {
+            console.log(response.data);
+            listControlPolitico.data = response.data;
+            console.log(listControlPolitico);
+        })
+            .catch((e) => {
+                console.error(e);
+            });
+
+        await CongresistasDataService.totalrecordsCtrlPolitico(id, search).then((response) => {
+            listControlPolitico.totalRows = response.data;
+        })
+            .catch((e) => {
+                console.error(e);
+            });
+
+        this.setState({
+            listControlPolitico,
+            subloaderControlPolitico: false
+        });
+    };
+
     getByID = async (id) => {
         this.setState({ subloader: true });
         await CongresistasDataService.get(id)
             .then(response => {
+                console.log(response.data);
                 this.setState({
                     data: response.data,
                     subloader: false
@@ -403,6 +465,32 @@ class PerfilCongresista extends React.Component {
                             </div>
                           
                             <PerfilCongresistaSubList data={this.state.listComisiones.data} propiedades={this.state.listComisiones.propiedades} link={`#/detalle-comision`} params={["comision_id"]} handler={this.handlerPaginationComisiones} pageExtends={this.state.listComisiones.page} pageSize={this.state.listComisiones.rows} totalRows={this.state.listComisiones.rows} />                        </div>
+                    </div> 
+
+
+                    <div className="lg:flex justify-center pageSection">
+                        
+                        <div className="itemSection info">
+                            <h3>Intervenciones de control político</h3>
+                            <div className="buscador items-center ml-auto mt-5 lg:mt-0 pd-25">
+                                <div className="input-group">
+                                    <input type="text" value={this.state.listControlPolitico.search}
+                                    onChange={async (e) => {
+                                        let data = this.state.listControlPolitico;
+                                        data.search = e.target.value;
+                                        this.setState({ listControlPolitico: data })
+                                    }}
+                                    onKeyUp={async (e) => {
+                                        if (e.key === "Enter") {
+                                            await this.handlerPaginationCtrlPolitico(this.state.listControlPolitico.page, this.state.listControlPolitico.rows, e.target.value)
+                                        }
+                                    }}
+                                    placeholder="Escriba para buscar" className="form-control" />
+                                    <span className="input-group-text"><button onClick={async () => { await this.handlerPaginationCtrlPolitico(this.state.listControlPolitico.page, this.state.listControlPolitico.rows, this.state.listControlPolitico.search) }} type="button" className="btn btn-primary"><i className="fa fa-search"></i></button></span>
+                                </div>
+                            </div>
+                          
+                            <PerfilCongresistaCtrlPoliticoSubList data={this.state.listControlPolitico.data} propiedades={this.state.listControlPolitico.propiedades} link={`#/detalle-ctrl_politico`} params={["ctrl_politico_id"]} handler={this.handlerPaginationCtrlPolitico} pageExtends={this.state.listControlPolitico.page} pageSize={this.state.listControlPolitico.rows} totalRows={this.state.listControlPolitico.rows} />                        </div>
                     </div> 
 
 

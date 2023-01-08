@@ -117,7 +117,7 @@ class ComisionsController extends Controller
     public function getProyectoLeyFilter(Request $request){
         $nombre = $request->input('nombre');
         $comision = $request->input('comision');
-        $items = ProyectoLeyEstado::select('proyecto_ley_estados.proyecto_ley_id', 'proyecto_leys.titulo','proyecto_leys.numero_camara','proyecto_leys.numero_senado')
+        $items = ProyectoLeyEstado::select('proyecto_ley_estados.proyecto_ley_id', 'proyecto_leys.titulo','proyecto_leys.numero_camara')
             ->join('proyecto_ley_comisions', 'proyecto_ley_estados.id', 'proyecto_ley_comisions.proyecto_ley_estado_id')
             ->join('proyecto_leys', 'proyecto_ley_estados.proyecto_ley_id', 'proyecto_leys.id')
             ->where('proyecto_leys.activo', '1')

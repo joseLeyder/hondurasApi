@@ -50,6 +50,13 @@ class CongresistasDataService {
         return await http.get(`/${NombreDelModulo}/totalrecordsComisionesByIdCongresista/${id}?search=${search}`);
     }
 
+    async getCtrlPoliticoByIdCongresista(id, search = "", page = 1, rows = 4) {
+        return await http.get(`/${NombreDelModulo}/getCtrlPoliticoByIdCongresista/${id}?search=${search}&page=${page}&rows=${rows}`);
+    }
+    async totalrecordsCtrlPolitico(id, search = "") {
+        return await http.get(`/${NombreDelModulo}/totalrecordsCtrlPoliticoByIdCongresista/${id}?search=${search}`);
+    }
+
     async getPonenciasByIdCongresista(id, search = "", page = 1, rows = 4) {
         return await http.get(`/${NombreDelModulo}/getPonenciasByIdCongresista/${id}?search=${search}&page=${page}&rows=${rows}`);
     }
