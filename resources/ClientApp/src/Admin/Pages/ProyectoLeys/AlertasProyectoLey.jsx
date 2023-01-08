@@ -38,6 +38,11 @@ class AlertasProyectoLey extends Component {
                             {
                                 Header: "Información de interés",
                                 accessor: "informacion",
+                                Cell: (tableProps) => {
+                                    return (
+                                        <div dangerouslySetInnerHTML={{ __html: tableProps.row.values.informacion }}></div>
+                                    );
+                                },
                             },
                             {
                                 Header: "Archivo",
@@ -348,7 +353,7 @@ class AlertasProyectoLey extends Component {
                             <div className="mb-middle">
                                 <div className="mb-title"><span className={`fa fa-${this.state.fields.activo ? "eraser" : "check"}`}></span> {this.state.fields.activo ? "Desactivar" : "Activar"} la alerta de proyecto de ley</div>
                                 <div className="mb-content">
-                                    <p>{`¿Está seguro que desea ${this.state.fields.activo ? "desactivar" : "activar"} la alerta de proyecto de ley ${this.state.fields.titulo}? Puede volver a ${this.state.fields.activo ? "activarlo" : "desactivarlo"} en cualquier otro momento.`}</p>
+                                    <p>{`¿Está seguro que desea ${this.state.fields.activo ? "desactivar" : "activar"} la alerta de proyecto de ley  ${(<div dangerouslySetInnerHTML={{ __html: this.state.fields.titulo }}></div>)}? Puede volver a ${this.state.fields.activo ? "activarlo" : "desactivarlo"} en cualquier otro momento.`}</p>
                                 </div>
                                 <div className="mb-footer">
                                     <ValidarPermiso
