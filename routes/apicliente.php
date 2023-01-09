@@ -99,6 +99,10 @@ Route::get('contenidomultimedia/getMultimedia', [ContenidoMultimediaController::
 // Actividades legislativas
 Route::get('actividadeslegislativas/totalrecordsAgenda', [ActividadesLegislativasController::class, 'totalrecordsAgenda']);
 Route::get('actividadeslegislativas/getAgenda', [ActividadesLegislativasController::class, 'getAgenda']);
+
+Route::get('actividadeslegislativas/getTotalRecordsAlertas', [ActividadesLegislativasController::class, 'totalrecordsAlertas']);
+Route::get('actividadeslegislativas/getAlertas', [ActividadesLegislativasController::class, 'getAlertas']);
+
 Route::get('actividadeslegislativas/getDetalle/{id}', [ActividadesLegislativasController::class, 'getAgendaDetalle']);
 Route::get('actividadeslegislativas/totalrecordsVotaciones', [ActividadesLegislativasController::class, 'totalrecordsVotaciones']);
 Route::get('actividadeslegislativas/getVotaciones', [ActividadesLegislativasController::class, 'getVotaciones']);

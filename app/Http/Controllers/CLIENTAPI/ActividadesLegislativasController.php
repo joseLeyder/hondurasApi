@@ -12,6 +12,7 @@ use App\Models\Votacion;
 use App\Models\ControlPolitico;
 use App\Models\Eleccion;
 use App\Models\Partido;
+use App\Models\ProyectoLeyAlerta;
 use DB;
 class ActividadesLegislativasController extends Controller
 {
@@ -61,6 +62,37 @@ class ActividadesLegislativasController extends Controller
         ->where('titulo', 'LIKE', '%' . $request->input('search') . '%')            
         ->count();
         return response($AgendaLegislativaActividad, 200);
+    }
+
+    public function getAlertas(Request $request){
+        $proyecto_ley_id=$request->input('idProyectoLey');
+        $AlertasProyectoLey = 
+        ProyectoLeyAlerta::select('id','proyecto_ley_id','informacion','url_archivo','activo')        
+        ->with('ProyectoLey')          
+        ->where('activo', $request->input('idFilter'))         
+        ->where('proyecto_ley_id', ($proyecto_ley_id != "-1") ? '=' : '!=', $proyecto_ley_id)                       
+        ->where('informacion', 'LIKE', '%' . $request->input('search') . '%')
+        ->skip(($request->input('page') - 1) * $request->input('rows'))
+        ->take($request->input('rows'))       
+        ->orderBy('id','asc')
+        ->get()
+        ->toJson(JSON_PRETTY_PRINT);
+    
+        return response($AlertasProyectoLey, 200);
+     }
+ 
+
+    public function totalrecordsAlertas(Request $request){
+        $proyecto_ley_id=$request->input('idProyectoLey');
+
+        $AlertasProyectoLey = 
+        ProyectoLeyAlerta::select('id','proyecto_ley_id','informacion','url_archivo','activo')        
+        ->with('ProyectoLey')        
+        ->where('activo', $request->input('idFilter'))         
+        ->where('proyecto_ley_id', ($proyecto_ley_id != "-1") ? '=' : '!=', $proyecto_ley_id)                       
+        ->where('informacion', 'LIKE', '%' . $request->input('search') . '%')           
+        ->count();
+        return response($AlertasProyectoLey, 200);
     }
    
     public function getAgendaActividad(Request $request){

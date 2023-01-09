@@ -8,12 +8,20 @@ class ActividadesLegislativasDataService {
     async getAllAgenda(idFilter, fecha,search='', page=1, rows=4,idtactividad=-1,idcomision= -1){
         return await http.get(`/${NombreDelModulo}/getAgenda?idFilter=${idFilter}&fecha=${fecha}&search=${search}&page=${page}&rows=${rows}&idtactividad=${idtactividad}&idcomision=${idcomision}`);                
     } 
+    async getAlertas(idFilter, search='', page=1, rows=4,idProyectoLey=-1){
+        return await http.get(`/${NombreDelModulo}/getAlertas?idFilter=${idFilter}&search=${search}&page=${page}&rows=${rows}&idProyectoLey=${idProyectoLey}`);                
+    } 
     async getAgendaDetalle(id){
         return await http.get(`/actividadeslegislativas/getDetalle/${id}`);                
     } 
     async getTotalRecordsAgenda(idFilter, fecha,search='', idtactividad=-1,idcomision= -1) {
         return await http.get(
             `/${NombreDelModulo}/totalrecordsAgenda?idFilter=${idFilter}&fecha=${fecha}&search=${search}&idtactividad=${idtactividad}&idcomision=${idcomision}`
+        );
+    }
+    async getTotalRecordsAlertas(idFilter, search='', idProyectoLey=-1) {
+        return await http.get(
+            `/${NombreDelModulo}/getTotalRecordsAlertas?idFilter=${idFilter}&search=${search}&idProyectoLey=${idProyectoLey}`
         );
     }
     async getAllVotaciones(idFilter, corporacion, legislatura, cuatrienio, comision, search='', page=1, rows=4){
@@ -59,6 +67,9 @@ class ActividadesLegislativasDataService {
     }
     async getComboTipoComision(idCorporacion) {
         return await apibase.get(`/${Utils}/getComboTipoComision?idcorporacion=${idCorporacion}`);
+    }
+    async getComboProyectoLey() {
+        return await apibase.get(`/${Utils}/getComboProyectosDeLey`);
     }
     async getComboComisiones(idTipoComision) {
         return await apibase.get(`/${Utils}/getComboComisiones?idtipocomision=${idTipoComision}`);

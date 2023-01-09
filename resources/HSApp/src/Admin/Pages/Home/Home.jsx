@@ -10,6 +10,7 @@ import {
 import * as FechaMysql from "../../../Utils/FormatDate";
 import Select from "../../../Components/Select";
 import ActLegislativaEventosList from "../../../Components/CongresoVisible/ActLegislativaEventosList";
+import ActLegislativaAlertasList from "../../../Components/CongresoVisible/ActLegislativaAlertasList";
 import ActividadesLegislativasDataService from "../../../Services/ActividadesLegislativas/ActividadesLegislativas.Service";
 import ProyectoLeyDataService from '../../../Services/CongresoVisible/ProyectoLey.Service';
 const auth = new AuthLogin();
@@ -41,6 +42,7 @@ class Home extends React.Component {
         this.state = {
             subloaderCalendario: true,
             subloaderAgendaActividades: true,
+            subloaderAlertas: true,
             subloader: true,
             fechaActual: formatDate(),
             year: new Date().getFullYear(),
@@ -58,11 +60,23 @@ class Home extends React.Component {
                 page: 1,
                 rows: 5,
             },
+            listAlertas: {
+                data: [],
+                totalRows: 0,
+                search: "",
+                page: 1,
+                rows: 5,
+            },
             filterTipoActividadA: {
                 value: -1,
                 label: "Filtrar tipo de actividad",
             },
+            filterProyectoLey: {
+                value: -1,
+                label: "Filtrar por proyecto de ley",
+            },
             dataSelectActividadA: [],
+            dataSelectProyectoLey: [],
             filterCorporacionA: { value: -1, label: "Filtrar por corporación" },
             dataSelectCorporacionA: [],
             filterTComisionA: {
@@ -161,6 +175,7 @@ class Home extends React.Component {
             selectTComision.value
         );
     };
+    
     handlerFilterComisionAgenda = async (selectComision) => {
         this.setState({ filterComisionA: selectComision });
         await this.getAgendaLegislativa(
@@ -173,7 +188,16 @@ class Home extends React.Component {
             selectComision.value
         );
     };
-
+    handlerFilterProyectoDeLey = async (selectProyectoLey) => {
+        this.setState({ filterProyectoLey: selectProyectoLey });
+        await this.getAlertas(
+            1,
+            this.state.listByFecha.search,
+            this.state.listByFecha.page,
+            this.state.listByFecha.rows,            
+            selectProyectoLey.value,
+        );
+    };
     handlerPaginationAgendaActividades = async (page, rows, search = "") => {
         let listByFecha = this.state.listByFecha;
         listByFecha.page = page;
@@ -189,6 +213,26 @@ class Home extends React.Component {
                     page,
                     rows,
                     this.state.fechaActual
+                );
+            }.bind(this),
+            1000
+        );
+    };
+    handlerPaginationAlertas = async (page, rows, search = "") => {
+        let listAlertas = this.state.listAlertas;
+        listAlertas.page = page;
+        listAlertas.rows = rows;
+        listAlertas.search = search;
+        this.setState({ listAlertas });
+        if (this.timeout) clearTimeout(this.timeout);
+        this.timeout = setTimeout(
+            async function () {
+                await this.getAlertas(
+                    1,
+                    search,
+                    page,
+                    rows,
+                    this.state.proyectoLey
                 );
             }.bind(this),
             1000
@@ -241,6 +285,21 @@ class Home extends React.Component {
                 });
             }
         );
+    };
+
+    getComboProyectoLey = async (prop) => {
+        this.setState({ subloaderFilters: true });
+        await ActividadesLegislativasDataService.getComboProyectoLey().then((response) => {
+            let combo = [];
+                response.data.forEach((i) => {
+                    combo.push({ value: i.id, label: i.titulo });
+                });
+                combo.unshift({ value: -1, label: "Ver todas" });
+                this.setState({
+                    dataSelectProyectoLey: combo,
+                    subloaderFilters: false,
+                });
+        });
     };
    
     getProyectosRecientesEditados = async () => {
@@ -296,6 +355,50 @@ class Home extends React.Component {
             listByFecha,
         });
     };
+
+    getAlertas = async (
+        idFilterActive,
+        search,
+        page,
+        rows,
+        proyectoLey
+    ) => {
+        this.setState({ subloaderAlertas: true });   
+        let listAlertas = this.state.listAlertas;     
+        await ActividadesLegislativasDataService.getAlertas(
+            idFilterActive,
+            search,
+            page,
+            rows,
+            proyectoLey
+        )
+            .then((response) => {
+                listAlertas.data = response.data;
+                console.log(listAlertas.data);
+            })
+            .catch((e) => {
+                console.error(e);
+            });
+        await ActividadesLegislativasDataService.getTotalRecordsAlertas(
+            idFilterActive,
+            search,
+            proyectoLey
+        )
+            .then((response) => {
+
+                listAlertas.totalRows = response.data;
+            })
+            .catch((e) => {
+                console.error(e);
+            });
+
+        this.setState({
+            subloaderAlertas: false,
+            listAlertas,
+        });
+    };
+
+
 
     getDataByYearAndMonth = async (year, month) => {
         this.setState({ subloaderCalendario: true });
@@ -379,6 +482,14 @@ class Home extends React.Component {
             this.state.fechaActual
         );
         await this.getProyectosRecientesEditados();
+        await this.getComboProyectoLey();
+        await this.getAlertas(
+            1, 
+            this.state.listAlertas.search,
+            this.state.listAlertas.page,
+            this.state.listAlertas.rows,
+            this.state.proyectoLey
+        );
     }
     render() {
         return (
@@ -401,6 +512,88 @@ class Home extends React.Component {
                                     }}
                                     customDaysClassName={this.state.listByFecha.dataCalendar}
                                 />
+                            </div>
+                        </div>
+                        <div className="lg:mx-12">
+                            <h3>Alertas de proyectos de ley</h3>
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="buscador pd-25">
+                                            <div className="input-group">
+                                                <input
+                                                    type="text"
+                                                    value={this.state.listByFecha.search}
+                                                    onChange={async (e) => {
+                                                        let data = this.state.listByFecha;
+                                                        data.search = e.target.value;
+                                                        this.setState({
+                                                            listByFecha: data,
+                                                        });
+                                                    }}
+                                                    onKeyUp={async (e) => {
+                                                        if (e.key === "Enter") {
+                                                            await this.handlerPaginationAgendaActividades(this.state.listByFecha.page, this.state.listByFecha.rows, e.target.value);
+                                                        }
+                                                    }}
+                                                    placeholder="Escriba para buscar"
+                                                    className="form-control"
+                                                />
+
+                                                <span className="input-group-text">
+                                                    <button
+                                                        onClick={async () => {
+                                                            await this.handlerPaginationAgendaActividades(this.state.listByFecha.page, this.state.listByFecha.rows, this.state.listByFecha.search);
+                                                        }}
+                                                        type="button"
+                                                        className="btn btn_primary uppercase mr-5 mb-5"
+                                                    >
+                                                        <span className="icon la la-search"></span>
+                                                    </button>
+                                                </span>
+                                                <span className="input-group-text">
+                                                    <button
+                                                        onClick={(e) => {
+                                                            toggleFilter(e.currentTarget);
+                                                        }}
+                                                        type="button"
+                                                        className="btn btn_secondary uppercase mb-5"
+                                                    >
+                                                        <span className="icon la la-filter"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                            <div className="floatingFilters evenColors">
+                                                <div className="one-columns relative no-margin">
+                                                    <div className="item">
+                                                        <label htmlFor="">Filtrar por proyecto de ley</label>
+                                                        <Select
+                                                            divClass=""
+                                                            selectplaceholder="Seleccione"
+                                                            selectValue={this.state.filterProyectoLey}
+                                                            selectOnchange={this.handlerFilterProyectoDeLey}
+                                                            selectoptions={this.state.dataSelectProyectoLey}
+                                                            selectIsSearchable={true}
+                                                            selectclassNamePrefix="selectReact__value-container"
+                                                            spanClass=""
+                                                            spanError=""
+                                                        ></Select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="relative">
+                                            <div className={`subloader ${this.state.subloaderAlertas ? "active" : ""}`}><div className="relative"></div></div>
+                                            <ActLegislativaAlertasList
+                                                data={this.state.listAlertas.data}
+                                                handler={this.handlerPaginationAlertas}
+                                                pageExtends={this.state.listAlertas.page}
+                                                pageSize={this.state.listAlertas.rows}
+                                                totalRows={this.state.listAlertas.totalRows}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className="lg:mx-12">
