@@ -31,16 +31,20 @@ const ActLegislativaAlertasList = ({ data=[], handler, pageSize = 8, pageExtends
                             return (
                                 <div key={i}>
                                     <div className="evento">
-                                    <div div className="">
-                                        <label className="col-md-3 control-label">Información: </label>
+                                    <div className="">
+                                        <label className="title">Proyecto de ley: </label>
+                                    </div>   
+                                    <div className = "">{x.proyecto_ley.alias}</div>
+                                    <div className="">
+                                        <label className="title">Información: </label>
                                     </div>   
                                     <div dangerouslySetInnerHTML={{ __html: x.informacion }} className = "title"></div>
                                     <br/>
                                         {
                                         x.url_archivo && (
                                                         <div className={`form-group`}>
-                                                            <div div className="">
-                                                                <label className="col-md-3 control-label">Documento</label>
+                                                            <div className="">
+                                                                <label className="title">Documento</label>
                                                             </div>  
                                                             
                                                             <div className="col-md-9 ">

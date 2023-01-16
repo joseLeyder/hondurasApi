@@ -502,18 +502,18 @@ class Home extends React.Component {
                         </ul>
                     </section>
                     <div className="lg:mx-12">
-                        <div class="lg:flex mainPageDescription">
-                            <div class="lg:w-1/2 lg:px-4 ">
-                                <div class="lg:flex slogan">
-                                    <div class="lg:w-1/2 lg:px-4">
+                        <div className="lg:flex mainPageDescription">
+                            <div className="lg:w-1/2 lg:px-4 ">
+                                <div className="lg:flex slogan">
+                                    <div className="lg:w-1/2 lg:px-4">
                                         <img src="/images/UCCAEP.png" alt="CONEP Peolpe"/>
                                     </div>
-                                    <div class="lg:w-1/2 lg:px-4 sloganDesc">
+                                    <div className="lg:w-1/2 lg:px-4 sloganDesc">
                                         <p> Bienvenidos al Observatorio Legislativo de UCCAEP.</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="lg:w-1/2 lg:px-4 resumen">
+                            <div className="lg:w-1/2 lg:px-4 resumen">
                                 <p> En este sistema encontrará información sobre expedientes que se encuentran en trámite en la Asamblea Legislativa y que son considerados por la Unión de Cámaras como transversales y de mayor importancia para el sector productivo; además, podrá obtener información relevante sobre los diputados de la República y recibir alertas sobre el quehacer legislativo. </p>
                                 <p> <strong>Es un gusto tener esta herramienta al servicio de nuestras cámaras y asociaciones afiliadas. </strong></p>
                             </div>
@@ -541,17 +541,17 @@ class Home extends React.Component {
                                             <div className="input-group">
                                                 <input
                                                     type="text"
-                                                    value={this.state.listByFecha.search}
+                                                    value={this.state.listAlertas.search}
                                                     onChange={async (e) => {
-                                                        let data = this.state.listByFecha;
+                                                        let data = this.state.listAlertas;
                                                         data.search = e.target.value;
                                                         this.setState({
-                                                            listByFecha: data,
+                                                            listAlertas: data,
                                                         });
                                                     }}
                                                     onKeyUp={async (e) => {
                                                         if (e.key === "Enter") {
-                                                            await this.handlerPaginationAgendaActividades(this.state.listByFecha.page, this.state.listByFecha.rows, e.target.value);
+                                                            await this.handlerPaginationAlertas(this.state.listAlertas.page, this.state.listAlertas.rows, e.target.value);
                                                         }
                                                     }}
                                                     placeholder="Escriba para buscar"
@@ -561,7 +561,7 @@ class Home extends React.Component {
                                                 <span className="input-group-text">
                                                     <button
                                                         onClick={async () => {
-                                                            await this.handlerPaginationAgendaActividades(this.state.listByFecha.page, this.state.listByFecha.rows, this.state.listByFecha.search);
+                                                            await this.handlerPaginationAlertas(this.state.listAlertas.page, this.state.listAlertas.rows, this.state.listAlertas.search);
                                                         }}
                                                         type="button"
                                                         className="btn btn_primary uppercase mr-5 mb-5"
