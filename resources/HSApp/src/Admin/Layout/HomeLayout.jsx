@@ -127,7 +127,7 @@ const HomeLayout = ({ children, ...rest }) => {
                     <div className="menu-items">
                         <a href="#/home" className="link" data-toggle="tooltip-menu" data-tippy-content="Página Principal">
                             <span className="icon la la-laptop"></span>
-                            <span className="title">Control político</span>
+                            <span className="title">Home</span>
                         </a>
                         {/* <a href="#/agenda-legislativa" className="link" data-target="[data-menu=pages]" data-toggle="tooltip-menu"
                             data-tippy-content="Agenda">

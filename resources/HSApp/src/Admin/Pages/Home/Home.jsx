@@ -502,6 +502,24 @@ class Home extends React.Component {
                         </ul>
                     </section>
                     <div className="lg:mx-12">
+                        <div class="lg:flex mainPageDescription">
+                            <div class="lg:w-1/2 lg:px-4 ">
+                                <div class="lg:flex slogan">
+                                    <div class="lg:w-1/2 lg:px-4">
+                                        <img src="/images/UCCAEP.png" alt="CONEP Peolpe"/>
+                                    </div>
+                                    <div class="lg:w-1/2 lg:px-4 sloganDesc">
+                                        <p> Bienvenidos al Observatorio Legislativo de UCCAEP.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lg:w-1/2 lg:px-4 resumen">
+                                <p> En este sistema encontrará información sobre expedientes que se encuentran en trámite en la Asamblea Legislativa y que son considerados por la Unión de Cámaras como transversales y de mayor importancia para el sector productivo; además, podrá obtener información relevante sobre los diputados de la República y recibir alertas sobre el quehacer legislativo. </p>
+                                <p> <strong>Es un gusto tener esta herramienta al servicio de nuestras cámaras y asociaciones afiliadas. </strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="lg:mx-12">
                         <div className="lg:w-1/2 lg:px-4" hidden>
                             <div className="relative">
                                 <div className={`subloader ${this.state.subloaderCalendario ? "active" : ""}`}><div className="relative"></div></div>

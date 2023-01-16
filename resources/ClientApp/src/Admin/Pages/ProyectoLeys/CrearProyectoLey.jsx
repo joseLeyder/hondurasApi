@@ -2480,7 +2480,7 @@ class CrearProyectoLey extends Component {
                                                                 divClassSpanType={ 1 }
                                                                 divClassSpan="input-group-addon"
                                                                 divClassSpanI="fa fa-calendar"
-                                                                maxDate={new Date()}
+                                                                //maxDate={new Date()}
                                                             />
                                                         </div>
                                                     </div>
@@ -2624,7 +2624,7 @@ class CrearProyectoLey extends Component {
                                                                 divClassSpanType={ 1 }
                                                                 divClassSpan="input-group-addon"
                                                                 divClassSpanI="fa fa-calendar"
-                                                                maxDate={new Date()}
+                                                                //maxDate={new Date()}
                                                             />
                                                         </div>
                                                     </div>
@@ -2907,7 +2907,7 @@ class CrearProyectoLey extends Component {
                                                                                     divClassSpanType={ 1 }
                                                                                     divClassSpan="input-group-addon"
                                                                                     divClassSpanI="fa fa-calendar"
-                                                                                    maxDate={new Date()}
+                                                                                    //maxDate={new Date()}
                                                                                 />
                                                                             </div>
                                                                         </div>
