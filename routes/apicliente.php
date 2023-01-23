@@ -66,10 +66,9 @@ Route::get('proyectoley/getRecientesEditados', [ProyectoLeyController::class, 'g
 Route::get('proyectoley/{id}', [ProyectoLeyController::class, 'show']);
 
 //Control politico
-Route::get('controlpolitico', [ControlPoliticosController::class, 'index']);
-Route::get('controlpolitico/getCitantesFilter', [ControlPoliticosController::class, 'getCitantesFilter']);
-Route::get('controlpolitico/getCitadosFilter', [ControlPoliticosController::class, 'getCitadosFilter']);
-Route::get('controlpolitico/{id}', [ControlPoliticosController::class, 'show']);
+Route::get('control-politico', [ControlPoliticosController::class, 'index']);
+Route::get('control-politico/totalrecords', [ControlPoliticosController::class, 'totalrecords']);
+Route::get('control-politico/{id}', [ControlPoliticosController::class, 'show']);
 
 //Blog Nuestra Democracia
 Route::get('blognd',[BlogNdsController::class ,'index']);

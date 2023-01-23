@@ -1707,6 +1707,17 @@ class UtilsController extends Controller
 
         return response($items, 200);
     }
+    public function getComboDiputado(){
+      
+        $items = Persona::select('id','nombres', 'apellidos', 'municipio_id_nacimiento')
+        ->with("LugarNacimiento", "Profesion", "Imagenes")
+        ->where('activo', 1)
+        ->orderBy('id','desc')
+        ->get()
+        ->toJson(JSON_PRETTY_PRINT);
+
+        return response($items, 200);
+    }
     public function totalrecordsComboPersonas(Request $request){
         $filter = $request->input('idFilter');
         $count = Persona::with("LugarNacimiento", "Profesion", "Imagenes")

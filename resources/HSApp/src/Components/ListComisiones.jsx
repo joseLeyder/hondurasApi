@@ -40,13 +40,6 @@ const ListComisiones = ({ data, propiedades, pathImgOrigen = "", defaultImage = 
                         return (
                             <div key={i} className="sm:flex sm:w-1/2 xl:w-1/4 mb-5 sm:px-4">
                                     <div className="card card_column card_hoverable">
-                                        <div className="image">
-                                        <a href={`#/detalle-comision/${item.id}`}>
-                                                <div className="aspect-w-4 aspect-h-3">
-                                                    <img src={path} alt={item.nombre} />
-                                                </div>
-                                            </a>
-                                        </div>
                                         <div className="header">
                                             <h5><a href={`#/detalle-comision/${item.id}`}>{item.nombre}</a></h5>
                                         </div>

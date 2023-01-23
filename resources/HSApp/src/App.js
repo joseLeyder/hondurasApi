@@ -15,6 +15,7 @@ import CongresoVisible from "./Admin/Pages/CongresoVisible/CongresoVisible";
 import DetalleEquipoCV from "./Admin/Pages/CongresoVisible/DetalleEquipoCV";
 import ContenidoMultimedia from "./Admin/Pages/ContenidoMultimedia/ContenidoMultimedia";
 import DetalleControlPolitico from "./Admin/Pages/ControlPolitico/DetalleControlPolitico";
+import ControlPolitico from "./Admin/Pages/ControlPolitico/ControlPolitico";
 import Home from "./Admin/Pages/Home/Home";
 import NuestraDemocracia from "./Admin/Pages/NuestraDemocracia/NuestraDemocracia";
 import DetalleNuestraDemocracia from "./Admin/Pages/NuestraDemocracia/DetalleNuestraDemocracia";
@@ -103,6 +104,10 @@ export default class App extends Component {
                         <RouteLayout
                             path="/detalle-control-politico/:id"
                             component={DetalleControlPolitico}
+                        />
+                        <RouteLayout
+                            path="/control-politico"
+                            component={ControlPolitico}
                         />
                         {/* End control político */}
 

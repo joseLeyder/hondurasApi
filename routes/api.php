@@ -133,6 +133,7 @@ Route::get('utils/totalrecordsPersonasNoCongresistas',[UtilsController::class,'t
 Route::post('utils/getComboAlcanceFilter',[UtilsController::class,'getComboAlcanceFilter']);
 Route::get('utils/getComboPersonas',[UtilsController::class,'getComboPersonas']);
 Route::get('utils/getComboDiputados',[UtilsController::class,'getComboDiputados']);
+Route::get('utils/getComboDiputado',[UtilsController::class,'getComboDiputado']);
 Route::get('utils/getComboTipoVotacion',[UtilsController::class,'getComboTipoVotacion']);
 Route::get('utils/getComboClaseVotacion',[UtilsController::class,'getComboClaseVotacion']);
 Route::get('utils/totalrecordsComboPersonas',[UtilsController::class,'totalrecordsComboPersonas']);

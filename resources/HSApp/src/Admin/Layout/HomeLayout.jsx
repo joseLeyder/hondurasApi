@@ -134,6 +134,11 @@ const HomeLayout = ({ children, ...rest }) => {
                             <span className="icon la la-calendar"></span>
                             <span className="title">Agenda Legislativa</span>
                         </a> */}
+                        <a href="#/control-politico" className="link"
+                            data-tippy-content="Diputados">
+                            <span className="icon la la-project-diagram"></span>
+                            <span className="title">Control político</span>
+                        </a>
                         <a href="#/congresistas" className="link"
                             data-tippy-content="Diputados">
                             <span className="icon la la-users"></span>
@@ -171,6 +176,7 @@ const HomeLayout = ({ children, ...rest }) => {
                     </nav>
                 </div>
             </footer>
+           
         </>
     );
 };
