@@ -53,6 +53,24 @@ class Home extends Component {
                             <a href="#/contacto-avisos" className="tile tile-danger"><span className="fa fa-exclamation"></span> <p>Avisos</p></a>
                         </div> */}
                     </div>
+                    <div className="col-md-12">
+                        <div className="col-md-12 sloganDesc">
+                            <h2> Bienvenidos al Observatorio Legislativo de UCCAEP.</h2>
+                        </div>
+                        <div className="col-md-12 resumen">
+                                <p> En este sistema encontrará información sobre expedientes que se encuentran en trámite en la Asamblea Legislativa y que son considerados por la Unión de Cámaras como transversales y de mayor importancia para el sector productivo; además, podrá obtener información relevante sobre los diputados de la República y recibir alertas sobre el quehacer legislativo. </p>
+                                <p> <strong>Es un gusto tener esta herramienta al servicio de nuestras cámaras y asociaciones afiliadas. </strong></p>
+                        </div>
+                        <div className="col-md-2">
+                            <div className="col-md-6 ">
+                                <div className="">
+                                    <div className="col-md-2">
+                                        <img src="/images/UCCAEP.png" alt="UCCAEP"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

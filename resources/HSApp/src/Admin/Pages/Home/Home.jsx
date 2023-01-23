@@ -506,7 +506,7 @@ class Home extends React.Component {
                             <div className="lg:w-1/2 lg:px-4 ">
                                 <div className="lg:flex slogan">
                                     <div className="lg:w-1/2 lg:px-4">
-                                        <img src="/images/UCCAEP.png" alt="CONEP Peolpe"/>
+                                        <img src="/images/UCCAEP.png" alt="UCCAEP"/>
                                     </div>
                                     <div className="lg:w-1/2 lg:px-4 sloganDesc">
                                         <p> Bienvenidos al Observatorio Legislativo de UCCAEP.</p>
