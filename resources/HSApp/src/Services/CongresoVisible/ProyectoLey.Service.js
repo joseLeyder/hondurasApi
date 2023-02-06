@@ -28,6 +28,10 @@ class ProyectoLeyDataService {
     async getCountVotos(votacion){
         return await http.get(`/${NombreDelModulo}/getCountVotos?votacion=${votacion}`);
     }
+
+    async getAlertaProyectoLey(idAlerta){
+        return await http.get(`/${NombreDelModulo}/getAlertaProyectoLey?idAlerta=${idAlerta}`);
+    }
     
 }
 

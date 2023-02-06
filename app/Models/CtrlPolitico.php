@@ -13,7 +13,7 @@ class CtrlPolitico extends Model
     public static $rules                        = [
         'tema'                                      => 'required|max:200|min:3',
         'fecha'                                     => 'required',
-        'proyecto_ley_id'                              => 'required|int|min:1',
+        //'proyecto_ley_id'                              => 'required|int|min:1',
         'persona_id'                                  => 'required|int|min:1',
         'intervencion'                            => 'required'
     ];
@@ -23,7 +23,7 @@ class CtrlPolitico extends Model
         'tema.max'                        => 'El tema del control político no puede ser mayor a :max caracteres.',
         'tema.min'                        => 'El tema del control político no puede ser menor a :min caracteres.',
         'fecha.required'                    => 'La fecha es requerida.',
-        'proyecto_ley_id.min'                 => 'Debe seleccionar un proyecto de ley.',
+        //'proyecto_ley_id.min'                 => 'Debe seleccionar un proyecto de ley.',
         'persona_id.min'                      => 'Debe seleccionar un diputado.',
         'intervencion.required'           => 'la Intervención es requerida.'
     ];

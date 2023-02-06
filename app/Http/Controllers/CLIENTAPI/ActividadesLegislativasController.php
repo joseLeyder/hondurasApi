@@ -64,10 +64,25 @@ class ActividadesLegislativasController extends Controller
         return response($AgendaLegislativaActividad, 200);
     }
 
-    public function getAlertas(Request $request){
+    public function getAlertaDetalle($id){
+        
+        
+        $AlertasProyectoLey = 
+        ProyectoLeyAlerta::select('id','proyecto_ley_id', 'clearContent', 'informacion','url_archivo','activo')        
+        ->with('ProyectoLey')          
+        //->where('activo', $request->input('idFilter'))         
+        ->where('id',  $id)
+        ->get()
+        ->toJson(JSON_PRETTY_PRINT);
+    
+        return response($AlertasProyectoLey, 200);
+     }
+
+    
+     public function getAlertas(Request $request){
         $proyecto_ley_id=$request->input('idProyectoLey');
         $AlertasProyectoLey = 
-        ProyectoLeyAlerta::select('id','proyecto_ley_id','informacion','url_archivo','activo')        
+        ProyectoLeyAlerta::select('id','proyecto_ley_id', 'clearContent', 'informacion','url_archivo','activo')        
         ->with('ProyectoLey')          
         ->where('activo', $request->input('idFilter'))         
         ->where('proyecto_ley_id', ($proyecto_ley_id != "-1") ? '=' : '!=', $proyecto_ley_id)                       
@@ -79,9 +94,7 @@ class ActividadesLegislativasController extends Controller
         ->toJson(JSON_PRETTY_PRINT);
     
         return response($AlertasProyectoLey, 200);
-     }
- 
-
+    }
     public function totalrecordsAlertas(Request $request){
         $proyecto_ley_id=$request->input('idProyectoLey');
 
@@ -94,7 +107,7 @@ class ActividadesLegislativasController extends Controller
         ->count();
         return response($AlertasProyectoLey, 200);
     }
-   
+    
     public function getAgendaActividad(Request $request){
             $fecha=$request->input('fecha');
             $tactividad=$request->input('idtactividad');

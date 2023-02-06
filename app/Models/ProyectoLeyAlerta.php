@@ -38,6 +38,7 @@ class ProyectoLeyAlerta extends Model
         'informacion',
         'url_archivo',
         'proyecto_ley_id',
+        'clearContent',
         'activo',
         'usercreated',
         'usermodifed',

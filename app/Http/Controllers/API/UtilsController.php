@@ -1698,8 +1698,8 @@ class UtilsController extends Controller
     public function getComboDiputados(Request $request){
         $filter = $request->input('idFilter');
 
-        $items = Persona::select('id','nombres', 'apellidos', 'municipio_id_nacimiento')
-        ->with("LugarNacimiento", "Profesion", "Imagenes")
+        $items = Persona::select('id','nombres', 'apellidos', 'municipio_id_nacimiento', 'fraccion_legislativa_id')
+        ->with("LugarNacimiento", "Profesion", "Imagenes", "FraccionLegislativa")
         ->where('activo', ($filter != "-1") ? '=' : '!=', $filter)
         ->orderBy('id','desc')
         ->get()
@@ -1709,8 +1709,8 @@ class UtilsController extends Controller
     }
     public function getComboDiputado(){
       
-        $items = Persona::select('id','nombres', 'apellidos', 'municipio_id_nacimiento')
-        ->with("LugarNacimiento", "Profesion", "Imagenes")
+        $items = Persona::select('id','nombres', 'apellidos', 'municipio_id_nacimiento', 'fraccion_legislativa_id')
+        ->with("LugarNacimiento", "Profesion", "Imagenes", "FraccionLegislativa")
         ->where('activo', 1)
         ->orderBy('id','desc')
         ->get()

@@ -11,6 +11,9 @@ class ActividadesLegislativasDataService {
     async getAlertas(idFilter, search='', page=1, rows=4,idProyectoLey=-1){
         return await http.get(`/${NombreDelModulo}/getAlertas?idFilter=${idFilter}&search=${search}&page=${page}&rows=${rows}&idProyectoLey=${idProyectoLey}`);                
     } 
+    async getAlertaDetalle(id){
+        return await http.get(`/${NombreDelModulo}/getAlertaDetalle/${id}`);
+    } 
     async getAgendaDetalle(id){
         return await http.get(`/actividadeslegislativas/getDetalle/${id}`);                
     } 

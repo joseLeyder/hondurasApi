@@ -26,7 +26,8 @@ const constFileds = {
     persona_id: 0,
     fecha: new Date(),
     intervencion:'',
-    user: ""
+    user: "",
+    clearContent:""
 };
 const constErrors = {
     id: '',
@@ -148,7 +149,7 @@ class ControlPoliticoAddUpd extends Component {
             console.log("Response->",response)
             let combo = [];
             response.data.forEach(i => {
-                combo.push({ value: i.id, label: i.nombres })
+                combo.push({ value: i.id, label: i.nombres + ' ' + i.apellidos + ' - ' + (i.fraccion_legislativa === null ? 'Sin fracción legislativa' : i.fraccion_legislativa?.nombre) })
             })
             combo.unshift(SelectDiputado)
             this.setState({
@@ -443,12 +444,24 @@ class ControlPoliticoAddUpd extends Component {
                                                     <div className="col-md-9">
                                                         <SunEditor
                                                             setContents={this.state.intervencion || ""}
+                                                            
                                                             onChange={(e) => {
+                                                                
+                                                                const contentTestContainer = document.createElement('div');
+                                                                contentTestContainer.innerHTML = e;
+                                                                const textContent = contentTestContainer.textContent; 
+                                                                //console.log(textContent);
+
                                                                 let fields = this.state.fields;
-                                                                let errors = this.state.errors;
+                                                                let errors = this.state.errors;                                                                
                                                                 fields = validForm.handleChangeFieldJodiEditor("intervencion", fields, e);
+
+                                                                fields.clearContent = textContent;
+
                                                                 errors = validForm.handleChangeErrors("intervencion", errors, e);
                                                                 this.setState({ state: fields, errors: errors, });
+
+                                                                console.log(fields);
                                                             }}
                                                             setOptions={{
                                                                 buttonList: buttonList,

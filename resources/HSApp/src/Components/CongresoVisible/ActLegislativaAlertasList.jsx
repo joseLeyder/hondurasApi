@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthLogin from "../../Utils/AuthLogin";
 const auth = new AuthLogin();
-const ActLegislativaAlertasList = ({ data=[], handler, pageSize = 8, pageExtends = 1, totalRows = 0 }) => {
+const ActLegislativaAlertasList = ({ data=[], handler, pageSize = 8, pageExtends = 1, totalRows = 0, params = [], link = "#" }) => {
     const handleFocus = (event) => event.target.select();
     return (
         <>
@@ -28,6 +28,14 @@ const ActLegislativaAlertasList = ({ data=[], handler, pageSize = 8, pageExtends
                     {                                
                         data !== null && data !== "undefined"? 
                         data.map((x, i) => {
+                            let str = "";
+                            if (params.length > 0) {
+                                params.forEach(p => {
+                                    str += `/${x[p] === null ? "" : x[p]}`;
+                                });
+                            }
+                            let href = link + str;
+                            console.log(href);
                             return (
                                 <div key={i}>
                                     <div className="evento">
@@ -38,7 +46,13 @@ const ActLegislativaAlertasList = ({ data=[], handler, pageSize = 8, pageExtends
                                     <div className="">
                                         <label className="title">Información: </label>
                                     </div>   
-                                    <div dangerouslySetInnerHTML={{ __html: x.informacion }} className = "title"></div>
+
+                                    {/* <p>{(x.clearContent !== null || x.clearContent.length > 200 ) ? x.clearContent.substring(0,200) : x.clearContent }</p> */}
+                                    <p>{ (x.clearContent === null ? "" : (x.clearContent.length > 200) ? x.clearContent.substring(0,200) : x.clearContent) }</p>
+
+                                    <a className="  uppercase" href={href} target="_blank" style={{display : (x.clearContent === null || x.clearContent.length === 0) ? "none" : "block"}}> Ver alerta completa </a>
+                                    {/* <div dangerouslySetInnerHTML={{ __html: x.informacion }} className = "title"></div> */}
+                                    
                                     <br/>
                                         {
                                         x.url_archivo && (

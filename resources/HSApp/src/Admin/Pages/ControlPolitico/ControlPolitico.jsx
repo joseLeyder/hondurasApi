@@ -132,7 +132,7 @@ class ControlPolitico extends React.Component {
                     listDataTemp.push({ 
                         id: i.id, 
                         intervencion: i.intervencion,
-                        titulo : i.proyecto_ley.titulo,
+                        titulo :  (i.proyecto_ley === null ? ' Sin proyecto ' : i.proyecto_ley.titulo),
                         nombre : i.persona.nombres + ' ' + i.persona.apellidos,
                         fecha: new Date(i.fecha).toLocaleDateString('es-mx', { weekday:"long", year:"numeric", month:"short", day:"numeric"}) 
                     })

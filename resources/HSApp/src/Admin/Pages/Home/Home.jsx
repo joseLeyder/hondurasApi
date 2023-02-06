@@ -372,9 +372,10 @@ class Home extends React.Component {
             rows,
             proyectoLey
         )
+
             .then((response) => {
                 listAlertas.data = response.data;
-                console.log(listAlertas.data);
+                console.log(response.data);
             })
             .catch((e) => {
                 console.error(e);
@@ -519,6 +520,44 @@ class Home extends React.Component {
                             </div>
                         </div>
                     </div>
+
+                    {/* <div className="lg:flex lg:-mx-4">
+                        <div className="lg:w-1/2 lg:px-4">
+                            <div className="card p-5">
+                                <h3>Basic</h3>
+                                <div className="mt-5">
+                                    <button className="btn btn_primary uppercase" data-toggle="modal" data-target="#exampleModal">Open
+                                        Modal</button>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+
+                    <div id="exampleModal" className="modal" data-animations="fadeInDown, fadeOutUp">
+                        <div className="modal-dialog max-w-2xl">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h2 className="modal-title">Modal Title</h2>
+                                    <button type="button" className="close la la-times" data-dismiss="modal"></button>
+                                </div>
+                                <div className="modal-body">
+                                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                                    labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                                    et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                                    labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                                    et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                                </div>
+                                <div className="modal-footer">
+                                    <div className="flex ml-auto">
+                                        <button type="button" className="btn btn_secondary uppercase" data-dismiss="modal">Close</button>
+                                        <button type="button" className="btn btn_primary ml-2 uppercase">Save Changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> */}
+
                     <div className="lg:mx-12">
                         <div className="lg:w-1/2 lg:px-4" hidden>
                             <div className="relative">
@@ -605,6 +644,8 @@ class Home extends React.Component {
                                             <ActLegislativaAlertasList
                                                 data={this.state.listAlertas.data}
                                                 handler={this.handlerPaginationAlertas}
+                                                link={`#/detalle-alerta`}
+                                                params={["id"]} 
                                                 pageExtends={this.state.listAlertas.page}
                                                 pageSize={this.state.listAlertas.rows}
                                                 totalRows={this.state.listAlertas.totalRows}
@@ -814,6 +855,8 @@ class Home extends React.Component {
                         <a href="#/proyectos-de-ley" className="btn btn_primary uppercase seeMoreCenter">Ver más</a>
                     </div>
                 </main>
+
+
             </>
         );
     }

@@ -24,7 +24,7 @@ const title_lowercase = "alerta de proyecto de ley";
 const title_sentence = "Alerta de Proyecto de ley";
 const auth = new AuthLogin();
 const fieldsConst = {
-    id: 0,                      proyecto_ley_id: "",        informacion: ""
+    id: 0,                      proyecto_ley_id: "",        informacion: "", clearContent : ""
 };
 const errorsConst = {
     id: 0,                      proyecto_ley_id: "",        informacion: ""
@@ -343,8 +343,17 @@ class EditarAlertaProyectoLey extends Component {
                                                             placeholder="..."
                                                             setContents={ this.state.fields.informacion || "" }
                                                             onChange={(e) => {
+
+                                                                const contentTestContainer = document.createElement('div');
+                                                                contentTestContainer.innerHTML = e;
+                                                                const textContent = contentTestContainer.textContent; 
+
                                                                 let fields = this.state.fields;
                                                                 let errors = this.state.errors;
+
+                                                                fields.clearContent = textContent;
+
+                                                                console.log(fields.clearContent);
 
                                                                 fields = validForm.handleChangeFieldJodiEditor("informacion", fields, e);
                                                                 errors = validForm.handleChangeErrors("informacion", errors, e);

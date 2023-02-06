@@ -9,6 +9,7 @@ import RouteLayout from "./Admin/Layout/RouteLayout";
 import ActividadesLegislativas from "./Admin/Pages/ActividadesLegislativas/ActividadesLegislativas";
 import Comisiones from "./Admin/Pages/Comisiones/Comisiones";
 import DetalleComision from "./Admin/Pages/Comisiones/DetalleComision";
+import DetalleAlerta from "./Admin/Pages/Home/DetalleAlertaProyecto";
 import Congresistas from "./Admin/Pages/Congresistas/Congresistas";
 import PerfilCongresista from "./Admin/Pages/Congresistas/PerfilCongresista";
 import CongresoVisible from "./Admin/Pages/CongresoVisible/CongresoVisible";
@@ -68,6 +69,10 @@ export default class App extends Component {
                         <RouteLayout
                             path="/detalle-comision/:id"
                             component={DetalleComision}
+                        />
+                        <RouteLayout
+                            path="/detalle-alerta/:id"
+                            component={DetalleAlerta}
                         />
                         {/* End comisiones */}
 

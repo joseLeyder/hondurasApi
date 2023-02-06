@@ -99,6 +99,7 @@ Route::get('contenidomultimedia/getMultimedia', [ContenidoMultimediaController::
 Route::get('actividadeslegislativas/totalrecordsAgenda', [ActividadesLegislativasController::class, 'totalrecordsAgenda']);
 Route::get('actividadeslegislativas/getAgenda', [ActividadesLegislativasController::class, 'getAgenda']);
 
+Route::get('actividadeslegislativas/getAlertaDetalle/{id}', [ActividadesLegislativasController::class, 'getAlertaDetalle']);
 Route::get('actividadeslegislativas/getTotalRecordsAlertas', [ActividadesLegislativasController::class, 'totalrecordsAlertas']);
 Route::get('actividadeslegislativas/getAlertas', [ActividadesLegislativasController::class, 'getAlertas']);
 
