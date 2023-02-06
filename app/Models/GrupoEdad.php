@@ -12,7 +12,7 @@
             'nombre'       => 'required|max:50|min:3',
             'edad_inicial' => 'numeric|required',
             'edad_final'   => 'numeric|required',
-            'imagen'       => 'required'
+            //'imagen'       => 'required'
         ];
         public static $rulesPostMessages = [
             'nombre.required'       => 'El nombre del grupo de edad es requerido.',
@@ -22,7 +22,7 @@
             'edad_inicial.required' => 'La edad inicial es requerida.',
             'edad_final.numeric'    => 'La edad final debe ser un número.',
             'edad_final.required'   => 'La edad final es requerida.',
-            'imagen.required'       => 'La imagen es requerida'
+            //'imagen.required'       => 'La imagen es requerida'
         ];
         public static $rulesPut          = [
             'nombre'       => 'required|max:50|min:3',

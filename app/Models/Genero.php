@@ -11,13 +11,13 @@ class Genero extends Model
 
     public static $rulesPost = [
         'nombre' => 'required|max:100',
-        'imagen'=>'required'
+        //'imagen'=>'required'
     ];
 
     public static $messagesPost = [
         'nombre.required' => 'El nombre es requerido.',
         'nombre.max' =>'El nombre no puede ser mayor a :max caracteres.',
-        'imagen.required' => 'La imagen es requerida',
+        //'imagen.required' => 'La imagen es requerida',
     ];
 
     public static $rulesPut = [

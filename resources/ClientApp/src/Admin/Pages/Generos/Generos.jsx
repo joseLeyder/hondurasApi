@@ -306,6 +306,7 @@ class Genero extends Component {
                                                         divClassSpanI="fa fa-indent" />
                                                 </div>
                                             </div>
+                                            {/* 
                                             {
                                                 this.state.fields["id"] != 0 ?
                                                 <div className="form-group">
@@ -325,6 +326,7 @@ class Genero extends Component {
                                                     <span className="error">{this.state.errors["imagen"] || ''}</span>
                                                 </div>
                                             </div>
+                                             */}
                                         </div>
                                     </div>
 

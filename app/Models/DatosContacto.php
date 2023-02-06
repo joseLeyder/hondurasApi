@@ -12,7 +12,7 @@ class DatosContacto extends Model
     public static $rulesPost = [
         'nombre' => 'required|max:200|min:3',
         'tipo' => 'required|int|min:1',
-        'imagen' => 'required'
+        //'imagen' => 'required'
     ];
     public static $messagesPost = [
         'nombre.required'   => 'El nombre es requerido.',

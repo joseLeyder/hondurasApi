@@ -361,6 +361,7 @@ class DatosContacto extends Component {
                                                     </Select>
                                                 </div>
                                             </div>
+                                            {/* 
                                             {
                                                 this.state.fields["id"] !== 0 ?
                                                 <div className="form-group">
@@ -379,6 +380,7 @@ class DatosContacto extends Component {
                                                         <span className="error">{this.state.errors["imagen"] || ''}</span>
                                                 </div>
                                             </div>
+                                             */}
                                         </div>
                                     </div>
 

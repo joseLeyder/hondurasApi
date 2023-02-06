@@ -651,7 +651,7 @@ class GrupoEdades extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className={this.state.fields["id"] === 0 ? "hidden" : "row"}>
+                                    {/* <div className={this.state.fields["id"] === 0 ? "hidden" : "row"}>
                                         <div className="col-md-12">
                                             <div className="form-group">
                                                 <div className="col-md-12">
@@ -699,7 +699,7 @@ class GrupoEdades extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="row">
                                         <div className="col-md-12 push-up-30">
                                             <button
