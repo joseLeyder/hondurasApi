@@ -329,7 +329,7 @@ class UtilsController extends Controller
     }
     public function getComboComisionAsamblea()
     {
-        $items = ComisionAsamblea::select(
+        $items = Comision::select(
             'id',
             'nombre'
         )->where(

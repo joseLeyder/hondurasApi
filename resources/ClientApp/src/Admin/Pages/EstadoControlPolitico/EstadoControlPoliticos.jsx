@@ -4,7 +4,7 @@ import Spinner from "../../../Components/Spinner";
 import Select from "../../../Components/Select";
 import Input from "../../../Components/Input";
 import ValidForm from "../../../Utils/ValidForm";
-import EstadoControlPoliticoDataService from "../../../Services/Catalogo/EstadoControlPolitico.Service";
+import TipoComisionsDataService from "../../../Services/Catalogo/TipoComision.Service";
 import AuthLogin from "../../../Utils/AuthLogin";
 import ValidarPermiso from "../../../Permisos/ValidarPermiso";
 import { ModuloPermiso } from "../../../Permisos/ModuloPermiso";
@@ -33,7 +33,7 @@ class EstadoControlPoliticos extends Component {
             tableInfo: {
                 columns: [
                     {
-                        Header: "Estados de control político",
+                        Header: "Tipo de comision",
                         columns: [
                             {
                                 Header: "id",
@@ -65,14 +65,14 @@ class EstadoControlPoliticos extends Component {
                     {
                         Header: "Acciones",
                         columns: [
-                            auth.tieneModuloPermiso(ModuloPermiso.EstadoControlPolitico.Obtener) ?
+                            auth.tieneModuloPermiso(ModuloPermiso.TipoComision.Obtener) ?
                             {
                                 Header: "Actualizar",
                                 id: "actualizar",
                                 accessor: (str) => "actualizar",
                                 Cell: (tableProps) => (
                                     <ValidarPermiso
-                                        IdModuloPermisoValidar={ModuloPermiso.EstadoControlPolitico.Obtener}
+                                        IdModuloPermisoValidar={ModuloPermiso.TipoComision.Obtener}
                                         DefaultTemplate={
                                             <button
                                                 data-toggle="modal"
@@ -96,14 +96,14 @@ class EstadoControlPoliticos extends Component {
                                 id: 'editar',
                                 accessor: (str) => '-',
                             },
-                            auth.tieneModuloPermiso(ModuloPermiso.EstadoControlPolitico.Eliminar) ?
+                            auth.tieneModuloPermiso(ModuloPermiso.TipoComision.Eliminar) ?
                             {
                                 Header: "Activar/Desactivar",
                                 id: "actdesc",
                                 accessor: (str) => "actdesc",
                                 Cell: (tableProps) => (
                                     <ValidarPermiso
-                                        IdModuloPermisoValidar={ModuloPermiso.EstadoControlPolitico.Eliminar}
+                                        IdModuloPermisoValidar={ModuloPermiso.TipoComision.Eliminar}
                                         DefaultTemplate={
                                             <button
                                                 data-toggle="modal"
@@ -203,7 +203,7 @@ class EstadoControlPoliticos extends Component {
         let data = this.state.fields;
 
         if (this.state.fields["id"] === 0) {
-            await EstadoControlPoliticoDataService.create(data)
+            await TipoComisionsDataService.create(data)
                 .then((response) => {
                     responseData = response.data;
                 })
@@ -214,7 +214,7 @@ class EstadoControlPoliticos extends Component {
                     );
                 });
         } else {
-            await EstadoControlPoliticoDataService.update(
+            await TipoComisionsDataService.update(
                 this.state.fields["id"],
                 data
             )
@@ -248,7 +248,7 @@ class EstadoControlPoliticos extends Component {
         this.setState({ errors: errors, loading: true });
 
         let responseData;
-        await EstadoControlPoliticoDataService.delete(this.state.fields["id"])
+        await TipoComisionsDataService.delete(this.state.fields["id"])
             .then((response) => {
                 responseData = response.data;
             })
@@ -274,7 +274,7 @@ class EstadoControlPoliticos extends Component {
     getAll = async (idFilterActive, page, rows, search) => {
         this.setState({ loading: true });
         let tableInfo = this.state.tableInfo;
-        await EstadoControlPoliticoDataService.getAll(
+        await TipoComisionsDataService.getAll(
             idFilterActive,
             search,
             page,
@@ -287,7 +287,7 @@ class EstadoControlPoliticos extends Component {
                 console.log(e);
             });
 
-        await EstadoControlPoliticoDataService.getTotalRecords(idFilterActive, search)
+        await TipoComisionsDataService.getTotalRecords(idFilterActive, search)
             .then((response) => {
                 tableInfo["totalRows"] = response.data;
             })
@@ -303,7 +303,7 @@ class EstadoControlPoliticos extends Component {
 
     getByID = async (id) => {
         this.setState({ loading: true });
-        await EstadoControlPoliticoDataService.get(id)
+        await TipoComisionsDataService.get(id)
             .then((response) => {
                 let fields = response.data;
                 Object.assign(fields, { user: auth.username() });
@@ -345,7 +345,7 @@ class EstadoControlPoliticos extends Component {
 
                 <ul className="breadcrumb push-down-0">
                     <li>Catálogos</li>
-                    <li>Estados de control político</li>
+                    <li>Tipos de comisión</li>
                 </ul>
                 <div className="content-frame">
                     <div className="content-frame-top">
@@ -354,7 +354,7 @@ class EstadoControlPoliticos extends Component {
                                 <div className="panel-heading">
                                     <h3 className="panel-title">
                                         <span className="fa fa-list"></span>{" "}
-                                        Listado de estados de control político
+                                        Listado de tipos de comisión
                                     </h3>
                                     <ul className="panel-controls">
                                         <li>
@@ -381,7 +381,7 @@ class EstadoControlPoliticos extends Component {
                                         </li>
                                         <li>
                                         <ValidarPermiso
-                                            IdModuloPermisoValidar={ModuloPermiso.EstadoControlPolitico.Nuevo}
+                                            IdModuloPermisoValidar={ModuloPermiso.TipoComision.Nuevo}
                                             DefaultTemplate={
                                                 <button
                                                     style={{ minHeight: "37px" }}
@@ -402,7 +402,7 @@ class EstadoControlPoliticos extends Component {
                                 <div className="panel-body">
                                     <div>
                                     <ValidarPermiso
-                                        IdModuloPermisoValidar={ModuloPermiso.EstadoControlPolitico.ObtenerTodos}
+                                        IdModuloPermisoValidar={ModuloPermiso.TipoComision.ObtenerTodos}
                                         DefaultTemplate={
                                             <TableReactExtends
                                                 columns={
@@ -463,7 +463,7 @@ class EstadoControlPoliticos extends Component {
                                     {this.state.fields["id"] === 0
                                         ? "Crear"
                                         : "Editar"}{" "}
-                                        estado de control político{" "}
+                                        tipo de comisión{" "}
                                 </h4>
                             </div>
 
@@ -493,7 +493,7 @@ class EstadoControlPoliticos extends Component {
                                                         inputName="nombre"
                                                         inputType="text"
                                                         inputClass="form-control"
-                                                        inputplaceholder="Ingrese el nombre del estado de control político"
+                                                        inputplaceholder="Ingrese el nombre del tipo de comisión"
                                                         inputValue={
                                                             this.state.fields[
                                                                 "nombre"
@@ -548,8 +548,8 @@ class EstadoControlPoliticos extends Component {
                                                 Cerrar
                                             </button>
                                             <ValidarPermiso
-                                                IdModuloPermisoValidar={this.state.fields.id === 0 ? ModuloPermiso.EstadoControlPolitico.Nuevo
-                                                    : ModuloPermiso.EstadoControlPolitico.Modificar}
+                                                IdModuloPermisoValidar={this.state.fields.id === 0 ? ModuloPermiso.TipoComision.Nuevo
+                                                    : ModuloPermiso.TipoComision.Modificar}
                                                 DefaultTemplate={
                                                     <button className="btn btn-success pull-right">
                                                         <i className="fa fa-check"></i>  Guardar
@@ -568,13 +568,13 @@ class EstadoControlPoliticos extends Component {
                     <form>
                         <div className="mb-container">
                             <div className="mb-middle">
-                                <div className="mb-title"><span className={`fa fa-${this.state.fields.activo ? "eraser" : "check"}`}></span> {this.state.fields.activo ? "Desactivar" : "Activar"} estado de control político</div>
+                                <div className="mb-title"><span className={`fa fa-${this.state.fields.activo ? "eraser" : "check"}`}></span> {this.state.fields.activo ? "Desactivar" : "Activar"} tipo de comisión</div>
                                 <div className="mb-content">
-                                    <p>{`¿Está seguro que desea ${this.state.fields.activo ? "desactivar" : "activar"} el estado de control político ${this.state.fields.nombre}? Puede volver a ${this.state.fields.activo ? "activarlo" : "desactivarlo"} en cualquier otro momento.`}</p>
+                                    <p>{`¿Está seguro que desea ${this.state.fields.activo ? "desactivar" : "activar"} el tipo de comisión ${this.state.fields.nombre}? Puede volver a ${this.state.fields.activo ? "activarlo" : "desactivarlo"} en cualquier otro momento.`}</p>
                                 </div>
                                 <div className="mb-footer">
                                 <ValidarPermiso
-                                        IdModuloPermisoValidar={ModuloPermiso.EstadoControlPolitico.Eliminar}
+                                        IdModuloPermisoValidar={ModuloPermiso.TipoComision.Eliminar}
                                         DefaultTemplate={
                                             <button type="button" className="btn btn-primary btn-lg pull-right" onClick={async (e) => { await this.deleteSubmit(e) }} >{this.state.fields.activo ? "Desactivar" : "Activar"}</button>
                                         }

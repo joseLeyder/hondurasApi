@@ -44,7 +44,12 @@ Route::get('circunscripcion/{id}', [CircunscripcionController::class, 'show'])->
 Route::get('circunscripcion', [CircunscripcionController::class, 'index'])->middleware(['jwt.cid:207']);
 
 //TipoComisions
-Route::get('tipocomisions', [TipoComisionsController::class, 'index']);
+Route::get('tipocomisions/totalrecords', [TipoComisionsController::class, 'totalrecords'])->middleware(['jwt.cid:268']);
+Route::get('tipocomisions/{id}', [TipoComisionsController::class, 'show'])->middleware(['jwt.cid:268']);
+Route::get('tipocomisions', [TipoComisionsController::class, 'index'])->middleware(['jwt.cid:268']);
+Route::post('tipocomisions', [TipoComisionsController::class, 'store'])->middleware(['jwt.cid:268']);
+Route::put('tipocomisions/{id}', [TipoComisionsController::class, 'update'])->middleware(['jwt.cid:268']);
+Route::delete('tipocomisions/{id}', [TipoComisionsController::class, 'destroy'])->middleware(['jwt.cid:268']);
 
 //Géneros
 Route::post('generos', [GenerosController::class, 'store'])->middleware(['jwt.cid:185']);

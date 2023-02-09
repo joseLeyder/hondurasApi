@@ -443,7 +443,7 @@ export default class App extends Component {
                         {/* control politico */}
 
                         <RouteLayout
-                            path="/estado-control-politico"
+                            path="/tipo-comision"
                             component={EstadoControlPoliticos}
                         />
                         <RouteLayout path="/control-politico" component={ControlPoliticoIndex}/>

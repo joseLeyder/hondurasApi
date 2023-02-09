@@ -172,4 +172,10 @@ class ProyectoLey extends Model
     public function ProyectoLeyVotacion(){
         return $this->hasMany(Votacion::class, 'proyecto_de_ley_id', 'id')->where('activo',1)->with(['votacionCongresista']);
     }
+    public function ComisionUccaep(){
+        return $this->hasOne(ComisionUccaep::class, 'id', 'comision_uccaeps_id');
+    }
+    public function ComisionAsamblea(){
+        return $this->hasOne(Comision::class, 'id', 'comision_asamblea_id');
+    }
 }

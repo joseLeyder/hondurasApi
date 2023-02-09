@@ -65,7 +65,7 @@ class Home extends Component {
                             <div className="col-md-6 ">
                                 <div className="">
                                     <div className="col-md-2">
-                                        <img src="/images/UCCAEP.png" alt="UCCAEP"/>
+                                        <img src="/images/UCCAEP.png" alt="UCCAEP" style={{heigth:24 + 'rem', width:30 + 'rem'}}/>
                                     </div>
                                 </div>
                             </div>

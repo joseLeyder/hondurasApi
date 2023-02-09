@@ -559,5 +559,12 @@
         , Obtener: 388
         , ObtenerTodos: 389
         , Index: 390
+    }, TipoComision: {
+        Nuevo: 263
+        , Modificar: 264
+        , Eliminar: 265
+        , Obtener: 266
+        , ObtenerTodos: 267
+        , Index: 268
     }
 }

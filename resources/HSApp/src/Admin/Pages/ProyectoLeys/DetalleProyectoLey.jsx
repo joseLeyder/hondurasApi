@@ -42,6 +42,8 @@ class DetalleProyectoLey extends React.Component {
             subloaderVotos: false,
             ponentes_estado_partido: [],
             comisiones: [],
+            comision_asamblea: [],
+            comision_uccaep: [],
             estado_proyecto_ley_id: 0
         }
     }
@@ -88,6 +90,7 @@ class DetalleProyectoLey extends React.Component {
         let fields = this.state.fields;
         await ProyectoLeyDataService.get(id)
             .then((response) => {
+                console.log(response.data);
                 let data = response.data;
                 fields.id = data.id;
                 fields.titulo = data.titulo;
@@ -112,6 +115,8 @@ class DetalleProyectoLey extends React.Component {
                 fields.proyecto_ley_estado = [];
                 fields.proyecto_ley_autor_legislativos = data.proyecto_ley_autor_legislativos;
                 fields.proyecto_ley_autor_personas = data.proyecto_ley_autor_personas;
+                fields.comision_asamblea = data.comision_asamblea;
+                fields.comision_uccaep = data.comision_uccaep;
                 let tabActive = ['active'];
                 let partidoPonenteActive = 0;
                 let estado_proyecto_ley_id = 0;
@@ -268,6 +273,23 @@ class DetalleProyectoLey extends React.Component {
                                             <div className="text-primary mt-1 text-xl leading-none">{this.state.fields.legislatura?.nombre || 'Sin iniciativa'}</div>
                                         </div>
                                     </div>
+                                </div>
+                                <div className="lg:flex lg:-mx-4">
+                                    <div className="lg:w-1/3 lg:px-4 pt-5 lg:pt-0">
+                                        <div
+                                            className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
+                                            <p className="mt-2">Comisión de uccaep</p>
+                                            <div className="text-primary mt-1 text-xl leading-none">{this.state.fields.comision_uccaep?.nombre || 'Sin comisión de uccaep'}</div>
+                                        </div>
+                                    </div>
+                                    <div className="lg:w-1/3 lg:px-4 pt-5 lg:pt-0">
+                                        <div
+                                            className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
+                                            <p className="mt-2">Comisión de asamblea</p>
+                                            <div className="text-primary mt-1 text-xl leading-none">{this.state.fields.comision_asamblea?.nombre || 'Sin comisión de asamblea'}</div>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                             <div className="itemSection">

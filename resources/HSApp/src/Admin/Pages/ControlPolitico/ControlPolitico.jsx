@@ -183,10 +183,11 @@ class ControlPolitico extends React.Component {
     getComboDiputado = async () => {
         await ControlPoliticoDataService.getComboDiputado().then(
             (response) => {
+                //console.log(response.data);
                 let combo = [];
                 let selected = { value: -1, label: "Ver todos" };
                 response.data.forEach((i) => {
-                    combo.push({ value: i.id, label: i.nombres + ' ' + i.apellidos });
+                    combo.push({ value: i.id, label: i.nombres + ' ' + i.apellidos + ' - ' + (i.fraccion_legislativa == null ? "Sin fracción legislativa" : i.fraccion_legislativa.nombre) });
                 });
                 combo.unshift({ value: -1, label: "Ver todos" });
                 this.setState({
