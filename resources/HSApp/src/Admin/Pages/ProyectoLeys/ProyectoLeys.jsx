@@ -60,6 +60,7 @@ class ProyectoLeys extends React.Component {
         this.setState({ tableInfo: tableInfo });
         if (this.timeout) clearTimeout(this.timeout);
         this.timeout = setTimeout(async function () {
+            console.log("rows: " + rows);
             await this.getAll(page, rows, search);
         }.bind(this), delayAccion);
     }

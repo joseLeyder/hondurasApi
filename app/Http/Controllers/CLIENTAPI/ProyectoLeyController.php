@@ -92,34 +92,36 @@ class ProyectoLeyController extends Controller
                         'numero_camara', 'like', '%' . $search . '%'
                     )->orWhere(
                         'titulo', 'like', '%' . $search . '%'
-                    )->orWhere(
-                        function ($query) use (
-                            $search
-                        ) {
-                            $query->orWhereHas(
-                                'ProyectoLeyAutorLegislativos', function ($query) use ( $search ) {
-                                $query->WhereHas(
-                                    'Congresista', function ($query) use ( $search ) {
-                                    $query->WhereHas(
-                                        'persona', function ($query) use ( $search ) {
-                                        $query->where(
-                                            'nombres', 'like', '%' . $search . '%'
-                                        )->OrWhere(
-                                            'apellidos', 'like', '%' . $search . '%'
-                                        );
-                                    });
-                                });
-                            });
-                        }
+                    // )->orWhere(
+                    //     function ($query) use (
+                    //         $search
+                    //     ) {
+                    //         $query->orWhereHas(
+                    //             'ProyectoLeyAutor', function ($query) use ( $search ) {
+                    //             // $query->WhereHas(
+                    //             //     'Congresista', function ($query) use ( $search ) {
+                    //                 $query->WhereHas(
+                    //                     'persona', function ($query) use ( $search ) {
+                    //                     $query->where(
+                    //                         'nombres', 'like', '%' . $search . '%'
+                    //                     )->OrWhere(
+                    //                         'apellidos', 'like', '%' . $search . '%'
+                    //                     );
+                    //                 });
+                    //             //});
+                    //         });
+                    //     }
                     )->orWhere(function ($query) use($search){
                         $query->orWhereHas('ProyectoLeyAutorPersonas', function ($query) use($search){
                             $query->WhereHas(
                                 'persona', function ($query) use ( $search  ) {
-                                $query->where(
-                                    'nombres', 'like', '%' . $search . '%'
-                                )->OrWhere(
-                                    'apellidos', 'like', '%' . $search . '%'
-                                );
+                                    $query->where(
+                                        DB::raw("CONCAT(`nombres`, ' ',COALESCE(`apellidos`,''))"), 'LIKE', "%".$search."%");
+                                // $query->where(
+                                //     'nombres', 'like', '%' . $search . '%'
+                                // )->OrWhere(
+                                //     'apellidos', 'like', '%' . $search . '%'
+                                // );
                             });
                         });
                     });
@@ -214,41 +216,163 @@ class ProyectoLeyController extends Controller
 
     public function totalrecords(Request $request)
     {
-        $filter = $request->input('idFilter');
-        $search = $request->input('search');
+        // $filter = $request->input('idFilter');
+        // $search = $request->input('search');
 
-        $cuatrienio = $request->input('cuatrienio');
-        $legislatura = $request->input('legislatura');
-        $iniciativa = $request->input('iniciativa');
-        $tema = $request->input('tema');
-        $estado = $request->input('estado');
-        $tipo = $request->input('tipo');
-        $counts = ProyectoLey::select([
-                                         'id',
-                                         'iniciativa_id',
-                                         'legislatura_id',
-                                         'cuatrienio_id',
-                                         'tipo_proyecto_id',
-                                         'titulo',
-                                         'numero_camara',
-                                         'tema_id_principal',
-                                         'tema_id_secundario',
-                                         'sinopsis',
-                                         'activo',
-                                     ])
-                            ->where('activo', '1')
-                            ->where('cuatrienio_id', ($cuatrienio != "0") ? '=' : '!=', $cuatrienio)
-                            ->where('legislatura_id', ($legislatura != "0") ? '=' : '!=', $legislatura)
-                            ->where('iniciativa_id', ($iniciativa != "0") ? '=' : '!=', $iniciativa)
-                            ->where('tema_id_principal', ($tema != "0") ? '=' : '!=', $tema)
-                            ->where('tema_id_secundario', ($tema != "0") ? '=' : '!=', $tema)
-                            ->where('tipo_proyecto_id', ($tipo != "0") ? '=' : '!=', $tipo)
-                            ->where('titulo', 'LIKE', '%' . $request->input('search') . '%' )
-                            ->with('Legislatura', 'Cuatrienio', 'TipoProyectoLey', 'EstadoProyectoLey', 'Iniciativa')
-                            ->orderBy('id','desc')
-                            ->count();
+        // $cuatrienio = $request->input('cuatrienio');
+        // $legislatura = $request->input('legislatura');
+        // $iniciativa = $request->input('iniciativa');
+        // $tema = $request->input('tema');
+        // $estado = $request->input('estado');
+        // $tipo = $request->input('tipo');
+        // $counts = ProyectoLey::select([
+        //                                  'id',
+        //                                  'iniciativa_id',
+        //                                  'legislatura_id',
+        //                                  'cuatrienio_id',
+        //                                  'tipo_proyecto_id',
+        //                                  'titulo',
+        //                                  'numero_camara',
+        //                                  'tema_id_principal',
+        //                                  'tema_id_secundario',
+        //                                  'sinopsis',
+        //                                  'activo',
+        //                              ])
+        //                     ->where('activo', '1')
+        //                     ->where('cuatrienio_id', ($cuatrienio != "0") ? '=' : '!=', $cuatrienio)
+        //                     ->where('legislatura_id', ($legislatura != "0") ? '=' : '!=', $legislatura)
+        //                     ->where('iniciativa_id', ($iniciativa != "0") ? '=' : '!=', $iniciativa)
+        //                     ->where('tema_id_principal', ($tema != "0") ? '=' : '!=', $tema)
+        //                     ->where('tema_id_secundario', ($tema != "0") ? '=' : '!=', $tema)
+        //                     ->where('tipo_proyecto_id', ($tipo != "0") ? '=' : '!=', $tipo)
+        //                     ->where('titulo', 'LIKE', '%' . $request->input('search') . '%' )
+        //                     ->with('Legislatura', 'Cuatrienio', 'TipoProyectoLey', 'EstadoProyectoLey', 'Iniciativa')
+        //                     ->orderBy('id','desc')
+        //                     ->count();
 
-        return response($counts);
+        // return response($counts);
+
+        $query = ProyectoLey::query()->where(
+            'activo', 1
+        );
+        if ($request->has('corporacion') && !is_null($request["corporacion"]) && $request->input('corporacion') !== '0') {
+            $query->where(
+                'corporacion_id',
+                $request->corporacion
+            );
+        }
+        if ($request->has('cuatrienio') && !is_null($request["cuatrienio"]) && $request->input('cuatrienio') !== '0') {
+            $query->where(
+                'cuatrienio_id',
+                $request->cuatrienio
+            );
+        }
+        if ($request->has('legislatura') && !is_null($request["legislatura"]) && $request->input('legislatura') !== '0') {
+            $query->where(
+                'legislatura_id', $request->legislatura
+            );
+        }
+        if ($request->has('iniciativa') && !is_null($request["iniciativa"]) && $request->input('iniciativa') !== '0') {
+            $query->where(
+                'iniciativa_id', $request->iniciativa
+            );
+        }
+        if ($request->has('tema') && !is_null($request["tema"]) && $request->input('tema') !== '0') {
+            $tema_id = $request->input('tema');
+            $query->where(
+                function ($query) use (
+                    $tema_id
+                ) {
+                    $query->where(
+                        'tema_id_principal', $tema_id
+                    )->orWhere(
+                        'tema_id_secundario', $tema_id
+                    );
+                }
+            );
+        }
+        if ($request->has('tipo') && !is_null($request["tipo"]) && $request->input('tipo') !== '0') {
+            $query->where(
+                'tipo_proyecto_id', $request->tipo
+            );
+        }
+        if ($request->has('estado') && !is_null($request["estado"]) && $request->input('estado') !== '0') {
+            $estado_id = $request->input('estado');
+            $query->Where(
+                function ($query) use (
+                    $estado_id
+                ) {
+                    $query->WhereHas(
+                        'ProyectoLeyEstado', function ($query) use (
+                        $estado_id
+                    ) {
+                        $query->where(
+                            'estado_proyecto_ley_id', $estado_id
+                        );
+                    }
+                    );
+                }
+            );
+        }
+        if ($request->has('search') && !is_null($request["search"])) {
+            $search = $request->input('search');
+            $query->Where(
+                function ($query) use (
+                    $search
+                ) {
+                    $query->Where(
+                        'numero_camara', 'like', '%' . $search . '%'
+                    )->orWhere(
+                        'titulo', 'like', '%' . $search . '%'
+                    // )->orWhere(
+                    //     function ($query) use (
+                    //         $search
+                    //     ) {
+                    //         $query->orWhereHas(
+                    //             'ProyectoLeyAutor', function ($query) use ( $search ) {
+                    //             // $query->WhereHas(
+                    //             //     'Congresista', function ($query) use ( $search ) {
+                    //                 $query->WhereHas(
+                    //                     'persona', function ($query) use ( $search ) {
+                    //                     $query->where(
+                    //                         'nombres', 'like', '%' . $search . '%'
+                    //                     )->OrWhere(
+                    //                         'apellidos', 'like', '%' . $search . '%'
+                    //                     );
+                    //                 });
+                    //             //});
+                    //         });
+                    //     }
+                    )->orWhere(function ($query) use($search){
+                        $query->orWhereHas('ProyectoLeyAutorPersonas', function ($query) use($search){
+                            $query->WhereHas(
+                                'persona', function ($query) use ( $search  ) {
+                                    $query->where(
+                                        DB::raw("CONCAT(`nombres`, ' ',COALESCE(`apellidos`,''))"), 'LIKE', "%".$search."%");
+                                // $query->where(
+                                //     'nombres', 'like', '%' . $search . '%'
+                                // )->OrWhere(
+                                //     'apellidos', 'like', '%' . $search . '%'
+                                // );
+                            });
+                        });
+                    });
+                }
+            );
+        }
+        $items = $query->with(
+            [
+                'Legislatura',
+                'Cuatrienio',
+                'TipoProyectoLey',
+                'Iniciativa',
+                'ProyectoLeyAutorPersonas',
+                'ProyectoLeyEstado'
+            ]
+        )->orderBy('id','desc')
+                             ->count();
+
+        return response($items);
     }
 
     public function getAutoresFilter(Request $request){

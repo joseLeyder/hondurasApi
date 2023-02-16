@@ -169,6 +169,9 @@ class ProyectoLey extends Model
     public function ProyectoLeyAutorPersonas(){
         return $this->hasMany(ProyectoLeyAutor::class)->where('activo', 1)->with('Persona');
     }
+    public function ProyectoLeyAutorLegislativo(){
+        return $this->hasMany(ProyectoLeyAutorLegislativo::class)->where('activo', 1);
+    }
     public function ProyectoLeyVotacion(){
         return $this->hasMany(Votacion::class, 'proyecto_de_ley_id', 'id')->where('activo',1)->with(['votacionCongresista']);
     }

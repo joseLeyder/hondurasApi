@@ -132,7 +132,7 @@ class Comisiones extends React.Component {
                                     }}
                                     onKeyUp={async (e) => {
                                         if (e.key === "Enter") {
-                                            await this.handlerPagination(this.state.page, this.state.rows, e.target.value);
+                                            await this.tableHandler(this.state.page, this.state.rows, e.target.value);
                                         }
                                     }}
                                     placeholder="Escriba para buscar"
@@ -142,7 +142,7 @@ class Comisiones extends React.Component {
                                 <span className="input-group-text">
                                     <button
                                         onClick={async () => {
-                                            await this.handlerPagination(this.state.page, this.state.rows, this.state.search);
+                                            await this.tableHandler(this.state.page, this.state.rows, this.state.search);
                                         }}
                                         type="button"
                                         className="btn btn_primary uppercase mr-5 mb-5"

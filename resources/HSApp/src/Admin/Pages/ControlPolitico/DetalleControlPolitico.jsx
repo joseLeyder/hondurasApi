@@ -13,9 +13,9 @@ const dataConst = {
         nombres: "",
         apellidos: "",
     },
-    proyecto_de_ley: {
+    proyecto_ley: {
         id: 0,
-        nombre: "",
+        titulo: "",
     }
 
 }
@@ -93,7 +93,7 @@ class DetalleControlPolitico extends React.Component {
                                             <div
                                                 className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
                                                 <p className="mt-2">Proyecto de ley</p>
-                                                <div className="text-primary mt-1 text-xl leading-none">{this.state.data.proyecto_de_ley?.nombre || "Sin proyecto de ley"}</div>
+                                                <div className="text-primary mt-1 text-xl leading-none">{this.state.data.proyecto_ley?.titulo || "Sin proyecto de ley"}</div>
                                             </div>
                                         </div>
                                     </div>

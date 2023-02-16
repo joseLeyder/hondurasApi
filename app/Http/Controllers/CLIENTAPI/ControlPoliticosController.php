@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CLIENTAPI;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CtrlPolitico;
+use Illuminate\Support\Facades\DB;
 
 class ControlPoliticosController extends Controller
 {
@@ -48,13 +49,18 @@ class ControlPoliticosController extends Controller
             $search = $request->input('search');
             $query->Where(function($query) use ($search){
                 $query->Where('intervencion', 'like', '%'. $search .'%')
-                      ->orWhere(function ($query) use ($search){
-                            $query->orWhereHas('ProyectoLey', function ($query) use ($search) {
-                                $query->where('titulo', 'like', '%'. $search .'%');
-                            })->orWhereHas('Persona', function ($query) use ($search) {
-                                $query->where(DB::raw("CONCAT(`nombres`, ' ', `apellidos`)"), 'LIKE', "%".$search."%");
-                            });
-                      });
+                        ->orWhere('tema', 'like', '%'. $search .'%')
+                       ->orWhere(function ($query) use ($search){
+                             $query->orWhereHas('ProyectoLey', function ($query) use ($search) {
+                                 $query->where('titulo', 'like', '%'. $search .'%');
+                                //  $query->where(
+                                //      DB::raw("COALESCE(`titulo`,'')"), 'LIKE', "%".$search."%");
+                                
+                              })->orWhereHas('Persona', function ($query) use ($search) {                                
+                                  $query->where(
+                                    DB::raw("CONCAT(`nombres`, ' ',COALESCE(`apellidos`,''))"), 'LIKE', "%".$search."%");
+                             });
+                       });
             });
         }
 

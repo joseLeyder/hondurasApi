@@ -3,7 +3,7 @@ import http2 from "../../Http/Http-processcommon2";
 const NombreDelModulo = "proyectoley";
 
 class ProyectoLeyDataService {
-    async getAll(corporacion, cuatrienio, legislatura, iniciativa, tema, estado, tipo, search = "", page = 1, rows = 4) {
+    async getAll(corporacion, cuatrienio, legislatura, iniciativa, tema, estado, tipo, search = "", page = 1, rows = 5) {
         return await http.get(
             `/${NombreDelModulo}?corporacion=${corporacion}&cuatrienio=${cuatrienio}&legislatura=${legislatura}&iniciativa=${iniciativa}&tema=${tema}&estado=${estado}&tipo=${tipo}&search=${search}&page=${page}&rows=${rows}`
         );
