@@ -370,7 +370,7 @@ class ProyectoLeyController extends Controller
                 'ProyectoLeyEstado'
             ]
         )->orderBy('id','desc')
-                             ->count();
+        ->count();
 
         return response($items);
     }
