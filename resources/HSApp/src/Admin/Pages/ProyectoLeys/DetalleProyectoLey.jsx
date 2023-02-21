@@ -117,6 +117,8 @@ class DetalleProyectoLey extends React.Component {
                 fields.proyecto_ley_autor_personas = data.proyecto_ley_autor_personas;
                 fields.comision_asamblea = data.comision_asamblea;
                 fields.comision_uccaep = data.comision_uccaep;
+                fields.fecha_cuatrienal = data.fecha_cuatrienal;
+                fields.fecha_dictamen = data.fecha_dictamen;
                 let tabActive = ['active'];
                 let partidoPonenteActive = 0;
                 let estado_proyecto_ley_id = 0;
@@ -177,7 +179,7 @@ class DetalleProyectoLey extends React.Component {
                 this.setState({
                     loading: false,
                 });
-                console.log(e);
+                
             });
     };
 
@@ -248,29 +250,29 @@ class DetalleProyectoLey extends React.Component {
                                     <div className="lg:w-1/3 lg:px-4 pt-5 lg:pt-0">
                                         <div
                                             className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
-                                            <p className="mt-2">Tipo de proyecto de ley</p>
+                                            <p className="mt-2">Tipo de expediente</p>
                                             <div className="text-primary mt-1 text-xl leading-none">{this.state.fields.tipo_proyecto_ley?.nombre || 'Sin tipo'}</div>
                                         </div>
                                     </div>
                                     <div className="lg:w-1/3 lg:px-4 pt-5 lg:pt-0">
                                         <div
                                             className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
-                                            <p className="mt-2">Fecha de introducción</p>
-                                            <div className="text-primary mt-1 text-xl leading-none">{this.state.fields.fecha_radicacion || 'Sin tema principal'}</div>
+                                            <p className="mt-2">Fecha de presentación</p>
+                                            <div className="text-primary mt-1 text-xl leading-none">{this.state.fields.fecha_radicacion || 'Sin fecha de presentación'}</div>
                                         </div>
                                     </div>
                                     <div className="lg:w-1/3 lg:px-4 pt-5 lg:pt-0">
                                         <div
                                             className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
                                             <p className="mt-2">Periodo legislativo</p>
-                                            <div className="text-primary mt-1 text-xl leading-none">{this.state.fields.cuatrienio?.nombre || 'Sin tema secundario' }</div>
+                                            <div className="text-primary mt-1 text-xl leading-none">{this.state.fields.cuatrienio?.nombre || 'Sin periodo legislativo' }</div>
                                         </div>
                                     </div>
                                     <div className="lg:w-1/3 lg:px-4 pt-5 lg:pt-0">
                                         <div
                                             className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
-                                            <p className="mt-2">Año</p>
-                                            <div className="text-primary mt-1 text-xl leading-none">{this.state.fields.legislatura?.nombre || 'Sin iniciativa'}</div>
+                                            <p className="mt-2">Fecha de plazo cuatrienal</p>
+                                            <div className="text-primary mt-1 text-xl leading-none">{this.state.fields.fecha_cuatrienal || 'Sin fecha de plazo cuatrienal'}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -289,7 +291,13 @@ class DetalleProyectoLey extends React.Component {
                                             <div className="text-primary mt-1 text-xl leading-none">{this.state.fields.comision_asamblea?.nombre || 'Sin comisión de asamblea'}</div>
                                         </div>
                                     </div>
-                                    
+                                    <div className="lg:w-1/3 lg:px-4 pt-5 lg:pt-0">
+                                        <div
+                                            className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
+                                            <p className="mt-2">Fecha estimada para dictaminar en comisión</p>
+                                            <div className="text-primary mt-1 text-xl leading-none">{this.state.fields.fecha_dictamen || 'Sin fecha estimada'}</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div className="itemSection">

@@ -58,7 +58,7 @@ class ComisionsController extends Controller
     public function show($id)
     {
         $partido = Comision::select('id', 'nombre', 'descripcion', 'tipo_comision_id', 'activo')
-        ->with('comisionDatosContacto', 'comisionImagen', 'tipoComision', 'comisionMiembro', 'comisionSecretario')
+        ->with('comisionDatosContacto', 'comisionImagen', 'tipoComision', 'comisionMiembro', 'comisionSecretario', 'comisionProyectos')
         ->where('id', $id)
         ->get()
         ->toJson(JSON_PRETTY_PRINT);

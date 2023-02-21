@@ -36,7 +36,7 @@ const ListProyectosLey = ({ data, origen = "", imgDefault = "", handler, pageExt
                     data.map((item, i) => {
 
                         return (
-                            <div className="card card_row card_hoverable customHS">
+                            <div key={i} className="card card_row card_hoverable customHS">
                                 <div className="header">
                                     <h3><a href={`#/detalle-proyecto-de-ley/${item.id}`}>{item.titulo}</a></h3>
                                     <br />

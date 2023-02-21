@@ -85,7 +85,7 @@ const HomeLayout = ({ children, ...rest }) => {
                                 notificaciones?.map((item, i) => {
                                     return (
                                         <>
-                                                <div className="p-5 hover:bg-primary-100 dark:hover:bg-primary-900">
+                                                <div key={i} className="p-5 hover:bg-primary-100 dark:hover:bg-primary-900">
                                                     <a href={`#/detalle-proyecto-de-ley/${item.notificacion.proyecto_ley_id}`}>
                                                         <h6 className="uppercase"><span className={`${item.notificacion.icono}`}></span> {item.notificacion.titulo}</h6>
                                                         <p>{item.notificacion.mensaje}</p>

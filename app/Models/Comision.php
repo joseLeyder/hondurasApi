@@ -127,4 +127,20 @@ class Comision extends Model
             1
         );
     }
+
+    public function comisionProyectos()
+    {
+        return $this->hasMany('App\Models\ProyectoLey', 'comision_asamblea_id', 'id')
+        ->with( 'Legislatura',
+                'Cuatrienio',
+                'TipoProyectoLey',
+                'Iniciativa',
+                'ProyectoLeyAutorPersonas',
+                'ProyectoLeyEstado')
+        ->where(
+            'activo',
+            1
+        );
+    }
+
 }

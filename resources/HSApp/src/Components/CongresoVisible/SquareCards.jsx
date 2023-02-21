@@ -51,8 +51,8 @@ const SquareCards = ({ data, handler, pathImgOrigen = "", defaultImage = "", han
                                                 x?.contactos.map((x,j) => {
                                                     if(x.datos_contacto.tipo === 2){
                                                         return (
-                                                            <li>
-                                                                <a key={j} href={x.cuenta} target="_blank">
+                                                            <li key={j}>
+                                                                <a  href={x.cuenta} target="_blank">
                                                                     <img src={typeof x.datos_contacto.datos_contacto_imagen[0] !== 'undefined' ? (pathImgOrigen + x.datos_contacto.datos_contacto_imagen[0].imagen) : defaultImage} alt=""/>
                                                                 </a>
                                                             </li>

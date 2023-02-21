@@ -36,7 +36,8 @@ const fieldsConst = {
     proyecto_ley_comision: [],
     control_politico: [],
     comision_imagen: [],
-    comision_datos_contacto: []
+    comision_datos_contacto: [],
+    comision_proyectos: []
 }
 const formatDate = () => {
     let dt = new Date()
@@ -50,15 +51,27 @@ const dateCalendar = (e) => {
 }
 
 let pos = { top: 0, left: 0, x: 0, y: 0 };
+let origen = auth.pathApi();
+let imgDefault = Constantes.NoImagen;
 class DetalleComision extends React.Component {
+    
     constructor(props) {
         super(props);
+       
         // this.getControlPoliticoFilter = this.getControlPoliticoFilter.bind(this);
         const id =
             this.props.match.params.id === undefined
                 ? 0
                 : this.props.match.params.id;
         this.state = {
+            subloader: true,
+            tableInfo: {
+                data: [],
+                totalRows: 0,
+                page: 1,
+                rows: 5,
+                search: '',
+            },
             id: id,
             fields: fieldsConst,
             searchControlPolitico: '',
@@ -394,6 +407,9 @@ class DetalleComision extends React.Component {
             .then((response) => {
                 let fields = this.state.fields;
                 fields = response.data[0];
+                
+                console.log(fields);
+
                 fields.comision_mesa = [];
                 let imagen = '';
                 if (fields.comision_imagen.length > 0) {
@@ -487,6 +503,86 @@ class DetalleComision extends React.Component {
                                 <h3>Tipo de comisión</h3>
                                 <div className="autor-list-tags">
                                     <p>{this.state.fields.tipo_comision.nombre}</p>
+                                </div>
+                            </div>
+                            <div className="itemSection">
+                                <h3>Proyectos de ley</h3>
+                                <div className="autor-list-tags">
+                                    {
+                                        this.state.fields.comision_proyectos?.map((item, j) => {
+                                            return(
+                                                <div key={j} className="card card_row card_hoverable customHS">
+                                <div className="header">
+                                    <h3><a href={`#/detalle-proyecto-de-ley/${item.id}`}>{item.titulo}</a></h3>
+                                    <br />
+
+                                    <div className="lg:flex lg:-mx-4">
+                                        <div className="lg:w-1/3 lg:px-4">
+                                            <div
+                                                className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
+                                                <p className="mt-2">No. De proyecto</p>
+                                                <div className="text-primary mt-1 text-xl leading-none">{item.numero_camara || ''}</div>
+                                            </div>
+                                        </div>
+                                        <div className="lg:w-1/3 lg:px-4 pt-5 lg:pt-0">
+                                            <div
+                                                className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
+                                                <p className="mt-2">Último estado</p>
+                                                <div className="text-primary mt-1 text-xl leading-none">{item.proyecto_ley_estado[item.proyecto_ley_estado.length - 1]?.tipo_estado?.nombre || 'Sin estado'}</div>
+                                            </div>
+                                        </div>
+                                        <div className="lg:w-1/3 lg:px-4 pt-5 lg:pt-0">
+                                            <div
+                                                className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
+                                                <p className="mt-2">Fecha de último estado</p>
+                                                <div className="text-primary mt-1 text-xl leading-none">{item.proyecto_ley_estado[item.proyecto_ley_estado.length - 1]?.fecha || 'Sin fecha'}</div>
+                                            </div>
+                                        </div>
+                                        <div className="lg:w-1/3 lg:px-4 pt-5 lg:pt-0">
+                                            <div
+                                                className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
+                                                <p className="mt-2">Tipo</p>
+                                                <div className="text-primary mt-1 text-xl leading-none">{item.tipo_proyecto_ley?.nombre || ''}</div>
+                                            </div>
+                                        </div>
+                                        <div className="lg:w-1/3 lg:px-4 pt-5 lg:pt-0">
+                                            <div
+                                                className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
+                                                <p className="mt-2">Iniciativa</p>
+                                                <div className="text-primary mt-1 text-xl leading-none">{item.iniciativa?.nombre || ''}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <p className="subtitle-autor-list">Autores</p>
+                                    <br />
+                                    <div className="autor-list-tags">
+                                        {
+                                            item.proyecto_ley_autor_personas?.map((autor, j) => {
+                                                if(j === 6){ // máximo 6
+                                                    return(
+                                                        <li key={j}>+{item.proyecto_ley_autor_personas.length - 6 < 0 ? (item.proyecto_ley_autor_personas.length - 6) * -1 : item.proyecto_ley_autor_personas.length - 6}...</li>
+                                                    );
+                                                }else if(j < 6){
+                                                    return(
+                                                        <div key={j} className="item">
+                                                            <div className="avatar w-16 h-16 ml-4">
+                                                                <img src={typeof autor.persona.imagenes[0] !== "undefined" ? (origen + autor.persona.imagenes[0].imagen) : imgDefault} alt={autor.persona.nombres}/>
+                                                            </div>
+                                                            <div className="name">
+                                                                <p><a target="_blank" href={`#/perfil-congresista/${autor.persona.id}`}>{autor.persona.nombres || ''}</a></p>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                }
+                                            })
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                                            );
+                                        })
+                                    }
                                 </div>
                             </div>
                         </div>
