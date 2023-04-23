@@ -76,7 +76,7 @@ class ProyectoLeys extends Component {
                                 },
                             },
                             {
-                                Header: "Número en cámara",
+                                Header: "Número de expediente",
                                 accessor: "numero_camara",
                             },
                         ],

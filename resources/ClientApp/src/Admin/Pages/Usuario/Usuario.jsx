@@ -115,7 +115,7 @@ class Usuario extends Component {
                                     IdModuloPermisoValidar={ModuloPermiso.Usuarios.Desbloquear}
                                     DefaultTemplate=
                                         {
-                                            !tableProps.row.values.activo ? null :
+                                            (!tableProps.row.values.activo || tableProps.row.values.fecha_suspension === null) ? null :
                                                 <button
                                                     data-toggle="modal"
                                                     data-target="#modal-desbloquear"

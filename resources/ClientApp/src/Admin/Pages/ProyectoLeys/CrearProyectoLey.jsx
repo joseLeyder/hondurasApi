@@ -95,7 +95,7 @@ const defaultLegislatura = { value: "", label: "Seleccione legislatura" };
 const defaultCuatrienio = { value: "", label: "Seleccione un periodo legislativo" };
 const defaultTipoProyecto = { value: "", label: "Seleccione tipo de expediente" };
 const defaultComisionUCCAEPS = { value: "", label: "Seleccione una comisión de UCCAEPS" };
-const defaultComisionAsamblea = { value: "", label: "Seleccione una comisión de asamblea" };
+const defaultComisionAsamblea = { value: "", label: "Seleccione una comisión de Asamblea Legislativa" };
 const defaultCorporacion = { value: "", label: "Seleccione corporación" };
 const default_item_select_corporacion = { value: "", label: "Seleccione una corporación" };
 const default_item_select_alcance = { value: "", label: "Seleccione un alcance" };
@@ -446,7 +446,7 @@ class CrearProyectoLey extends Component {
                     {column_name: 'Nombres', accessor: 'nombres', show: true},
                     {column_name: 'Apellidos', accessor: 'apellidos', show: true},
                     {column_name: 'Fecha nacimiento', accessor: 'fechaNacimiento', show: true},
-                    {column_name: 'Lugar nacimiento', accessor: 'lugar_nacimiento', show: true},
+                    {column_name: 'Provincia', accessor: 'lugar_nacimiento', show: true},
                 ],
                 default_item: ''
             },
@@ -2486,7 +2486,7 @@ class CrearProyectoLey extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="form-group">
-                                                    <label className="col-md-3 control-label"> Número de proyecto </label>
+                                                    <label className="col-md-3 control-label"> Número de expediente </label>
                                                     <div className="col-md-9">
                                                         <div className="input-group">
                                                             <Input
@@ -2494,7 +2494,7 @@ class CrearProyectoLey extends Component {
                                                                 inputName="numero_camara"
                                                                 inputType="text"
                                                                 inputClass="form-control"
-                                                                inputplaceholder="Ingrese el número de proyecto"
+                                                                inputplaceholder="Ingrese el número de expediente"
                                                                 inputValue={ this.state.fields.numero_camara || "" }
                                                                 inputOnchange={(e) => {
                                                                     let fields = this.state.fields;
@@ -2707,7 +2707,7 @@ class CrearProyectoLey extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="form-group">
-                                                    <label className="col-md-3 control-label"> Comisión interna </label>
+                                                    <label className="col-md-3 control-label"> Comisión de UCCAEP </label>
                                                     <div className="col-md-9">
                                                         <div className="input-group">
                                                             <Select
@@ -2725,7 +2725,7 @@ class CrearProyectoLey extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="form-group">
-                                                    <label className="col-md-3 control-label"> Comisión de asamblea legislativa </label>
+                                                    <label className="col-md-3 control-label"> Comisión de Asamblea Legislativa </label>
                                                     <div className="col-md-9">
                                                         <div className="input-group">
                                                             <Select

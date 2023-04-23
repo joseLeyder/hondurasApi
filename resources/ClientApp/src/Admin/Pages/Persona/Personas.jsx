@@ -74,7 +74,7 @@ class Personas extends Component {
                                 accessor: "fraccion_legislativa.nombre",
                             },
                             {
-                                Header: "Nació en",
+                                Header: "Provincia",
                                 accessor: "lugar_nacimiento.nombre",
                             },
                             // {

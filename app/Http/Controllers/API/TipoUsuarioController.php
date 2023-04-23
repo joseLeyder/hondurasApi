@@ -110,7 +110,10 @@ class TipoUsuarioController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = TipoUsuario::find($id);
+        $item->activo = !$item->activo;
+        $item->save();
+        return response($item,200);
     }
 
     /**

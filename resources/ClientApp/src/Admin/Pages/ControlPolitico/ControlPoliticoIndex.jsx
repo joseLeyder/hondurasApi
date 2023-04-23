@@ -341,6 +341,10 @@ class ControlPoliticoIndex extends Component {
         await CtrlPoliticoService.getAll(
             idFilterActive, search, page, rows)
             .then(response => {
+                response.data.forEach((i, index) => {    
+                    console.log(i);             
+                    response.data[index].persona.nombres = i.persona.nombres +' ' +i.persona.apellidos;
+                })
                 tableInfo["data"] = response.data;
                 console.log(response.data)
             })

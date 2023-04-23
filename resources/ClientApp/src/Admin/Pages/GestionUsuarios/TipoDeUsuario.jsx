@@ -205,8 +205,7 @@ class TipoDeUsuario extends Component {
                                             className="btn btn-danger eliminar"
                                             style={{ width: "100%" }}
                                             data-id={
-                                                tableProps.row.values
-                                                    .idTipoUsuario
+                                                tableProps.row.values.id
                                             }
                                             data-nombre={
                                                 tableProps.row.values.nombre
@@ -288,6 +287,7 @@ class TipoDeUsuario extends Component {
 
         //Start Editar
         if (element.classList.contains("editar")) {
+            
             let id = Number(element.getAttribute("data-id"));
             let nombre = element.getAttribute("data-nombre");
             let acceso_panel_administrador = element.getAttribute(
@@ -296,7 +296,7 @@ class TipoDeUsuario extends Component {
             let acceso_panel_cliente = element.getAttribute(
                 "data-acceso-panel-cliente"
             );
-
+            console.log("id1: " + id);
             console.log(acceso_panel_administrador);
             console.log(acceso_panel_cliente);
 
@@ -321,7 +321,6 @@ class TipoDeUsuario extends Component {
             let acceso_panel_cliente = element.getAttribute(
                 "data-acceso-panel-cliente"
             );
-
             console.log(acceso_panel_administrador);
             console.log(acceso_panel_cliente);
 
@@ -343,8 +342,10 @@ class TipoDeUsuario extends Component {
         //Start Eliminar
         if (element.classList.contains("eliminar")) {
             let id = Number(element.getAttribute("data-id"));
+            //let id = Number(element.parentNode.getAttribute("data-id"));
             let nombre = element.getAttribute("data-nombre");
             let activo = element.getAttribute("data-activo") === "1";
+            
             this.setState((prevState) => ({
                 ...prevState,
                 fields: {
@@ -355,10 +356,11 @@ class TipoDeUsuario extends Component {
                 },
             }));
         } else if (element.parentNode.classList.contains("eliminar")) {
-            let id = Number(element.parentNode.getAttribute("data-id"));
+            //let id = Number(element.parentNode.getAttribute("data-id"));
+            let id = Number(element.parentNode.getAttribute("data-id"));            
             let nombre = element.parentNode.getAttribute("data-nombre");
             let activo = element.parentNode.getAttribute("data-activo") === "1";
-
+            
             this.setState((prevState) => ({
                 ...prevState,
                 fields: {
@@ -379,10 +381,11 @@ class TipoDeUsuario extends Component {
         this.setState({ errors: errors, loading: true });
         let responseData;
         let idTipoUsuario = this.state.fields["idTipoUsuario"];
-
+        console.log("IdTipoUsuario: " + idTipoUsuario);
         await TipoUsuarioDataService.delete(idTipoUsuario)
             .then((response) => {
                 responseData = response.data;
+                console.log(responseData);
             })
             .catch(function (error) {
                 errors = validForm.displayErrors(
