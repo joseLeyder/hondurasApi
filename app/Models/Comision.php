@@ -33,7 +33,7 @@ class Comision extends Model
     public static $rulesPut         = [
         'nombre'                                    => 'required|max:200|min:3',
         'descripcion'                               => 'required|max:500',
-        // 'tipo_comision_id'                          => 'required|int|min:1',
+        'tipo_comision_id'                          => 'required|int|min:1',
         'datosContacto.*.cuenta'                    => 'exclude_if:datosContacto.*.activo,0|required|max:200|min:3',
         'miembros.*.persona_id'                 => 'exclude_if:miembros.*.activo,0|required|int|min:1',
         // 'miembros.*.fecha_fin'                      => 'exclude_if:miembros.*.activo,0|required|after:miembros.*.fecha_inicio',
@@ -45,7 +45,7 @@ class Comision extends Model
         'nombre.min'                        => 'El nombre de la comisión no puede ser menor a :min caracteres.',
         'descripcion.required'              => 'La descripción es requerida.',
         'descripcion.max'                   => 'La descripción no puede ser mayor a :max caracteres.',
-        // 'tipo_comision_id.min'              => 'Debe seleccionar un tipo de comisión',
+        'tipo_comision_id.min'              => 'Debe seleccionar un tipo de comisión',
         'datosContacto.*.cuenta.required'   => 'El dato de contacto es requerido.',
         'datosContacto.*.cuenta.max'        => 'El dato de contacto no puede ser mayor a :max caracteres.',
         'datosContacto.*.cuenta.min'        => 'El dato de contacto no puede ser menor a :min caracteres.',

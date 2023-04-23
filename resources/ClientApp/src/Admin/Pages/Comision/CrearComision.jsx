@@ -457,6 +457,7 @@ class CrearComision extends Component {
                 txtDescripcion = fields.descripcion;
                 fields.imagen = fields.comision_imagen;
                 fields.datosContacto = fields.comision_datos_contacto;
+                fields.tipo_comision_id = fields.tipo_comision.id;
                 fields.miembros = [];
                 fields.secretarios = [];
                 fields.datosContacto.map((item, i) => {
