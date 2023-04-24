@@ -231,11 +231,11 @@ class ControlPolitico extends React.Component {
                 <main className="workspace">
                     <section className="breadcrumb lg:flex items-start">
                         <div>
-                            <h1>Control político</h1>
+                            <h1>Control Político</h1>
                             <ul>
                                 <li><a href="#">Página principal</a></li>
                                 <li className="divider la la-arrow-right"></li>
-                                <li><a href="#">Intervenciones de control político</a></li>
+                                <li><a href="#">Intervenciones de Control Político</a></li>
                                 <li className="divider la la-arrow-right"></li>
                                 <li>Listado</li>
                             </ul>

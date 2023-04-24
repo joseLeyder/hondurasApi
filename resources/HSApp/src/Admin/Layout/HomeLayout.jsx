@@ -137,7 +137,7 @@ const HomeLayout = ({ children, ...rest }) => {
                         <a href="#/control-politico" className="link"
                             data-tippy-content="Diputados">
                             <span className="icon la la-project-diagram"></span>
-                            <span className="title">Control político</span>
+                            <span className="title">Control Político</span>
                         </a>
                         <a href="#/congresistas" className="link"
                             data-tippy-content="Diputados">

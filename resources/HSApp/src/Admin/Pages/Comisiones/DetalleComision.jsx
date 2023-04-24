@@ -238,7 +238,7 @@ class DetalleComision extends React.Component {
         // await this.getComboPartidoMesa(id);
         await this.getProyectoLeyFilter();
         // await this.getControlPoliticoFilter();
-        await this.getMiembrosFilter(this.state.partidoIdActive, false);
+        //await this.getMiembrosFilter(this.state.partidoIdActive, false);
         // await this.getMesaFilter(this.state.partidoIdActiveMesa, false);
         // await this.getSecretariosFilter();
         // await this.getTipoActividad()
@@ -362,6 +362,7 @@ class DetalleComision extends React.Component {
                     let fields = this.state.fields;
                     fields.comision_miembro = response.data;
                     console.log(response.data);
+                    console.log(response.data);
                     this.setState({ fields });
                 }).catch((e) => {
                     console.log(e);
@@ -405,11 +406,11 @@ class DetalleComision extends React.Component {
         this.setState({ loading: true });
         await ComisionDataService.get(id)
             .then((response) => {
+
+                console.log(response.data);
+
                 let fields = this.state.fields;
                 fields = response.data[0];
-                
-                console.log(fields);
-
                 fields.comision_mesa = [];
                 let imagen = '';
                 if (fields.comision_imagen.length > 0) {
@@ -490,9 +491,12 @@ class DetalleComision extends React.Component {
                                                     <div className="avatar w-16 h-16 ml-4">
                                                         <img src={typeof item.persona.imagenes[0] !== "undefined" ? (auth.pathApi() + item.persona.imagenes[0].imagen) : Constantes.NoImagen} alt={item.persona.nombres}/>
                                                     </div>
-                                                    <div className="name">
-                                                        <p>{item.persona.nombres + " " + item.persona.apellidos || ''}</p>
+                                                    <div className="row">
+                                                        <span>{item.persona.nombres + " " + item.persona.apellidos || ''}<br/> 
+                                                        {item.cargo_legislativo.nombre || ''}
+                                                         </span>
                                                     </div>
+                                                    
                                                 </div>
                                             );
                                         })
