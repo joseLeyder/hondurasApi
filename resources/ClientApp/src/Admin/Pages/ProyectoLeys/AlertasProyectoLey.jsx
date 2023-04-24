@@ -46,7 +46,7 @@ class AlertasProyectoLey extends Component {
                             },
                             {
                                 Header: "Archivo",
-                                accessor: "archivo",
+                                accessor: "url_archivo",
                             },
                             {
                                 Header: "id",
@@ -303,6 +303,7 @@ class AlertasProyectoLey extends Component {
         await ProyectoLeyDataService.getAlertas(id, idFilterActive, search, page, rows)
             .then((response) => {
                 tableInfo["data"] = response.data;
+                console.log("info: ");
                 console.log(response.data);
             })
             .catch((e) => {
