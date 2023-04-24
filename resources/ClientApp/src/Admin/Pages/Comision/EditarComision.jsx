@@ -45,7 +45,9 @@ const constFileds = {
             fecha_fin: '',
             nombre: '',
             path: Constantes.NoImagen,
-            activo: 1
+            activo: 1,
+            cargo_legislativo_id: 0,
+            cargo: ""
         }
     ],
     secretarios: [
@@ -374,6 +376,7 @@ class EditarComision extends Component {
     componentDidMount = async () => {
         this.resetFields();
         await this.getComboDatosContacto();
+        await this.getComboCargoLegislativo();
         await this.getComboTipoComision();
         await this.getAllPersonas(1, this.state.buscadorPersona.page, this.state.buscadorPersona.rows, this.state.buscadorPersona.search);
         this.state.fields.id = this.state.id;
@@ -429,6 +432,20 @@ class EditarComision extends Component {
         }
     }
 
+    getComboCargoLegislativo = async () => {
+        this.setState({ loading: true });
+        await UtilsDataService.getComboCargoCongresista()
+            .then((response) => {
+                response.data.map((item) => {
+                    this.state.dataSelectCargo.push({
+                        value: item.id,
+                        label: item.nombre,
+                    });
+                });
+                let data = response.data;
+                this.setState({ loading: false });
+            });
+    };
 
     setSelectValue = (id, dataSelect, filter) => {
         let select = this.state[`${dataSelect}`];
@@ -480,7 +497,9 @@ class EditarComision extends Component {
                         fecha_inicio: item.fecha_inicio,
                         fecha_fin: item.fecha_fin,
                         path: item.persona.imagenes.length > 0 ? auth.pathApi() + item.persona.imagenes[2].imagen : Constantes.NoImagen,
-                        activo: 1
+                        activo: 1,
+                        cargo_legislativo_id: item.cargo_legislativo.id,
+                        cargo : item.cargo_legislativo.nombre
                     })
                     errors.miembros.push({
                         id: "",
@@ -600,9 +619,15 @@ class EditarComision extends Component {
         let errorsModal = validForm.resetObject(constErrorsModal);
         let fechas = this.state.fechasMiembro;
         let miembro = this.state.buscadorPersona.selected;
+        let cargo = this.state.selectCargo;
+        console.log(cargo);
         let errors = 0;
         if (miembro.id === 0) {
             errorsModal.errorMiembro = "Seleccione un miembro";
+            errors++;
+        }
+        if (cargo.value === 0) {
+            errorsModal.errorCargo = "Seleccione un cargo";
             errors++;
         }
         let repetidos = this.state.fields.miembros.filter(x => x.persona_id === miembro.id && x.activo === 1);
@@ -624,7 +649,9 @@ class EditarComision extends Component {
                 persona_id
             ) ||
             ""
-            : Constantes.NoImagen
+            : Constantes.NoImagen;
+            
+        let nombreCargo  = cargo.label;
         let item = {
             id: 0,
             comision_id: this.state.fields.id,
@@ -632,6 +659,8 @@ class EditarComision extends Component {
             fecha_inicio: FechaMysql.DateFormatMySql(this.state.fechasMiembro.fecha_inicio),
             fecha_fin: FechaMysql.DateFormatMySql(this.state.fechasMiembro.fecha_fin),
             nombre: nombre_congresista,
+            cargo_legislativo_id: this.state.selectCargo.value,
+            cargo: nombreCargo,
             path: path,
             activo: 1,
         };
@@ -1270,7 +1299,7 @@ class EditarComision extends Component {
                                                                                 <div className="list-group-status status-online"></div>
                                                                                 <img src={item.path} className="pull-left" alt={item.nombre} />
                                                                                 <span className="contacts-title">{item.nombre}</span>
-                                                                                {/* <span className="contacts-title">{item.nombreCuatrienio}</span> */}
+                                                                                <span className="contacts-title">{item.cargo}</span>
                                                                                 <button onClick={() => { this.handlerRemoveMiembro(i) }} className="btn btn-danger pull-right" type="button"><i className="fa fa-trash-alt"></i></button>
                                                                             </div>
                                                                            
@@ -1322,7 +1351,7 @@ class EditarComision extends Component {
                                         <div className="row">
                                             
                                             
-                                            <div className="col-md-6">
+                                            <div className="col-md-4">
                                                 <div className="form-group">
                                                     <div className="input-group">
                                                         <label htmlFor="">Fecha inicio</label>
@@ -1345,7 +1374,7 @@ class EditarComision extends Component {
                                                 </div>
                                                 <span className={`error`}>{this.state.errorsModal.errorFechaInicio || ''}</span>
                                             </div>
-                                            <div className="col-md-6">
+                                            <div className="col-md-4">
                                                 <div className="form-group">
                                                     <div className="input-group">
                                                         <label htmlFor="">Fecha fin</label>
@@ -1368,6 +1397,26 @@ class EditarComision extends Component {
                                                 </div>
                                                 <span className={`error`}>{this.state.errorsModal.errorFechaFin || ''}</span>
                                             </div>
+                                            <div className="col-md-4">
+                                                <div className="form-group">
+                                                    <div className="input-group">
+                                                        <label htmlFor="">Cargo legislativo</label>
+                                                        <Select
+                                                                divClass=""
+                                                                selectplaceholder="Seleccione"
+                                                                selectValue={this.state.selectCargo}
+                                                                selectIsSearchable={false}
+                                                                selectoptions={this.state.dataSelectCargo}
+                                                                selectOnchange={this.handleCargo}
+                                                                selectclassNamePrefix="selectReact__value-container"
+                                                                spanClass="error"
+                                                                spanError={this.state.errorsModal.cargo_legislativo_id || ''} >
+                                                            </Select>
+                                                    </div>
+                                                </div>
+                                                <span className={`error`}>{this.state.errorsModal.errorCargo || ''}</span>
+                                            </div>
+
                                         </div>
                                         <hr />
                                         <div className="row">

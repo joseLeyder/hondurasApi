@@ -14,6 +14,7 @@ class ComisionMiembro extends Model
         'persona_id',
         'fecha_inicio',
         'fecha_fin',
+        'cargo_legislativo_id',
         'usercreated',
         'activo',
         'usercreated',
@@ -33,6 +34,10 @@ class ComisionMiembro extends Model
         return $this->hasOne('App\Models\Comision', 'id', 'comision_id');
     }
 
+    public function cargoLegislativo()
+    {
+        return $this->hasOne('App\Models\CargoLegislativo', 'id', 'cargo_legislativo_id');
+    }
     public function persona()
     {
         return $this->hasOne('App\Models\Persona', 'id', 'persona_id')

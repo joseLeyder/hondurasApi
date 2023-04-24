@@ -85,6 +85,10 @@ class Comision extends Model
         ->with("persona")->where(
             'activo',
             1
+        )
+        ->with("cargoLegislativo")->where(
+            'activo',
+            1
         );
     }
 
