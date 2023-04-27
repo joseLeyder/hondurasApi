@@ -89,7 +89,7 @@ class ActividadesLegislativasController extends Controller
         ->where('informacion', 'LIKE', '%' . $request->input('search') . '%')
         ->skip(($request->input('page') - 1) * $request->input('rows'))
         ->take($request->input('rows'))       
-        ->orderBy('id','asc')
+        ->orderBy('updated_at','desc')
         ->get()
         ->toJson(JSON_PRETTY_PRINT);
     
