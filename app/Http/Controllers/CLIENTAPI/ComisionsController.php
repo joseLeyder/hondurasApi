@@ -28,7 +28,7 @@ class ComisionsController extends Controller
         ->with('tipoComision','comisionImagen', "comisionDatosContacto")
         ->where('activo', ($filter != "-1") ? '=' : '!=', $filter)
         // ->where('corporacion_id', ($corporacion != "-1") ? '=' : '!=', $corporacion)
-        ->where('tipo_comision_id', ($tipoComision != "0") ? '=' : '!=', $tipoComision)
+        ->where('tipo_comision_id', ($tipoComision != "-1") ? '=' : '!=', $tipoComision)
         ->where('nombre', 'LIKE', '%' . $request->input('search') . '%' )
         ->skip(($request->input('page') - 1) * $request->input('rows'))
         ->take($request->input('rows'))
@@ -96,7 +96,7 @@ class ComisionsController extends Controller
         $count = Comision::where('activo', ($filter != "-1") ? '=' : '!=', $filter)
         ->where('nombre', 'LIKE', '%' . $request->input('search') . '%' )
         // ->where('corporacion_id', ($corporacion != "0") ? '=' : '!=', $corporacion)
-        ->where('tipo_comision_id', ($tipoComision != "0") ? '=' : '!=', $tipoComision)
+        ->where('tipo_comision_id', ($tipoComision != "-1") ? '=' : '!=', $tipoComision)
         ->count();
         return response($count, 200);
     }

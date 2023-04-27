@@ -62,7 +62,8 @@ class Comisiones extends React.Component {
                 let combo = [];
                 response.data.forEach(i => {
                     combo.push({ value: i.id, label: i.nombre })
-                })
+                });
+                combo.unshift({ value: -1, label: "Ver todos" });
                 this.state.selectTipoComision = combo[0];
                 this.setState({
                     dataSelectTipoComision: combo,
