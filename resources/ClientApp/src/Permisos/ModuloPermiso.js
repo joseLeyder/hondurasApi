@@ -566,5 +566,12 @@
         , Obtener: 266
         , ObtenerTodos: 267
         , Index: 268
+    }, TipoExpediente: {
+        Nuevo: 292
+        , Modificar: 293
+        , Eliminar: 294
+        , Obtener: 295
+        , ObtenerTodos: 296
+        , Index: 297
     }
 }

@@ -111,6 +111,7 @@ import Municipios from "./Admin/Pages/Municipio/Municipios";
  import TipoDeUsuario from './Admin/Pages/GestionUsuarios/TipoDeUsuario';
  import RolesPorTipoDeUsuario from './Admin/Pages/GestionUsuarios/RolesPorTipoDeUsuario';
 import ComisionAsambleas from "./Admin/Pages/ComisionAsamblea/ComisionAsambleas";
+import TipoExpediente from "./Admin/Pages/TipoExpediente/TipoExpediente";
 import ComisionUccaeps from "./Admin/Pages/ComisionUccaep/ComisionUccaeps";
 import FraccionLegislativa from "./Admin/Pages/FraccionLegislativa/FraccionLegislativa";
 //TERMINA Gestión de usuarios
@@ -520,6 +521,10 @@ export default class App extends Component {
                         
                         {/* Comision de Asamblea */}
                         <RouteLayout path="/comisionasamblea" component={ComisionAsambleas} />
+                        {/* end Asamblea */}
+
+                        {/* Comision de Asamblea */}
+                        <RouteLayout path="/tipo-expediente" component={TipoExpediente} />
                         {/* end Asamblea */}
                         
                         {/* Comision de Uccaep */}

@@ -651,6 +651,15 @@ Route::get('comisionasamblea/{id}', [ComisionAsambleasController::class, 'show']
 Route::get('comisionasamblea', [ComisionAsambleasController::class, 'index'])->middleware(['jwt.cid:375']);
 Route::post('comisionasamblea/totalrecords', [ComisionAsambleasController::class, 'totalrecords'])->middleware(['jwt.cid:375']);
 
+// Tipo de expediente o tipo de proyecto
+Route::post('tipoproyecto', [TipoProyectoController::class, 'store'])->middleware(['jwt.cid:392']);
+Route::put('tipoproyecto/{id}', [TipoProyectoController::class, 'update'])->middleware(['jwt.cid:393']);
+Route::delete('tipoproyecto/{id}', [TipoProyectoController::class, 'destroy'])->middleware(['jwt.cid:394']);
+Route::get('tipoproyecto/{id}', [TipoProyectoController::class, 'show'])->middleware(['jwt.cid:395']);
+Route::get('tipoproyecto', [TipoProyectoController::class, 'index'])->middleware(['jwt.cid:397']);
+Route::post('tipoproyecto/totalrecords', [TipoProyectoController::class, 'totalrecords'])->middleware(['jwt.cid:397']);
+
+
 
 // Comision UCCAEP
 Route::post('comisionuccaep', [ComisionUCCAEPsController::class, 'store'])->middleware(['jwt.cid:377']);
