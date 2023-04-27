@@ -44,6 +44,7 @@ class DetalleProyectoLey extends React.Component {
             comisiones: [],
             comision_asamblea: [],
             comision_uccaep: [],
+            proyecto_ley_alertas: [],
             estado_proyecto_ley_id: 0
         }
     }
@@ -118,7 +119,8 @@ class DetalleProyectoLey extends React.Component {
                 fields.comision_asamblea = data.comision_asamblea;
                 fields.comision_uccaep = data.comision_uccaep;
                 fields.fecha_cuatrienal = data.fecha_cuatrienal;
-                fields.fecha_dictamen = data.fecha_dictamen;
+                fields.fecha_dictamen = data.fecha_dictamen; 
+                fields.proyecto_ley_alertas = data.proyecto_ley_alertas;
                 let tabActive = ['active'];
                 let partidoPonenteActive = 0;
                 let estado_proyecto_ley_id = 0;
@@ -382,7 +384,64 @@ class DetalleProyectoLey extends React.Component {
                                     );
                                 })
                             }
-                        </div>
+                            </div>
+                            <div className="itemSection">
+                                <h3>Alertas</h3>
+                                <div className="">
+                                    {
+                                        this.state.fields.proyecto_ley_alertas?.map((item, j) => {
+                                            
+                                            return(
+
+                                                <div className="subItemSection type-list" key={j}>
+                                        <div className="lg:flex lg:-mx-4">
+                                            <div className="lg:w-1/2 lg:px-4">
+                                                <div
+                                                    className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
+                                                    <p className="mt-2">Información</p>
+                                                    <div className="text-primary mt-1 text-xl leading-none">
+                                                        <p>{ (item.clearContent === null ? "" : (item.clearContent.length > 200) ? item.clearContent.substring(0,200) : item.clearContent) }</p>
+                                                        <a className="uppercase" href={"#/detalle-alerta/" + item.id} target="_blank" style={{display : (item.clearContent === null || item.clearContent.length === 0) ? "none" : "block"}}> Ver alerta completa </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {
+                                                        item.url_archivo && (
+                                                            <div className="lg:w-1/2 lg:px-4 pt-5 lg:pt-0">
+                                                            <div
+                                                                className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
+                                                                <p className="mt-2">Archivo</p>
+                                                                <div className="text-primary mt-1 text-xl leading-none">
+                                                                <a href={(auth.pathApi() + item.url_archivo) } target="_blank" className="control-label">Ver documento</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                                    )
+                                                        }
+                                            
+                                            {/* <div className="lg:w-1/3 lg:px-4 pt-5 lg:pt-0">
+                                                <div
+                                                    className="card px-4 py-8 text-center lg:transform hover:scale-110 hover:shadow-lg transition-transform duration-200">
+                                                    <p className="mt-2">Gaceta</p>
+                                                    <div className="text-primary mt-1 text-xl leading-none">{
+                                                    value.gaceta_url ?
+                                                    <a href={url} className="gaceta" target="_blank">Descargar</a>
+                                                    :
+                                                    <p className="gaceta">Sin gaceta</p>
+                                                }</div>
+                                                </div>
+                                            </div> */}
+                                        </div>
+                                        
+                                    </div>
+
+
+                                               
+                                            );
+                                        })
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </main>

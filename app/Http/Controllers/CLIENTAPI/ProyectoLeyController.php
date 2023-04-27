@@ -183,7 +183,8 @@ class ProyectoLeyController extends Controller
                 'ProyectoLeyAutorPersonas',
                 'ProyectoLeyEstado',
                 'ComisionUccaep',
-                'ComisionAsamblea'
+                'ComisionAsamblea',
+                'ProyectoLeyAlertas'
                 ])
             ->get()
             ->first();
